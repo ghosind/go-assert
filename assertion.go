@@ -24,3 +24,13 @@ func (a *Assertion) Equal(actual, expect any, message ...string) error {
 func (a *Assertion) NotEqual(actual, expect any, message ...string) error {
 	return NotEqual(a.t, actual, expect, message...)
 }
+
+// Panic expects the function fn to panic.
+func (a *Assertion) Panic(fn func(), message ...string) (err error) {
+	return Panic(a.t, fn, message...)
+}
+
+// NotPanic asserts that the function fn does not panic.
+func (a *Assertion) NotPanic(fn func(), message ...string) (err error) {
+	return NotPanic(a.t, fn, message...)
+}

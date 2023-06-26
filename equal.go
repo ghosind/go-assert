@@ -1,6 +1,7 @@
 package assert
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -11,7 +12,7 @@ func Equal(t *testing.T, actual, expect any, message ...string) error {
 		return nil
 	}
 
-	err := newAssertionError("==", actual, expect, message...)
+	err := newAssertionError(fmt.Sprintf("%v == %v", actual, expect), message...)
 
 	t.Error(err)
 
@@ -24,7 +25,7 @@ func NotEqual(t *testing.T, actual, expect any, message ...string) error {
 		return nil
 	}
 
-	err := newAssertionError("!=", actual, expect, message...)
+	err := newAssertionError(fmt.Sprintf("%v != %v", actual, expect), message...)
 
 	t.Error(err)
 

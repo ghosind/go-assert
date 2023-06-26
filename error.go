@@ -1,33 +1,24 @@
 package assert
 
-import "fmt"
-
 // AssertionError indicates the failure of an assertion.
 type AssertionError struct {
-	message  *string
-	actual   any
-	expect   any
-	operator string
+	message string
 }
 
-func newAssertionError(operator string, actual, expect any, message ...string) AssertionError {
-	err := AssertionError{
-		actual:   actual,
-		expect:   expect,
-		operator: operator,
-	}
+// newAssertionError creates a new error with custom message or default message.
+func newAssertionError(defaultMsg string, message ...string) AssertionError {
+	err := AssertionError{}
 
 	if len(message) > 0 {
-		err.message = &message[0]
+		err.message = message[0]
+	} else {
+		err.message = "assert error: " + defaultMsg
 	}
 
 	return err
 }
 
+// Error returns the message of the error.
 func (err AssertionError) Error() string {
-	if err.message != nil {
-		return *err.message
-	}
-
-	return fmt.Sprintf("%v %s %v", err.actual, err.operator, err.expect)
+	return err.message
 }

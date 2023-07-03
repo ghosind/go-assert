@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-// Equal tests equality between actual and expect parameters.
-func Equal(t *testing.T, actual, expect any, message ...string) error {
+// DeepEqual tests deeply equality between actual and expect parameters.
+func DeepEqual(t *testing.T, actual, expect any, message ...string) error {
 	if reflect.DeepEqual(actual, expect) {
 		return nil
 	}
@@ -19,8 +19,8 @@ func Equal(t *testing.T, actual, expect any, message ...string) error {
 	return err
 }
 
-// NotEqual tests inequality between actual and expected parameters.
-func NotEqual(t *testing.T, actual, expect any, message ...string) error {
+// NotDeepEqual tests deeply inequality between actual and expected parameters.
+func NotDeepEqual(t *testing.T, actual, expect any, message ...string) error {
 	if !reflect.DeepEqual(actual, expect) {
 		return nil
 	}

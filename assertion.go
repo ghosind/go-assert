@@ -15,14 +15,14 @@ func New(t *testing.T) *Assertion {
 	return a
 }
 
-// Equal tests equality between actual and expect parameters.
-func (a *Assertion) Equal(actual, expect any, message ...string) error {
-	return Equal(a.t, actual, expect, message...)
+// DeepEqual tests deeply equality between actual and expect parameters.
+func (a *Assertion) DeepEqual(actual, expect any, message ...string) error {
+	return DeepEqual(a.t, actual, expect, message...)
 }
 
-// NotEqual tests inequality between actual and expected parameters.
-func (a *Assertion) NotEqual(actual, expect any, message ...string) error {
-	return NotEqual(a.t, actual, expect, message...)
+// NotDeepEqual tests deeply inequality between actual and expected parameters.
+func (a *Assertion) NotDeepEqual(actual, expect any, message ...string) error {
+	return NotDeepEqual(a.t, actual, expect, message...)
 }
 
 // Panic expects the function fn to panic.

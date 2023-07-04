@@ -15,8 +15,6 @@ func Panic(t *testing.T, fn func(), message ...string) (err error) {
 
 	fn()
 
-	// err = newAssertionError("mssing expected panic", message...)
-
 	return
 }
 

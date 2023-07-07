@@ -45,3 +45,31 @@ func testDeepEqualAndNotDeepEqual(t *testing.T, assertion *Assertion, v1, v2 any
 		t.Errorf("NotEqual(%v, %v) = %v, want = nil", v1, v2, err)
 	}
 }
+
+func TestNilAndNotNil(t *testing.T) {
+	mockT := new(testing.T)
+	assert := New(mockT)
+
+	testNilAndNotNil(t, assert, 1, false)
+	testNilAndNotNil(t, assert, "", false)
+	testNilAndNotNil(t, assert, nil, true)
+	var testAssert *Assertion
+	testNilAndNotNil(t, assert, testAssert, true)
+	testNilAndNotNil(t, assert, assert, false)
+}
+
+func testNilAndNotNil(t *testing.T, assertion *Assertion, v any, isNil bool) {
+	err := assertion.Nil(v)
+	if isNil && err != nil {
+		t.Errorf("Nil(%v) = %v, want nil", v, err)
+	} else if !isNil && err == nil {
+		t.Errorf("Nil(%v) = nil, want error", v)
+	}
+
+	err = assertion.NotNil(v)
+	if isNil && err == nil {
+		t.Errorf("Nil(%v) = nil, want error", v)
+	} else if !isNil && err != nil {
+		t.Errorf("Nil(%v) = %v, want nil", v, err)
+	}
+}

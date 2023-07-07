@@ -31,3 +31,29 @@ func NotDeepEqual(t *testing.T, actual, expect any, message ...string) error {
 
 	return err
 }
+
+// Nil tests a value is nil or not, and it'll failed when the value is not nil.
+func Nil(t *testing.T, val any, message ...string) error {
+	if isNil(val) {
+		return nil
+	}
+
+	err := newAssertionError(fmt.Sprintf("expect nil, got %v", val), message...)
+
+	t.Error(err)
+
+	return err
+}
+
+// NotNil tests a value is nil or not, and it'll failed when the value is nil.
+func NotNil(t *testing.T, val any, message ...string) error {
+	if !isNil(val) {
+		return nil
+	}
+
+	err := newAssertionError("expect not nil, got nil", message...)
+
+	t.Error(err)
+
+	return err
+}

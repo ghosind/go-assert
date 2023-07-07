@@ -25,6 +25,16 @@ func (a *Assertion) NotDeepEqual(actual, expect any, message ...string) error {
 	return NotDeepEqual(a.t, actual, expect, message...)
 }
 
+// Nil tests a value is nil or not, and it'll failed when the value is not nil.
+func (a *Assertion) Nil(val any, message ...string) error {
+	return Nil(a.t, val, message...)
+}
+
+// NotNil tests a value is nil or not, and it'll failed when the value is nil.
+func (a *Assertion) NotNil(val any, message ...string) error {
+	return NotNil(a.t, val, message...)
+}
+
 // Panic expects the function fn to panic.
 func (a *Assertion) Panic(fn func(), message ...string) (err error) {
 	return Panic(a.t, fn, message...)

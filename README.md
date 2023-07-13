@@ -18,7 +18,7 @@ go get -u github.com/ghosind/go-assert
 
 ## Getting Started
 
-This library provided assertion functions to verify the equality of values:
+This library provided assertion functions to verify the equality of values, or assert for nil:
 
 ```go
 func TestExample(t *testing.T) {
@@ -27,6 +27,12 @@ func TestExample(t *testing.T) {
 
   // assert inequality
   assert.NotDeepEqual(t, actual, expect)
+
+  // assert for nil
+  assert.Nil(t, object)
+
+  // assert for not nil
+  assert.NotNil(t, object)
 }
 ```
 

@@ -32,7 +32,9 @@ func NotDeepEqual(t *testing.T, actual, expect any, message ...string) error {
 	return err
 }
 
-// Nil tests a value is nil or not, and it'll failed when the value is not nil.
+// Nil tests whether a value is nil or not, and it'll fail when the value is not nil. It will
+// always return false if the value is a bool, an integer, a floating number, a complex, or a
+// string.
 func Nil(t *testing.T, val any, message ...string) error {
 	if isNil(val) {
 		return nil
@@ -45,7 +47,9 @@ func Nil(t *testing.T, val any, message ...string) error {
 	return err
 }
 
-// NotNil tests a value is nil or not, and it'll failed when the value is nil.
+// NotNil tests whether a value is nil or not, and it'll fail when the value is nil. It will
+// always return true if the value is a bool, an integer, a floating number, a complex, or a
+// string.
 func NotNil(t *testing.T, val any, message ...string) error {
 	if !isNil(val) {
 		return nil

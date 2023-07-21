@@ -21,44 +21,6 @@ func New(t *testing.T) *Assertion {
 	return a
 }
 
-// #########################
-// ## Assertion Functions ##
-// #########################
-
-// DeepEqual tests deeply equality between actual and expect parameters.
-func (a *Assertion) DeepEqual(actual, expect any, message ...string) error {
-	return DeepEqual(a.t, actual, expect, message...)
-}
-
-// NotDeepEqual tests deeply inequality between actual and expected parameters.
-func (a *Assertion) NotDeepEqual(actual, expect any, message ...string) error {
-	return NotDeepEqual(a.t, actual, expect, message...)
-}
-
-// Nil tests whether a value is nil or not, and it'll fail when the value is not nil. It will
-// always return false if the value is a bool, an integer, a floating number, a complex, or a
-// string.
-func (a *Assertion) Nil(val any, message ...string) error {
-	return Nil(a.t, val, message...)
-}
-
-// NotNil tests whether a value is nil or not, and it'll fail when the value is nil. It will
-// always return true if the value is a bool, an integer, a floating number, a complex, or a
-// string.
-func (a *Assertion) NotNil(val any, message ...string) error {
-	return NotNil(a.t, val, message...)
-}
-
-// Panic expects the function fn to panic.
-func (a *Assertion) Panic(fn func(), message ...string) (err error) {
-	return Panic(a.t, fn, message...)
-}
-
-// NotPanic asserts that the function fn does not panic.
-func (a *Assertion) NotPanic(fn func(), message ...string) (err error) {
-	return NotPanic(a.t, fn, message...)
-}
-
 // ##########################
 // ## Delegation Functions ##
 // ##########################

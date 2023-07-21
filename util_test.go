@@ -12,3 +12,12 @@ func TestIsNil(t *testing.T) {
 	assert.DeepEqual(isNil(testAssert), true)
 	assert.DeepEqual(isNil(assert), false)
 }
+
+func TestIsPanic(t *testing.T) {
+	Nil(t, isPanic(func() {
+		// no panic
+	}))
+	NotNil(t, isPanic(func() {
+		panic("unexpected panic")
+	}))
+}

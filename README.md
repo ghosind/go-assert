@@ -22,11 +22,16 @@ This library provided assertion functions to verify the equality of values, or a
 
 ```go
 func TestExample(t *testing.T) {
+  // var actual
+  // var expect
+
   // assert equality
   assert.DeepEqual(t, actual, expect)
 
   // assert inequality
   assert.NotDeepEqual(t, actual, expect)
+
+  // var object
 
   // assert for nil
   assert.Nil(t, object)
@@ -53,6 +58,21 @@ func TestPanic(t *testing.T) {
 
     // panic()
   })
+}
+```
+
+For every assertion functions, it also provided `XXXNow` functions to stop the execution.
+
+```go
+func TestExample(t *testing.T) {
+  // var actual
+  // var expect
+
+  // The following line will set the test result to fail and stop the execution
+  assert.DeepEqualNow(t, actual, expect)
+
+  // The following lines will never execute if they are not deep equal.
+  // ...
 }
 ```
 

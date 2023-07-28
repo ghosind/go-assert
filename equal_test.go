@@ -1,6 +1,9 @@
 package assert
 
-import "testing"
+import (
+	"sync"
+	"testing"
+)
 
 type testStruct struct {
 	v int
@@ -44,6 +47,31 @@ func testDeepEqualAndNotDeepEqual(t *testing.T, assertion *Assertion, v1, v2 any
 	} else if !isEqual && err != nil {
 		t.Errorf("NotEqual(%v, %v) = %v, want = nil", v1, v2, err)
 	}
+
+	isTerminated := true
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		assertion.DeepEqualNow(v1, v2)
+		isTerminated = false
+	}()
+	wg.Wait()
+	if isEqual && isTerminated {
+		t.Error("execution stopped, want do not stop")
+	}
+
+	isTerminated = true
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		assertion.NotDeepEqualNow(v1, v2)
+		isTerminated = false
+	}()
+	wg.Wait()
+	if !isEqual && isTerminated {
+		t.Error("execution stopped, want do not stop")
+	}
 }
 
 func TestNilAndNotNil(t *testing.T) {
@@ -71,5 +99,30 @@ func testNilAndNotNil(t *testing.T, assertion *Assertion, v any, isNil bool) {
 		t.Errorf("Nil(%v) = nil, want error", v)
 	} else if !isNil && err != nil {
 		t.Errorf("Nil(%v) = %v, want nil", v, err)
+	}
+
+	isTerminated := true
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		assertion.NilNow(v)
+		isTerminated = false
+	}()
+	wg.Wait()
+	if isNil && isTerminated {
+		t.Error("execution stopped, want do not stop")
+	}
+
+	isTerminated = true
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		assertion.NotNilNow(v)
+		isTerminated = false
+	}()
+	wg.Wait()
+	if !isNil && isTerminated {
+		t.Error("execution stopped, want do not stop")
 	}
 }

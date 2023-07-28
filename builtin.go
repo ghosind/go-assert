@@ -105,5 +105,5 @@ func NotPanic(t *testing.T, fn func(), message ...string) error {
 func NotPanicNow(t *testing.T, fn func(), message ...string) error {
 	t.Helper()
 
-	return tryNotPanic(t, false, fn, message...)
+	return tryNotPanic(t, true, fn, message...)
 }

@@ -34,7 +34,7 @@ func (a *Assertion) NotPanic(fn func(), message ...string) error {
 func (a *Assertion) NotPanicNow(fn func(), message ...string) error {
 	a.Helper()
 
-	return tryNotPanic(a.T, false, fn, message...)
+	return tryNotPanic(a.T, true, fn, message...)
 }
 
 // tryPanic executes the function fn, and try to catching the panic error. It expect the function

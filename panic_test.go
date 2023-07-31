@@ -1,98 +1,101 @@
 package assert
 
 import (
-	"sync"
 	"testing"
+
+	"github.com/ghosind/go-assert/internal"
 )
 
-func TestPanic(t *testing.T) {
+func TestPanicAndNotPanic(t *testing.T) {
 	mockT := new(testing.T)
-	a := New(mockT)
+	assertion := New(mockT)
 
-	if err := a.Panic(func() {
-		panic("expected panic")
-	}); err != nil {
-		t.Errorf("Panic() = %v, want = nil", err)
-	}
-
-	if err := a.Panic(func() {
+	testPanicAndNotPanic(t, assertion, func() {
 		// no panic
-	}); err == nil {
+	}, false)
+	testPanicAndNotPanic(t, assertion, func() {
+		panic("some panic")
+	}, true)
+}
+
+func testPanicAndNotPanic(t *testing.T, assertion *Assertion, fn func(), isPanic bool) {
+	testPanic(t, assertion, fn, isPanic)
+
+	testNotPanic(t, assertion, fn, isPanic)
+
+	testPanicNow(t, assertion, fn, isPanic)
+
+	testNotPanicNow(t, assertion, fn, isPanic)
+}
+
+func testPanic(t *testing.T, assertion *Assertion, fn func(), isPanic bool) {
+	err := assertion.Panic(fn)
+	if isPanic && err != nil {
+		t.Errorf("Panic() = %v, want = nil", err)
+	} else if !isPanic && err == nil {
 		t.Error("Panic() = nil, want error")
 	}
 
-	isTerminated := true
-	wg := sync.WaitGroup{}
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		a.Panic(func() {
-			panic("expected panic")
-		})
-		isTerminated = false
-	}()
-	wg.Wait()
-	if isTerminated {
-		t.Error("execution stopped, want do not stop")
-	}
-
-	isTerminated = true
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		a.PanicNow(func() {
-			// no panic
-		})
-		isTerminated = false
-	}()
-	wg.Wait()
-	if !isTerminated {
-		t.Error("execution not stopped, want stop")
+	err = Panic(assertion.T, fn)
+	if isPanic && err != nil {
+		t.Errorf("Panic() = %v, want = nil", err)
+	} else if !isPanic && err == nil {
+		t.Error("Panic() = nil, want error")
 	}
 }
 
-func TestNotPanic(t *testing.T) {
-	mockT := new(testing.T)
-	a := New(mockT)
-
-	if err := a.NotPanic(func() {
-		// no panic
-	}); err != nil {
+func testNotPanic(t *testing.T, assertion *Assertion, fn func(), isPanic bool) {
+	err := assertion.NotPanic(fn)
+	if !isPanic && err != nil {
 		t.Errorf("NotPanic() = %v, want = nil", err)
-	}
-
-	if err := a.NotPanic(func() {
-		panic("unexpected panic")
-	}); err == nil {
+	} else if isPanic && err == nil {
 		t.Error("NotPanic() = nil, want error")
 	}
 
-	isTerminated := true
-	wg := sync.WaitGroup{}
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		a.NotPanicNow(func() {
-			// no panic
-		})
-		isTerminated = false
-	}()
-	wg.Wait()
-	if isTerminated {
+	err = NotPanic(assertion.T, fn)
+	if !isPanic && err != nil {
+		t.Errorf("NotPanic() = %v, want = nil", err)
+	} else if isPanic && err == nil {
+		t.Error("NotPanic() = nil, want error")
+	}
+}
+
+func testPanicNow(t *testing.T, assertion *Assertion, fn func(), isPanic bool) {
+	isTerminated := internal.CheckTermination(func() {
+		assertion.PanicNow(fn)
+	})
+	if isPanic && isTerminated {
 		t.Error("execution stopped, want do not stop")
+	} else if !isPanic && !isTerminated {
+		t.Error("execution do not stopped, want stop")
 	}
 
-	isTerminated = true
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		a.NotPanicNow(func() {
-			panic("unexpected panic")
-		})
-		isTerminated = false
-	}()
-	wg.Wait()
-	if !isTerminated {
-		t.Error("execution not stopped, want stop")
+	isTerminated = internal.CheckTermination(func() {
+		PanicNow(assertion.T, fn)
+	})
+	if isPanic && isTerminated {
+		t.Error("execution stopped, want do not stop")
+	} else if !isPanic && !isTerminated {
+		t.Error("execution do not stopped, want stop")
+	}
+}
+
+func testNotPanicNow(t *testing.T, assertion *Assertion, fn func(), isPanic bool) {
+	isTerminated := internal.CheckTermination(func() {
+		assertion.NotPanicNow(fn)
+	})
+	if !isPanic && isTerminated {
+		t.Error("execution stopped, want do not stop")
+	} else if isPanic && !isTerminated {
+		t.Error("execution do not stopped, want stop")
+	}
+
+	isTerminated = internal.CheckTermination(func() {
+		NotPanicNow(assertion.T, fn)
+	})
+	if !isPanic && isTerminated {
+		t.Error("execution stopped, want do not stop")
+	} else if isPanic && !isTerminated {
+		t.Error("execution do not stopped, want stop")
 	}
 }

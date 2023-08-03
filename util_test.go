@@ -41,3 +41,23 @@ func TestIsPanic(t *testing.T) {
 		panic("unexpected panic")
 	}))
 }
+
+func TestIsTrue(t *testing.T) {
+	assert := New(t)
+
+	// reflect.Invalid
+	assert.DeepEqual(isTrue(nil), false)
+
+	// reflect.Slice
+	assert.DeepEqual(isTrue([]int{0}), true)
+	assert.DeepEqual(isTrue([]int{}), false)
+
+	// other kinds
+	assert.DeepEqual(isTrue(1), true)
+	assert.DeepEqual(isTrue(0), false)
+	assert.DeepEqual(isTrue(1.0), true)
+	assert.DeepEqual(isTrue(0.0), false)
+	assert.DeepEqual(isTrue("Hello"), true)
+	assert.DeepEqual(isTrue(""), false)
+	assert.DeepEqual(isTrue(func() {}), true)
+}

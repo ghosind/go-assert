@@ -57,3 +57,19 @@ func isPanic(fn func()) (err any) {
 
 	return
 }
+
+// isTrue checks whether a value is truthy or not. It'll return true if the value is not the zero
+// value for its type. For a slice, a truthy value should not be the zero value and the length must
+// be greater than 0. For nil, it'll always return false.
+func isTrue(v any) bool {
+	rv := reflect.ValueOf(v)
+
+	switch rv.Kind() {
+	case reflect.Invalid:
+		return false // always false
+	case reflect.Slice:
+		return v != nil && rv.Len() > 0
+	default:
+		return !rv.IsZero()
+	}
+}

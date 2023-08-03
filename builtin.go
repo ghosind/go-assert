@@ -107,3 +107,47 @@ func NotPanicNow(t *testing.T, fn func(), message ...string) error {
 
 	return tryNotPanic(t, true, fn, message...)
 }
+
+// True tests whether a value is truthy or not. It'll set the result to fail if the value is a
+// false value. For most types of value, a falsy value is the zero value for its type. For a
+// slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the
+// value is always falsy.
+func True(t *testing.T, val any, message ...string) error {
+	t.Helper()
+
+	return tryTrue(t, false, val, message...)
+}
+
+// TrueNow tests whether a value is truthy or not. It'll set the result to fail if the value is a
+// false value. For most types of value, a falsy value is the zero value for its type. For a
+// slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the
+// value is always falsy.
+//
+// The function will stop the execution if the value is falsy.
+func TrueNow(t *testing.T, val any, message ...string) error {
+	t.Helper()
+
+	return tryTrue(t, true, val, message...)
+}
+
+// NotTrue tests whether a value is truthy or not. It'll set the result to fail if the value is a
+// truthy value. For most types of value, a falsy value is the zero value for its type. For a
+// slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the
+// value is always falsy.
+func NotTrue(t *testing.T, val any, message ...string) error {
+	t.Helper()
+
+	return tryNotTrue(t, false, val, message...)
+}
+
+// NotTrueNow tests whether a value is truthy or not. It'll set the result to fail if the value is
+// a truthy value. For most types of value, a falsy value is the zero value for its type. For a
+// slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the
+// value is always falsy.
+//
+// The function will stop the execution if the value is truthy.
+func NotTrueNow(t *testing.T, val any, message ...string) error {
+	t.Helper()
+
+	return tryNotTrue(t, true, val, message...)
+}

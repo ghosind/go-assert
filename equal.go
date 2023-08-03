@@ -135,3 +135,75 @@ func tryNotNil(t *testing.T, failedNow bool, val any, message ...string) error {
 
 	return err
 }
+
+// True tests whether a value is truthy or not. It'll set the result to fail if the value is a
+// false value. For most types of value, a falsy value is the zero value for its type. For a
+// slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the
+// value is always falsy.
+func (a *Assertion) True(val any, message ...string) error {
+	a.Helper()
+
+	return tryTrue(a.T, false, val, message...)
+}
+
+// TrueNow tests whether a value is truthy or not. It'll set the result to fail if the value is a
+// false value. For most types of value, a falsy value is the zero value for its type. For a
+// slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the
+// value is always falsy.
+//
+// The function will stop the execution if the value is falsy.
+func (a *Assertion) TrueNow(val any, message ...string) error {
+	a.Helper()
+
+	return tryTrue(a.T, true, val, message...)
+}
+
+// NotTrue tests whether a value is truthy or not. It'll set the result to fail if the value is a
+// truthy value. For most types of value, a falsy value is the zero value for its type. For a
+// slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the
+// value is always falsy.
+func (a *Assertion) NotTrue(val any, message ...string) error {
+	a.Helper()
+
+	return tryNotTrue(a.T, false, val, message...)
+}
+
+// NotTrueNow tests whether a value is truthy or not. It'll set the result to fail if the value is
+// a truthy value. For most types of value, a falsy value is the zero value for its type. For a
+// slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the
+// value is always falsy.
+//
+// The function will stop the execution if the value is truthy.
+func (a *Assertion) NotTrueNow(val any, message ...string) error {
+	a.Helper()
+
+	return tryNotTrue(a.T, true, val, message...)
+}
+
+// tryTrue try to testing a value is truthy or falsy, and it'll fail the value is falsy.
+func tryTrue(t *testing.T, failedNow bool, val any, message ...string) error {
+	t.Helper()
+
+	if isTrue(val) {
+		return nil
+	}
+
+	err := newAssertionError("the expression evaluated to a falsy value")
+	failed(t, err, failedNow)
+
+	return err
+}
+
+// tryNotTrue try to testing a value is truthy or falsy, and it'll fail the value is truthy.
+func tryNotTrue(t *testing.T, failedNow bool, val any, message ...string) error {
+	t.Helper()
+
+	if !isTrue(val) {
+		return nil
+	}
+
+	err := newAssertionError("the expression evaluated to a truthy value")
+	failed(t, err, failedNow)
+
+	return err
+}

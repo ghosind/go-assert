@@ -157,16 +157,16 @@ func testNil(t *testing.T, assertion *Assertion, v any, isNil bool) {
 func testNotNil(t *testing.T, assertion *Assertion, v any, isNil bool) {
 	err := assertion.NotNil(v)
 	if isNil && err == nil {
-		t.Errorf("Nil(%v) = nil, want error", v)
+		t.Errorf("NotNil(%v) = nil, want error", v)
 	} else if !isNil && err != nil {
-		t.Errorf("Nil(%v) = %v, want nil", v, err)
+		t.Errorf("NotNil(%v) = %v, want nil", v, err)
 	}
 
 	err = NotNil(assertion.T, v)
 	if isNil && err == nil {
-		t.Errorf("Nil(%v) = nil, want error", v)
+		t.Errorf("NotNil(%v) = nil, want error", v)
 	} else if !isNil && err != nil {
-		t.Errorf("Nil(%v) = %v, want nil", v, err)
+		t.Errorf("NotNil(%v) = %v, want nil", v, err)
 	}
 }
 
@@ -206,6 +206,104 @@ func testNotNilNow(t *testing.T, assertion *Assertion, v any, isNil bool) {
 	if !isNil && isTerminated {
 		t.Error("execution stopped, want do not stop")
 	} else if isNil && !isTerminated {
+		t.Error("execution do not stopped, want stop")
+	}
+}
+
+func TestTrueAndNotTrue(t *testing.T) {
+	mockT := new(testing.T)
+	assert := New(mockT)
+
+	testTrueAndNotTrue(t, assert, nil, false)
+	testTrueAndNotTrue(t, assert, []int{}, false)
+	testTrueAndNotTrue(t, assert, []int{0}, true)
+	testTrueAndNotTrue(t, assert, 0, false)
+	testTrueAndNotTrue(t, assert, 1, true)
+	testTrueAndNotTrue(t, assert, 0.0, false)
+	testTrueAndNotTrue(t, assert, 1.0, true)
+	testTrueAndNotTrue(t, assert, "", false)
+	testTrueAndNotTrue(t, assert, "test", true)
+	testTrueAndNotTrue(t, assert, func() {}, true)
+}
+
+func testTrueAndNotTrue(t *testing.T, assertion *Assertion, v any, isTruthy bool) {
+	testTrue(t, assertion, v, isTruthy)
+
+	testNotTrue(t, assertion, v, isTruthy)
+
+	testTrueNow(t, assertion, v, isTruthy)
+
+	testNotTrueNow(t, assertion, v, isTruthy)
+}
+
+func testTrue(t *testing.T, assertion *Assertion, v any, isTruthy bool) {
+	err := assertion.True(v)
+	if isTruthy && err != nil {
+		t.Errorf("True(%v) = %v, want nil", v, err)
+	} else if !isTruthy && err == nil {
+		t.Errorf("True(%v) = nil, want error", v)
+	}
+
+	err = True(assertion.T, v)
+	if isTruthy && err != nil {
+		t.Errorf("True(%v) = %v, want nil", v, err)
+	} else if !isTruthy && err == nil {
+		t.Errorf("True(%v) = nil, want error", v)
+	}
+}
+
+func testNotTrue(t *testing.T, assertion *Assertion, v any, isTruthy bool) {
+	err := assertion.NotTrue(v)
+	if isTruthy && err == nil {
+		t.Errorf("NotTrue(%v) = nil, want error", v)
+	} else if !isTruthy && err != nil {
+		t.Errorf("NotTrue(%v) = %v, want nil", v, err)
+	}
+
+	err = NotTrue(assertion.T, v)
+	if isTruthy && err == nil {
+		t.Errorf("NotTrue(%v) = nil, want error", v)
+	} else if !isTruthy && err != nil {
+		t.Errorf("NotTrue(%v) = %v, want nil", v, err)
+	}
+}
+
+func testTrueNow(t *testing.T, assertion *Assertion, v any, isTruthy bool) {
+	isTerminated := internal.CheckTermination(func() {
+		assertion.TrueNow(v)
+	})
+	if isTruthy && isTerminated {
+		t.Error("execution stopped, want do not stop")
+	} else if !isTruthy && !isTerminated {
+		t.Error("execution do not stopped, want stop")
+	}
+
+	isTerminated = internal.CheckTermination(func() {
+		TrueNow(assertion.T, v)
+	})
+	if isTruthy && isTerminated {
+		t.Error("execution stopped, want do not stop")
+	} else if !isTruthy && !isTerminated {
+		t.Error("execution do not stopped, want stop")
+	}
+}
+
+func testNotTrueNow(t *testing.T, assertion *Assertion, v any, isTruthy bool) {
+	isTerminated := internal.CheckTermination(func() {
+		assertion.NotTrueNow(v)
+	})
+	if !isTruthy && isTerminated {
+		t.Error("execution stopped, want do not stop")
+	} else if isTruthy && !isTerminated {
+		t.Error("execution do not stopped, want stop")
+	}
+
+	isTerminated = internal.CheckTermination(func() {
+		NotTrueNow(assertion.T, v)
+	})
+	if !isTruthy && isTerminated {
+		t.Error("execution stopped, want do not stop")
+	} else if isTruthy && !isTerminated {
 		t.Error("execution do not stopped, want stop")
 	}
 }

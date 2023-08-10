@@ -13,3 +13,15 @@ func TestNewAssertion(t *testing.T) {
 		New(new(testing.T))
 	})
 }
+
+func TestRun(t *testing.T) {
+	a := New(t)
+	isSubTestRun := false
+
+	a.Run("sub test", func(sub *Assertion) {
+		DeepEqualNow(t, sub.Name(), "TestRun/sub_test")
+		isSubTestRun = true
+	})
+
+	DeepEqualNow(t, isSubTestRun, true)
+}

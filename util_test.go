@@ -22,6 +22,62 @@ func TestFailedHandler(t *testing.T) {
 	assert.DeepEqual(isTerminated, true)
 }
 
+func TestIsEqual(t *testing.T) {
+	assert := New(t)
+
+	type testStruct1 struct {
+		A int
+	}
+	type testStruct2 struct {
+		A int
+	}
+
+	var s1 *testStruct1
+
+	assert.Equal(isEqual(nil, nil), true)
+	assert.Equal(isEqual(nil, s1), false) // s1 is nil
+	assert.Equal(isEqual(true, false), false)
+	assert.Equal(isEqual(1, 1), true)
+	assert.Equal(isEqual(1, 2), false)
+	assert.Equal(isEqual(1, int64(1)), true)
+	assert.Equal(isEqual(1, int64(2)), false)
+	assert.Equal(isEqual(uint(1), uint(1)), true)
+	assert.Equal(isEqual(uint(1), uint(2)), false)
+	assert.Equal(isEqual(uint(1), uint64(1)), true)
+	assert.Equal(isEqual(uint(1), uint64(2)), false)
+	assert.Equal(isEqual(1.0, 1.0), true)
+	assert.Equal(isEqual(1.0, 2.0), false)
+	assert.Equal(isEqual(1.0, float32(1.0)), true)
+	assert.Equal(isEqual(1.0, float32(2.0)), false)
+	assert.Equal(isEqual(complex(1, 1), complex(1, 1)), true)
+	assert.Equal(isEqual(complex(1, 1), complex(2, 2)), false)
+	assert.Equal(isEqual(complex(1, 1), complex64(complex(1, 1))), true)
+	assert.Equal(isEqual(complex(1, 1), complex64(complex(2, 2))), false)
+	assert.Equal(isEqual([1]int{0}, [1]int{0}), true)
+	assert.Equal(isEqual([1]int{0}, [1]int{1}), false)
+	assert.Equal(isEqual([1]int{0}, [2]int{0, 0}), false)
+	assert.Equal(isEqual([1]int{0}, [1]float64{0.0}), false)
+	assert.Equal(isEqual("hello", "hello"), true)
+	assert.Equal(isEqual("hello", "world"), false)
+
+	slice1 := []int{0}
+	slice2 := []int{0}
+	slice3 := []int{0, 0}
+	slice4 := []int{1}
+	slice5 := []float64{0.0}
+	assert.Equal(isEqual(slice1, slice1), true)
+	assert.Equal(isEqual(slice1, slice2), true)
+	assert.Equal(isEqual(slice1, slice3), false)
+	assert.Equal(isEqual(slice1, slice4), false)
+	assert.Equal(isEqual(slice1, slice5), false)
+
+	assert.Equal(isEqual(testStruct1{A: 0}, testStruct1{A: 0}), true)
+	assert.Equal(isEqual(testStruct1{A: 0}, testStruct1{A: 1}), false)
+	assert.Equal(isEqual(s1, s1), true)
+	assert.Equal(isEqual(&testStruct1{A: 0}, &testStruct1{A: 1}), false)
+	assert.Equal(isEqual(testStruct1{A: 0}, testStruct2{A: 0}), false)
+}
+
 func TestIsNil(t *testing.T) {
 	assert := New(t)
 

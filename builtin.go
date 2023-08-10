@@ -36,6 +36,38 @@ func NotDeepEqualNow(t *testing.T, actual, expect any, message ...string) error 
 	return tryNotDeepEqual(t, true, actual, expect, message...)
 }
 
+// Equal tests the equality between actual and expect parameters. It'll set the result to fail if
+// they are not equal, and it doesn't stop the execution.
+func Equal(t *testing.T, actual, expect any, message ...string) error {
+	t.Helper()
+
+	return tryEqual(t, false, actual, expect, message...)
+}
+
+// EqualNow tests the equality between actual and expect parameters, and it'll stop the execution
+// if they are not equal.
+func EqualNow(t *testing.T, actual, expect any, message ...string) error {
+	t.Helper()
+
+	return tryEqual(t, true, actual, expect, message...)
+}
+
+// NotEqual tests the inequality between actual and expected parameters. It'll set the result to
+// fail if they are equal, but it doesn't stop the execution.
+func NotEqual(t *testing.T, actual, expect any, message ...string) error {
+	t.Helper()
+
+	return tryNotEqual(t, false, actual, expect, message...)
+}
+
+// NotEqualNow tests the inequality between actual and expected parameters, and it'll stop the
+// execution if they are equal.
+func NotEqualNow(t *testing.T, actual, expect any, message ...string) error {
+	t.Helper()
+
+	return tryNotEqual(t, true, actual, expect, message...)
+}
+
 // Nil tests whether a value is nil or not, and it'll fail when the value is not nil. It will
 // always return false if the value is a bool, an integer, a floating number, a complex, or a
 // string.

@@ -47,32 +47,32 @@ func testDeepEqualAndNotDeepEqual(t *testing.T, assertion *Assertion, v1, v2 any
 func testDeepEqual(t *testing.T, assertion *Assertion, v1, v2 any, isEqual bool) {
 	err := assertion.DeepEqual(v1, v2)
 	if isEqual && err != nil {
-		t.Errorf("Equal(%v, %v) = %v, want = nil", v1, v2, err)
+		t.Errorf("DeepEqual(%v, %v) = %v, want = nil", v1, v2, err)
 	} else if !isEqual && err == nil {
-		t.Errorf("Equal(%v, %v) = nil, want = error", v1, v2)
+		t.Errorf("DeepEqual(%v, %v) = nil, want = error", v1, v2)
 	}
 
 	err = DeepEqual(assertion.T, v1, v2)
 	if isEqual && err != nil {
-		t.Errorf("Equal(%v, %v) = %v, want = nil", v1, v2, err)
+		t.Errorf("DeepEqual(%v, %v) = %v, want = nil", v1, v2, err)
 	} else if !isEqual && err == nil {
-		t.Errorf("Equal(%v, %v) = nil, want = error", v1, v2)
+		t.Errorf("DeepEqual(%v, %v) = nil, want = error", v1, v2)
 	}
 }
 
 func testNotDeepEqual(t *testing.T, assertion *Assertion, v1, v2 any, isEqual bool) {
 	err := assertion.NotDeepEqual(v1, v2)
 	if isEqual && err == nil {
-		t.Errorf("NotEqual(%v, %v) = nil, want = error", v1, v2)
+		t.Errorf("NotDeepEqual(%v, %v) = nil, want = error", v1, v2)
 	} else if !isEqual && err != nil {
-		t.Errorf("NotEqual(%v, %v) = %v, want = nil", v1, v2, err)
+		t.Errorf("NotDeepEqual(%v, %v) = %v, want = nil", v1, v2, err)
 	}
 
 	err = NotDeepEqual(assertion.T, v1, v2)
 	if isEqual && err == nil {
-		t.Errorf("NotEqual(%v, %v) = nil, want = error", v1, v2)
+		t.Errorf("NotDeepEqual(%v, %v) = nil, want = error", v1, v2)
 	} else if !isEqual && err != nil {
-		t.Errorf("NotEqual(%v, %v) = %v, want = nil", v1, v2, err)
+		t.Errorf("NotDeepEqual(%v, %v) = %v, want = nil", v1, v2, err)
 	}
 }
 
@@ -108,6 +108,112 @@ func testNotDeepEqualNow(t *testing.T, assertion *Assertion, v1, v2 any, isEqual
 
 	isTerminated = internal.CheckTermination(func() {
 		NotDeepEqualNow(assertion.T, v1, v2)
+	})
+	if !isEqual && isTerminated {
+		t.Error("execution stopped, want do not stop")
+	} else if isEqual && !isTerminated {
+		t.Error("execution do not stopped, want stop")
+	}
+}
+
+func TestEqualAndNotEqual(t *testing.T) {
+	mockT := new(testing.T)
+	assertion := New(mockT)
+
+	testEqualAndNotEqual(t, assertion, 1, 1, true)
+	testEqualAndNotEqual(t, assertion, 1, 2, false)
+	testEqualAndNotEqual(t, assertion, 1, int64(1), true)
+	testEqualAndNotEqual(t, assertion, 1, 1.0, false)
+	testEqualAndNotEqual(t, assertion, 1, "1", false)
+	testEqualAndNotEqual(t, assertion, 1, '1', false)
+	testEqualAndNotEqual(t, assertion, 1, []int{1}, false)
+	testEqualAndNotEqual(t, assertion, []int{1}, []int{1}, true)
+
+	obj1 := testStruct{v: 1}
+	obj2 := testStruct{v: 1}
+
+	testEqualAndNotEqual(t, assertion, obj1, obj2, true)
+	testEqualAndNotEqual(t, assertion, obj1, &obj2, false)
+	testEqualAndNotEqual(t, assertion, &obj1, &obj2, false)
+
+	obj2.v = 2
+	testEqualAndNotEqual(t, assertion, obj1, obj2, false)
+}
+
+func testEqualAndNotEqual(t *testing.T, assertion *Assertion, v1, v2 any, isEqual bool) {
+	testEqual(t, assertion, v1, v2, isEqual)
+
+	testNotEqual(t, assertion, v1, v2, isEqual)
+
+	testEqualNow(t, assertion, v1, v2, isEqual)
+
+	testNotEqualNow(t, assertion, v1, v2, isEqual)
+}
+
+func testEqual(t *testing.T, assertion *Assertion, v1, v2 any, isEqual bool) {
+	err := assertion.Equal(v1, v2)
+	if isEqual && err != nil {
+		t.Errorf("Equal(%v, %v) = %v, want = nil", v1, v2, err)
+	} else if !isEqual && err == nil {
+		t.Errorf("Equal(%v, %v) = nil, want = error", v1, v2)
+	}
+
+	err = Equal(assertion.T, v1, v2)
+	if isEqual && err != nil {
+		t.Errorf("Equal(%v, %v) = %v, want = nil", v1, v2, err)
+	} else if !isEqual && err == nil {
+		t.Errorf("Equal(%v, %v) = nil, want = error", v1, v2)
+	}
+}
+
+func testNotEqual(t *testing.T, assertion *Assertion, v1, v2 any, isEqual bool) {
+	err := assertion.NotEqual(v1, v2)
+	if isEqual && err == nil {
+		t.Errorf("NotEqual(%v, %v) = nil, want = error", v1, v2)
+	} else if !isEqual && err != nil {
+		t.Errorf("NotEqual(%v, %v) = %v, want = nil", v1, v2, err)
+	}
+
+	err = NotEqual(assertion.T, v1, v2)
+	if isEqual && err == nil {
+		t.Errorf("NotEqual(%v, %v) = nil, want = error", v1, v2)
+	} else if !isEqual && err != nil {
+		t.Errorf("NotEqual(%v, %v) = %v, want = nil", v1, v2, err)
+	}
+}
+
+func testEqualNow(t *testing.T, assertion *Assertion, v1, v2 any, isEqual bool) {
+	isTerminated := internal.CheckTermination(func() {
+		assertion.EqualNow(v1, v2)
+	})
+	if isEqual && isTerminated {
+		t.Error("execution stopped, want do not stop")
+	} else if !isEqual && !isTerminated {
+		t.Error("execution do not stopped, want stop")
+	}
+
+	isTerminated = internal.CheckTermination(func() {
+		EqualNow(assertion.T, v1, v2)
+	})
+	if isEqual && isTerminated {
+		t.Error("execution stopped, want do not stop")
+	} else if !isEqual && !isTerminated {
+		t.Error("execution do not stopped, want stop")
+	}
+}
+
+func testNotEqualNow(t *testing.T, assertion *Assertion, v1, v2 any, isEqual bool) {
+	isTerminated := internal.CheckTermination(func() {
+		assertion.NotEqualNow(v1, v2)
+	})
+	if !isEqual && isTerminated {
+		t.Error("execution stopped, want do not stop")
+	} else if isEqual && !isTerminated {
+		t.Error("execution do not stopped, want stop")
+	}
+
+	isTerminated = internal.CheckTermination(func() {
+		NotEqualNow(assertion.T, v1, v2)
 	})
 	if !isEqual && isTerminated {
 		t.Error("execution stopped, want do not stop")

@@ -68,6 +68,68 @@ func tryNotDeepEqual(t *testing.T, failedNow bool, actual, expect any, message .
 	return err
 }
 
+// Equal tests the equality between actual and expect parameters. It'll set the result to fail if
+// they are not equal, and it doesn't stop the execution.
+func (a *Assertion) Equal(actual, expect any, message ...string) error {
+	a.Helper()
+
+	return tryEqual(a.T, false, actual, expect, message...)
+}
+
+// EqualNow tests the equality between actual and expect parameters, and it'll stop the execution
+// if they are not equal.
+func (a *Assertion) EqualNow(actual, expect any, message ...string) error {
+	a.Helper()
+
+	return tryEqual(a.T, true, actual, expect, message...)
+}
+
+// NotEqual tests the inequality between actual and expected parameters. It'll set the result to
+// fail if they are equal, but it doesn't stop the execution.
+func (a *Assertion) NotEqual(actual, expect any, message ...string) error {
+	a.Helper()
+
+	return tryNotEqual(a.T, false, actual, expect, message...)
+}
+
+// NotEqualNow tests the inequality between actual and expected parameters, and it'll stop the
+// execution if they are equal.
+func (a *Assertion) NotEqualNow(actual, expect any, message ...string) error {
+	a.Helper()
+
+	return tryNotEqual(a.T, true, actual, expect, message...)
+}
+
+// tryEqual try to testing the equality between actual and expect values, and it'll fail if the
+// values are not equal.
+func tryEqual(t *testing.T, failedNow bool, actual, expect any, message ...string) error {
+	t.Helper()
+
+	if isEqual(actual, expect) {
+		return nil
+	}
+
+	err := newAssertionError(fmt.Sprintf("%v == %v", actual, expect), message...)
+	failed(t, err, failedNow)
+
+	return err
+}
+
+// tryNotEqual try to testing the inequality between actual and expect values, and it'll fail if
+// the values are equal.
+func tryNotEqual(t *testing.T, failedNow bool, actual, expect any, message ...string) error {
+	t.Helper()
+
+	if !isEqual(actual, expect) {
+		return nil
+	}
+
+	err := newAssertionError(fmt.Sprintf("%v != %v", actual, expect), message...)
+	failed(t, err, failedNow)
+
+	return err
+}
+
 // Nil tests whether a value is nil or not, and it'll fail when the value is not nil. It will
 // always return false if the value is a bool, an integer, a floating number, a complex, or a
 // string.

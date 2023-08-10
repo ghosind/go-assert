@@ -26,10 +26,10 @@ func TestExample(t *testing.T) {
   // var expect
 
   // assert equality
-  assert.DeepEqual(t, actual, expect)
+  assert.Equal(t, actual, expect)
 
   // assert inequality
-  assert.NotDeepEqual(t, actual, expect)
+  assert.NotEqual(t, actual, expect)
 
   // var object
 
@@ -61,7 +61,7 @@ func TestPanic(t *testing.T) {
 }
 ```
 
-For every assertion functions, it also provided `XXXNow` functions to stop the execution.
+For every assertion functions, it also provided `XXXNow` functions to stop the execution if the test is failed.
 
 ```go
 func TestExample(t *testing.T) {
@@ -69,7 +69,7 @@ func TestExample(t *testing.T) {
   // var expect
 
   // The following line will set the test result to fail and stop the execution
-  assert.DeepEqualNow(t, actual, expect)
+  assert.EqualNow(t, actual, expect)
 
   // The following lines will never execute if they are not deep equal.
   // ...
@@ -80,7 +80,7 @@ Every assertion will not terminate the testing workflow. However, they'll return
 
 ```go
 func TestExample(t *testing.T) {
-  if err := assert.DeepEqual(t, actual, expect); err != nil {
+  if err := assert.Equal(t, actual, expect); err != nil {
     // terminate test
     t.Fail()
   }
@@ -94,12 +94,20 @@ func TestExample(t *testing.T) {
   assertion := assert.New(t)
 
   // test equality
-  assertion.DeepEqual(actual, expect)
+  assertion.Equal(actual, expect)
 
   // Test inequality
-  assertion.NotDeepEqual(actual, expect)
+  assertion.NotEqual(actual, expect)
 }
 ```
+
+## Available Assertions
+
+- [`DeepEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.DeepEqual) and [`NotDeepEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotDeepEqual): assert the deep equality or inequality.
+- [`Equal`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Equal) and [`NotEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotEqual): assert the equality or inequality.
+- [`Nil`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Nil) and [`NotNil`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotNil): assert the value is nil or not.
+- [`Panic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Panic) and [`NotPanic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotPanic): assert the function will panic or not.
+- [`True`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.True) and [`NotTrue`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotTrue): assert the truthy of the value.
 
 ## License
 

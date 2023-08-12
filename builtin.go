@@ -1,6 +1,7 @@
 package assert
 
 import (
+	"regexp"
 	"testing"
 )
 
@@ -66,6 +67,81 @@ func NotEqualNow(t *testing.T, actual, expect any, message ...string) error {
 	t.Helper()
 
 	return tryNotEqual(t, true, actual, expect, message...)
+}
+
+// Match tests whether the string matches the regular expression or not.
+func Match(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
+	t.Helper()
+
+	return tryMatchRegexp(t, false, val, pattern, message...)
+}
+
+// MatchNow tests whether the string matches the regular expression or not, and it will terminate
+// the execution if it does not match.
+func MatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
+	t.Helper()
+
+	return tryMatchRegexp(t, true, val, pattern, message...)
+}
+
+// MatchString will compile the pattern and test whether the string matches the regular expression
+// or not. It will panic if the pattern is not a valid regular expression.
+func MatchString(t *testing.T, val, pattern string, message ...string) error {
+	t.Helper()
+
+	regPattern := regexp.MustCompile(pattern)
+
+	return tryMatchRegexp(t, false, val, regPattern, message...)
+}
+
+// MatchStringNow will compile the pattern and test whether the string matches the regular
+// expression or not. It will terminate the execution if it does not match, and it will panic if
+// the pattern is not a valid regular expression.
+func MatchStringNow(t *testing.T, val, pattern string, message ...string) error {
+	t.Helper()
+
+	regPattern := regexp.MustCompile(pattern)
+
+	return tryMatchRegexp(t, true, val, regPattern, message...)
+}
+
+// NotMatch tests whether the string matches the regular expression or not, and it set the result
+// to fail if the string matches the pattern.
+func NotMatch(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
+	t.Helper()
+
+	return tryNotMatchRegexp(t, false, val, pattern, message...)
+}
+
+// NotMatchNow tests whether the string matches the regular expression or not, and it will
+// terminate the execution if the string matches the pattern.
+func NotMatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
+	t.Helper()
+
+	return tryNotMatchRegexp(t, true, val, pattern, message...)
+}
+
+// MatchString will compile the pattern and test whether the string matches the regular expression
+// or not, and it set the result to fail if the string matches the pattern. It will also panic if
+// the pattern is not a valid regular expression.
+func NotMatchString(t *testing.T, val, pattern string, message ...string) error {
+	t.Helper()
+
+	regPattern := regexp.MustCompile(pattern)
+
+	return tryNotMatchRegexp(t, false, val, regPattern, message...)
+}
+
+// NotMatchStringNow will compile the pattern and test whether the string matches the regular
+// expression or not, and it set the result to fail if the string matches the pattern. It will
+// terminate the execution if the string matches the pattern, and it will panic if the pattern is
+// not a valid regular expression.
+func NotMatchStringNow(t *testing.T, val, pattern string, message ...string) error {
+	t.Helper()
+
+	regPattern := regexp.MustCompile(pattern)
+
+	return tryNotMatchRegexp(t, true, val, regPattern, message...)
 }
 
 // Nil tests whether a value is nil or not, and it'll fail when the value is not nil. It will

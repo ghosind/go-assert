@@ -105,6 +105,8 @@ func TestExample(t *testing.T) {
 
 - [`DeepEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.DeepEqual) and [`NotDeepEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotDeepEqual): assert the deep equality or inequality.
 - [`Equal`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Equal) and [`NotEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotEqual): assert the equality or inequality.
+- [`Match`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Match) and [`NotMatch`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotMatch): assert whether the string matches the regular expression pattern or not.
+- [`MatchString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.MatchString) and [`NotMatchString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotMatchString): compile the regular expression pattern and assert whether the string matches the pattern or not.
 - [`Nil`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Nil) and [`NotNil`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotNil): assert the value is nil or not.
 - [`Panic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Panic) and [`NotPanic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotPanic): assert the function will panic or not.
 - [`True`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.True) and [`NotTrue`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotTrue): assert the truthy of the value.

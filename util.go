@@ -49,7 +49,7 @@ func isEqual(x, y any) bool {
 	case reflect.Slice:
 		return isSliceEqual(v1, v2)
 	default:
-		return v1 == v2
+		return x == y
 	}
 }
 

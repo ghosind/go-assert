@@ -129,6 +129,12 @@ func TestEqualAndNotEqual(t *testing.T) {
 	testEqualAndNotEqual(t, assertion, 1, []int{1}, false)
 	testEqualAndNotEqual(t, assertion, []int{1}, []int{1}, true)
 
+	str1 := "Hello"
+	testEqualAndNotEqual(t, assertion, str1, "Hello", true)
+	str1p := &str1
+	testEqualAndNotEqual(t, assertion, str1p, "Hello", false)
+	testEqualAndNotEqual(t, assertion, *str1p, "Hello", true)
+
 	obj1 := testStruct{v: 1}
 	obj2 := testStruct{v: 1}
 

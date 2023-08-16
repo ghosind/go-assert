@@ -78,6 +78,19 @@ func TestIsEqual(t *testing.T) {
 	assert.Equal(isEqual(testStruct1{A: 0}, testStruct2{A: 0}), false)
 }
 
+func TestIsComparable(t *testing.T) {
+	assert := New(t)
+
+	assert.Equal(isComparable(1), true)
+	assert.Equal(isComparable(int64(1)), true)
+	assert.Equal(isComparable(uint64(1)), true)
+	assert.Equal(isComparable(float32(1.0)), true)
+	assert.Equal(isComparable(1.0), true)
+	assert.Equal(isComparable("Hello"), true)
+	assert.Equal(isComparable([]byte{'H', 'e', 'l', 'l', 'o'}), false)
+	assert.Equal(isComparable([]int{1, 2, 3}), false)
+}
+
 func TestIsNil(t *testing.T) {
 	assert := New(t)
 

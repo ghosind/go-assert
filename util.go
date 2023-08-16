@@ -53,6 +53,20 @@ func isEqual(x, y any) bool {
 	}
 }
 
+// isComparable gets the type of the value, and checks whether the type is comparable or not.
+func isComparable(v any) bool {
+	switch v.(type) {
+	case
+		int, int8, int16, int32, int64, // Signed integer
+		uint, uint8, uint16, uint32, uint64, uintptr, // Unsigned integer
+		float32, float64, // Floating-point number
+		string: // string
+		return true
+	default:
+		return false
+	}
+}
+
 // isSameType indicates the equality of two types, and it will ignore the bit size of the same
 // type. For example, `int32` and `int64` will be the same type.
 func isSameType(t1, t2 reflect.Type) bool {

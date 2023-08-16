@@ -26,6 +26,20 @@ func failed(t *testing.T, err error, failedNow bool) {
 // ## Assertion Helper Functions ##
 // ################################
 
+// isComparable gets the type of the value, and checks whether the type is comparable or not.
+func isComparable(v any) bool {
+	switch v.(type) {
+	case
+		int, int8, int16, int32, int64, // Signed integer
+		uint, uint8, uint16, uint32, uint64, uintptr, // Unsigned integer
+		float32, float64, // Floating-point number
+		string: // string
+		return true
+	default:
+		return false
+	}
+}
+
 // isEqual checks the equality of the values.
 func isEqual(x, y any) bool {
 	if x == nil || y == nil {
@@ -54,18 +68,36 @@ func isEqual(x, y any) bool {
 	}
 }
 
-// isComparable gets the type of the value, and checks whether the type is comparable or not.
-func isComparable(v any) bool {
-	switch v.(type) {
-	case
-		int, int8, int16, int32, int64, // Signed integer
-		uint, uint8, uint16, uint32, uint64, uintptr, // Unsigned integer
-		float32, float64, // Floating-point number
-		string: // string
+// isNil checks whether a value is nil or not. It'll always return false if the value is not a
+// channel, a function, a map, a point, an unsafe point, an interface, or a slice.
+func isNil(val any) bool {
+	if val == nil {
 		return true
+	}
+
+	v := reflect.ValueOf(val)
+
+	switch v.Kind() {
+	case reflect.Chan, reflect.Func, reflect.Map, reflect.Pointer, reflect.UnsafePointer,
+		reflect.Interface, reflect.Slice:
+		return v.IsNil()
 	default:
 		return false
 	}
+}
+
+// isPanic executes the function, and tries to catching and returns the return value from
+// recover().
+func isPanic(fn func()) (err any) {
+	defer func() {
+		if e := recover(); e != nil {
+			err = e
+		}
+	}()
+
+	fn()
+
+	return
 }
 
 // isSameType indicates the equality of two types, and it will ignore the bit size of the same
@@ -101,38 +133,6 @@ func isSliceEqual(v1, v2 reflect.Value) bool {
 	}
 
 	return true
-}
-
-// isNil checks whether a value is nil or not. It'll always return false if the value is not a
-// channel, a function, a map, a point, an unsafe point, an interface, or a slice.
-func isNil(val any) bool {
-	if val == nil {
-		return true
-	}
-
-	v := reflect.ValueOf(val)
-
-	switch v.Kind() {
-	case reflect.Chan, reflect.Func, reflect.Map, reflect.Pointer, reflect.UnsafePointer,
-		reflect.Interface, reflect.Slice:
-		return v.IsNil()
-	default:
-		return false
-	}
-}
-
-// isPanic executes the function, and tries to catching and returns the return value from
-// recover().
-func isPanic(fn func()) (err any) {
-	defer func() {
-		if e := recover(); e != nil {
-			err = e
-		}
-	}()
-
-	fn()
-
-	return
 }
 
 // isTrue checks whether a value is truthy or not. It'll return true if the value is not the zero

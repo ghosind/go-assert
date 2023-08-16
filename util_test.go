@@ -45,6 +45,7 @@ func TestIsEqual(t *testing.T) {
 	assert.Equal(isEqual(uint(1), uint(2)), false)
 	assert.Equal(isEqual(uint(1), uint64(1)), true)
 	assert.Equal(isEqual(uint(1), uint64(2)), false)
+	assert.Equal(isEqual(uint(1), uintptr(1)), true)
 	assert.Equal(isEqual(1.0, 1.0), true)
 	assert.Equal(isEqual(1.0, 2.0), false)
 	assert.Equal(isEqual(1.0, float32(1.0)), true)

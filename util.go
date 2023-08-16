@@ -40,7 +40,8 @@ func isEqual(x, y any) bool {
 	switch v1.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		return v1.Int() == v2.Int()
-	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,
+		reflect.Uintptr:
 		return v1.Uint() == v2.Uint()
 	case reflect.Float32, reflect.Float64:
 		return v1.Float() == v2.Float()
@@ -75,8 +76,9 @@ func isSameType(t1, t2 reflect.Type) bool {
 	switch t1.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		return kind >= reflect.Int && kind <= reflect.Int64
-	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
-		return kind >= reflect.Uint && kind <= reflect.Uint64
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,
+		reflect.Uintptr:
+		return kind >= reflect.Uint && kind <= reflect.Uintptr
 	case reflect.Float32, reflect.Float64:
 		return kind == reflect.Float32 || kind == reflect.Float64
 	case reflect.Complex64, reflect.Complex128:

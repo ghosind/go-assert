@@ -1,6 +1,7 @@
 package assert
 
 import (
+	"math"
 	"reflect"
 	"testing"
 )
@@ -47,7 +48,10 @@ func isEqual(x, y any) bool {
 	}
 	v1 := reflect.ValueOf(x)
 	v2 := reflect.ValueOf(y)
-	if !isSameType(v1.Type(), v2.Type()) {
+	if isSame, isMixSign := isSameType(v1.Type(), v2.Type()); !isSame {
+		if isMixSign {
+			return isEqualForMixSignInt(v1, v2)
+		}
 		return false
 	}
 
@@ -66,6 +70,25 @@ func isEqual(x, y any) bool {
 	default:
 		return x == y
 	}
+}
+
+// isEqualForMixSignInt checks the equality of two integers one of an integer is signed, but
+// another one is unsigned.
+func isEqualForMixSignInt(v1, v2 reflect.Value) bool {
+	intVal := v1
+	uintVal := v2
+	if v1.Kind() >= reflect.Uint && v1.Kind() <= reflect.Uintptr {
+		intVal = v2
+		uintVal = v1
+	}
+
+	if intVal.Int() < 0 {
+		return false
+	} else if uintVal.Uint() > uint64(math.MaxInt64) {
+		return false
+	}
+
+	return intVal.Int() == int64(uintVal.Uint())
 }
 
 // isNil checks whether a value is nil or not. It'll always return false if the value is not a
@@ -102,21 +125,26 @@ func isPanic(fn func()) (err any) {
 
 // isSameType indicates the equality of two types, and it will ignore the bit size of the same
 // type. For example, `int32` and `int64` will be the same type.
-func isSameType(t1, t2 reflect.Type) bool {
+//
+// It will returns a bool value to tell the callee function that one of the values is an integer,
+// but another one is unsigned. For this case, it needs to check the value to compare them.
+func isSameType(t1, t2 reflect.Type) (isSame bool, isMixSign bool) {
 	kind := t2.Kind()
 
 	switch t1.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		return kind >= reflect.Int && kind <= reflect.Int64
+		return kind >= reflect.Int && kind <= reflect.Int64,
+			kind >= reflect.Uint && kind <= reflect.Uintptr
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,
 		reflect.Uintptr:
-		return kind >= reflect.Uint && kind <= reflect.Uintptr
+		return kind >= reflect.Uint && kind <= reflect.Uintptr,
+			kind >= reflect.Int && kind <= reflect.Int64
 	case reflect.Float32, reflect.Float64:
-		return kind == reflect.Float32 || kind == reflect.Float64
+		return kind == reflect.Float32 || kind == reflect.Float64, false
 	case reflect.Complex64, reflect.Complex128:
-		return kind == reflect.Complex64 || kind == reflect.Complex128
+		return kind == reflect.Complex64 || kind == reflect.Complex128, false
 	default:
-		return t1 == t2
+		return t1 == t2, false
 	}
 }
 

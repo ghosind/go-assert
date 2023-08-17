@@ -1,6 +1,7 @@
 package assert
 
 import (
+	"math"
 	"testing"
 
 	"github.com/ghosind/go-assert/internal"
@@ -77,6 +78,18 @@ func TestIsEqual(t *testing.T) {
 	assert.Equal(isEqual(s1, s1), true)
 	assert.Equal(isEqual(&testStruct1{A: 0}, &testStruct1{A: 1}), false)
 	assert.Equal(isEqual(testStruct1{A: 0}, testStruct2{A: 0}), false)
+}
+
+func TestIsEqualOfMixSignInt(t *testing.T) {
+	assert := New(t)
+
+	assert.True(isEqual(0, uint(0)))
+	assert.True(isEqual(1, uint(1)))
+	assert.True(isEqual(uint(1), 1))
+	assert.True(isEqual(math.MaxInt64, uint64(math.MaxInt64)))
+	assert.NotTrue(isEqual(-1, uint64(math.MaxUint64)))
+	assert.NotTrue(isEqual(uint64(math.MaxUint64), -1))
+	assert.NotTrue(isEqual(uint64(math.MaxUint64), 0))
 }
 
 func TestIsComparable(t *testing.T) {

@@ -123,6 +123,7 @@ func TestEqualAndNotEqual(t *testing.T) {
 	testEqualAndNotEqual(t, assertion, 1, 1, true)
 	testEqualAndNotEqual(t, assertion, 1, 2, false)
 	testEqualAndNotEqual(t, assertion, 1, int64(1), true)
+	testEqualAndNotEqual(t, assertion, 1, uint64(1), true)
 	testEqualAndNotEqual(t, assertion, 1, 1.0, false)
 	testEqualAndNotEqual(t, assertion, 1, "1", false)
 	testEqualAndNotEqual(t, assertion, 1, '1', false)

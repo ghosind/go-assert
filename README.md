@@ -31,6 +31,9 @@ func TestExample(t *testing.T) {
   // assert inequality
   assert.NotEqual(t, actual, expect)
 
+  // you can also use DeepEqual to assert the equality that also checks the type between the values
+  assert.DeepEqual(t, actual, expect)
+
   // var object
 
   // assert for nil
@@ -38,6 +41,30 @@ func TestExample(t *testing.T) {
 
   // assert for not nil
   assert.NotNil(t, object)
+}
+```
+
+You can use `True` method to check whether a value is truthy or falsy (is the zero value of the type or not).
+
+```go
+func TestExample(t *testing.T) {
+  assert.True(t, 1) // success
+  assert.True(t, 0) // fail
+  assert.True(t, "test") // success
+  assert.True(t, "") // fail
+}
+```
+
+If you want to test the value of a string, you can use `Match` method to test it with a regular expression pattern.
+
+```go
+func TestExample(t *testing.T) {
+  pattern := regexp.MustCompile(`^https?:\/\/`)
+  assert.Match(t, "https://example.com", pattern) // success
+  assert.Match(t, "example.com", pattern) // fail
+
+  // you can also use `MatchString` to test it without compiling the regexp pattern
+  assert.MatchString(t, "https://example.com", `^https?:\/\/`) // success
 }
 ```
 
@@ -71,7 +98,7 @@ func TestExample(t *testing.T) {
   // The following line will set the test result to fail and stop the execution
   assert.EqualNow(t, actual, expect)
 
-  // The following lines will never execute if they are not deep equal.
+  // The following lines will never execute if they are not equal.
   // ...
 }
 ```

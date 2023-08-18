@@ -4,11 +4,16 @@ import (
 	"testing"
 )
 
+// Assertion is the extension of the Go builtin `testing.T`.
 type Assertion struct {
 	*testing.T
 }
 
 // New returns an assertion instance for verifying invariants.
+//
+//	assertion := assert.New(t)
+//	assertion.Equal(actual, expect)
+//	// ...
 func New(t *testing.T) *Assertion {
 	a := new(Assertion)
 
@@ -26,6 +31,11 @@ func New(t *testing.T) *Assertion {
 //
 // Run may be called simultaneously from multiple goroutines, but all such calls
 // must return before the outer test function for a returns.
+//
+//	assertion := assert.New(t)
+//	assertion.Run("SubTest", func (a *assert.Assertion) bool {
+//	  // TODO...
+//	})
 func (assertion *Assertion) Run(name string, f func(a *Assertion)) bool {
 	return assertion.T.Run(name, func(t *testing.T) {
 		subAssertion := New(t)

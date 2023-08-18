@@ -7,6 +7,11 @@ import (
 
 // DeepEqual tests the deep equality between actual and expect parameters. It'll set the result to
 // fail if they are not deeply equal, and it doesn't stop the execution.
+//
+//	DeepEqual(t, 1, 1) // success
+//	DeepEqual(t, "ABC", "ABC") // success
+//	DeepEqual(t, 1, 0) // fail
+//	DeepEqual(t, 1, int64(1)) // fail
 func DeepEqual(t *testing.T, actual, expect any, message ...string) error {
 	t.Helper()
 
@@ -15,6 +20,11 @@ func DeepEqual(t *testing.T, actual, expect any, message ...string) error {
 
 // DeepEqualNow tests the deep equality between actual and expect parameters, and it'll stop the
 // execution if they are not deeply equal.
+//
+//	DeepEqualNow(t, 1, 1) // success
+//	DeepEqualNow(t, "ABC", "ABC") // success
+//	DeepEqualNow(t, 1, int64(1)) // fail and terminate
+//	// never run
 func DeepEqualNow(t *testing.T, actual, expect any, message ...string) error {
 	t.Helper()
 
@@ -23,6 +33,11 @@ func DeepEqualNow(t *testing.T, actual, expect any, message ...string) error {
 
 // NotDeepEqual tests the deep inequality between actual and expected parameters. It'll set the
 // result to fail if they are deeply equal, but it doesn't stop the execution.
+//
+//	NotDeepEqual(t, 1, 0) // success
+//	NotDeepEqual(t, 1, int64(1)) // success
+//	NotDeepEqual(t, 1, 1) // fail
+//	NotDeepEqual(t, "ABC", "ABC") // fail
 func NotDeepEqual(t *testing.T, actual, expect any, message ...string) error {
 	t.Helper()
 
@@ -31,6 +46,11 @@ func NotDeepEqual(t *testing.T, actual, expect any, message ...string) error {
 
 // NotDeepEqualNow tests the deep inequality between actual and expected parameters, and it'll stop
 // the execution if they are deeply equal.
+//
+//	NotDeepEqual(t, 1, 0) // success
+//	NotDeepEqual(t, 1, int64(1)) // success
+//	NotDeepEqual(t, "ABC", "ABC") // fail and terminate
+//	// never run
 func NotDeepEqualNow(t *testing.T, actual, expect any, message ...string) error {
 	t.Helper()
 
@@ -39,6 +59,12 @@ func NotDeepEqualNow(t *testing.T, actual, expect any, message ...string) error 
 
 // Equal tests the equality between actual and expect parameters. It'll set the result to fail if
 // they are not equal, and it doesn't stop the execution.
+//
+//	Equal(t, 1, 1) // success
+//	Equal(t, "ABC", "ABC") // success
+//	Equal(t, 1, int64(1)) // success
+//	Equal(t, 1, uint64(1)) // success
+//	Equal(t, 1, 0) // fail
 func Equal(t *testing.T, actual, expect any, message ...string) error {
 	t.Helper()
 
@@ -47,6 +73,13 @@ func Equal(t *testing.T, actual, expect any, message ...string) error {
 
 // EqualNow tests the equality between actual and expect parameters, and it'll stop the execution
 // if they are not equal.
+//
+//	EqualNow(t, 1, 1) // success
+//	EqualNow(t, "ABC", "ABC") // success
+//	EqualNow(t, 1, int64(1)) // success
+//	EqualNow(t, 1, uint64(1)) // success
+//	EqualNow(t, 1, 0) // fail and terminate
+//	never run
 func EqualNow(t *testing.T, actual, expect any, message ...string) error {
 	t.Helper()
 
@@ -55,6 +88,13 @@ func EqualNow(t *testing.T, actual, expect any, message ...string) error {
 
 // NotEqual tests the inequality between actual and expected parameters. It'll set the result to
 // fail if they are equal, but it doesn't stop the execution.
+//
+//	NotEqual(t, 1, 0) // success
+//	NotEqual(t, "ABC", "CBA") // success
+//	NotEqual(t, 1, 1) // fail
+//	NotEqual(t, "ABC", "ABC") // fail
+//	NotEqual(t, 1, int64(1)) // fail
+//	NotEqual(t, 1, uint64(1)) // fail
 func NotEqual(t *testing.T, actual, expect any, message ...string) error {
 	t.Helper()
 
@@ -63,6 +103,11 @@ func NotEqual(t *testing.T, actual, expect any, message ...string) error {
 
 // NotEqualNow tests the inequality between actual and expected parameters, and it'll stop the
 // execution if they are equal.
+//
+//	NotEqualNow(t, 1, 0) // success
+//	NotEqualNow(t, "ABC", "CBA") // success
+//	NotEqualNow(t, 1, 1) // fail and terminate
+//	// never run
 func NotEqualNow(t *testing.T, actual, expect any, message ...string) error {
 	t.Helper()
 
@@ -70,6 +115,10 @@ func NotEqualNow(t *testing.T, actual, expect any, message ...string) error {
 }
 
 // Match tests whether the string matches the regular expression or not.
+//
+//	pattern := regexp.MustCompile(`^https?:\/\/`)
+//	Match(t, "http://example.com", pattern) // success
+//	Match(t, "example.com", pattern) // fail
 func Match(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
 	t.Helper()
 
@@ -78,6 +127,11 @@ func Match(t *testing.T, val string, pattern *regexp.Regexp, message ...string) 
 
 // MatchNow tests whether the string matches the regular expression or not, and it will terminate
 // the execution if it does not match.
+//
+//	pattern := regexp.MustCompile(`^https?:\/\/`)
+//	MatchNow(t, "http://example.com", pattern) // success
+//	MatchNow(t, "example.com", pattern) // fail and terminate
+//	// never run
 func MatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
 	t.Helper()
 
@@ -86,6 +140,9 @@ func MatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...strin
 
 // MatchString will compile the pattern and test whether the string matches the regular expression
 // or not. It will panic if the pattern is not a valid regular expression.
+//
+//	MatchString(t, "http://example.com", `^https?:\/\/`) // success
+//	MatchString(t, "example.com", `^https?:\/\/`) // fail
 func MatchString(t *testing.T, val, pattern string, message ...string) error {
 	t.Helper()
 
@@ -97,6 +154,10 @@ func MatchString(t *testing.T, val, pattern string, message ...string) error {
 // MatchStringNow will compile the pattern and test whether the string matches the regular
 // expression or not. It will terminate the execution if it does not match, and it will panic if
 // the pattern is not a valid regular expression.
+//
+//	MatchStringNow(t, "http://example.com", `^https?:\/\/`) // success
+//	MatchStringNow(t, "example.com", `^https?:\/\/`) // fail and terminate
+//	// never run
 func MatchStringNow(t *testing.T, val, pattern string, message ...string) error {
 	t.Helper()
 
@@ -107,6 +168,10 @@ func MatchStringNow(t *testing.T, val, pattern string, message ...string) error 
 
 // NotMatch tests whether the string matches the regular expression or not, and it set the result
 // to fail if the string matches the pattern.
+//
+//	pattern := regexp.MustCompile(`^https?:\/\/`)
+//	NotMatch(t, "example.com", pattern) // success
+//	NotMatch(t, "http://example.com", pattern) // fail
 func NotMatch(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
 	t.Helper()
 
@@ -115,6 +180,11 @@ func NotMatch(t *testing.T, val string, pattern *regexp.Regexp, message ...strin
 
 // NotMatchNow tests whether the string matches the regular expression or not, and it will
 // terminate the execution if the string matches the pattern.
+//
+//	pattern := regexp.MustCompile(`^https?:\/\/`)
+//	NotMatchNow(t, "example.com", pattern) // success
+//	NotMatchNow(t, "http://example.com", pattern) // fail and terminate
+//	// never run
 func NotMatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
 	t.Helper()
 
@@ -124,6 +194,9 @@ func NotMatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...st
 // MatchString will compile the pattern and test whether the string matches the regular expression
 // or not, and it set the result to fail if the string matches the pattern. It will also panic if
 // the pattern is not a valid regular expression.
+//
+//	NotMatchString(t, "example.com", `^https?:\/\/`) // success
+//	NotMatchString(t, "http://example.com", `^https?:\/\/`) // fail
 func NotMatchString(t *testing.T, val, pattern string, message ...string) error {
 	t.Helper()
 
@@ -136,6 +209,10 @@ func NotMatchString(t *testing.T, val, pattern string, message ...string) error 
 // expression or not, and it set the result to fail if the string matches the pattern. It will
 // terminate the execution if the string matches the pattern, and it will panic if the pattern is
 // not a valid regular expression.
+//
+//	NotMatchStringNow(t, "example.com", `^https?:\/\/`) // success
+//	NotMatchStringNow(t, "http://example.com", `^https?:\/\/`) // fail and terminate
+//	// never run
 func NotMatchStringNow(t *testing.T, val, pattern string, message ...string) error {
 	t.Helper()
 
@@ -147,6 +224,12 @@ func NotMatchStringNow(t *testing.T, val, pattern string, message ...string) err
 // Nil tests whether a value is nil or not, and it'll fail when the value is not nil. It will
 // always return false if the value is a bool, an integer, a floating number, a complex, or a
 // string.
+//
+//	var err error // nil
+//	Nil(t, err) // success
+//
+//	err = errors.New("some error")
+//	Nil(t, err) // fail
 func Nil(t *testing.T, val any, message ...string) error {
 	t.Helper()
 
@@ -158,6 +241,13 @@ func Nil(t *testing.T, val any, message ...string) error {
 // string.
 //
 // This function will set the result to fail, and stop the execution if the value is not nil.
+//
+//	var err error // nil
+//	NilNow(t, err) // success
+//
+//	err = errors.New("some error")
+//	NilNow(t, err) // fail and terminate
+//	// never run
 func NilNow(t *testing.T, val any, message ...string) error {
 	t.Helper()
 
@@ -167,6 +257,12 @@ func NilNow(t *testing.T, val any, message ...string) error {
 // NotNil tests whether a value is nil or not, and it'll fail when the value is nil. It will
 // always return true if the value is a bool, an integer, a floating number, a complex, or a
 // string.
+//
+//	var err error // nil
+//	NotNil(t, err) // fail
+//
+//	err = errors.New("some error")
+//	NotNil(t, err) // success
 func NotNil(t *testing.T, val any, message ...string) error {
 	t.Helper()
 
@@ -178,6 +274,13 @@ func NotNil(t *testing.T, val any, message ...string) error {
 // string.
 //
 // This function will set the result to fail, and stop the execution if the value is nil.
+//
+//	var err error = errors.New("some error")
+//	NotNilNow(t, err) // success
+//
+//	err = nil
+//	NotNilNow(t, err) // fail and terminate
+//	// never run
 func NotNilNow(t *testing.T, val any, message ...string) error {
 	t.Helper()
 
@@ -186,6 +289,14 @@ func NotNilNow(t *testing.T, val any, message ...string) error {
 
 // Panic expects the function fn to panic, and it'll set the result to fail if the function doesn't
 // panic.
+//
+//	Panic(t, func() {
+//	  panic("some error")
+//	}) // success
+//
+//	Panic(t, func() {
+//	  // no panic
+//	}) // fail
 func Panic(t *testing.T, fn func(), message ...string) error {
 	t.Helper()
 
@@ -194,6 +305,15 @@ func Panic(t *testing.T, fn func(), message ...string) error {
 
 // PanicNow expects the function fn to panic. It'll set the result to fail if the function doesn't
 // panic, and stop the execution.
+//
+//	PanicNow(t, func() {
+//	  panic("some error")
+//	}) // success
+//
+//	PanicNow(t, func() {
+//	  // no panic
+//	}) // fail
+//	// never run
 func PanicNow(t *testing.T, fn func(), message ...string) error {
 	t.Helper()
 
@@ -202,6 +322,14 @@ func PanicNow(t *testing.T, fn func(), message ...string) error {
 
 // NotPanic asserts that the function fn does not panic, and it'll set the result to fail if the
 // function panic.
+//
+//	NotPanic(t, func() {
+//	  // no panic
+//	}) // success
+//
+//	NotPanic(t, func() {
+//	  panic("some error")
+//	}) // fail
 func NotPanic(t *testing.T, fn func(), message ...string) error {
 	t.Helper()
 
@@ -210,6 +338,15 @@ func NotPanic(t *testing.T, fn func(), message ...string) error {
 
 // NotPanicNow asserts that the function fn does not panic. It'll set the result to fail if the
 // function panic, and it also stops the execution.
+//
+//	NotPanicNow(t, func() {
+//	  // no panic
+//	}) // success
+//
+//	NotPanicNow(t, func() {
+//	  panic("some error")
+//	}) // fail and terminate
+//	// never run
 func NotPanicNow(t *testing.T, fn func(), message ...string) error {
 	t.Helper()
 
@@ -220,6 +357,11 @@ func NotPanicNow(t *testing.T, fn func(), message ...string) error {
 // false value. For most types of value, a falsy value is the zero value for its type. For a
 // slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the
 // value is always falsy.
+//
+//	True(t, 1) // success
+//	True(t, "test") // success
+//	True(t, 0) // fail
+//	True(t, "") // fail
 func True(t *testing.T, val any, message ...string) error {
 	t.Helper()
 
@@ -232,6 +374,11 @@ func True(t *testing.T, val any, message ...string) error {
 // value is always falsy.
 //
 // The function will stop the execution if the value is falsy.
+//
+//	TrueNow(t, 1) // success
+//	TrueNow(t, "test") // success
+//	TrueNow(t, "") // fail and terminate
+//	// never run
 func TrueNow(t *testing.T, val any, message ...string) error {
 	t.Helper()
 
@@ -242,6 +389,11 @@ func TrueNow(t *testing.T, val any, message ...string) error {
 // truthy value. For most types of value, a falsy value is the zero value for its type. For a
 // slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the
 // value is always falsy.
+//
+//	NotTrue(t, 0) // success
+//	NotTrue(t, "") // success
+//	NotTrue(t, 1) // fail
+//	NotTrue(t, "test") // fail
 func NotTrue(t *testing.T, val any, message ...string) error {
 	t.Helper()
 
@@ -254,6 +406,11 @@ func NotTrue(t *testing.T, val any, message ...string) error {
 // value is always falsy.
 //
 // The function will stop the execution if the value is truthy.
+//
+//	NotTrueNow(t, 0) // success
+//	NotTrueNow(t, "") // success
+//	NotTrueNow(t, "test") // fail and terminate
+//	// never run
 func NotTrueNow(t *testing.T, val any, message ...string) error {
 	t.Helper()
 

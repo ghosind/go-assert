@@ -7,6 +7,14 @@ import (
 
 // Panic expects the function fn to panic, and it'll set the result to fail if the function doesn't
 // panic.
+//
+//	assertion.Panic(func() {
+//	  panic("some error")
+//	}) // success
+//
+//	assertion.Panic(func() {
+//	  // no panic
+//	}) // fail
 func (a *Assertion) Panic(fn func(), message ...string) error {
 	a.Helper()
 
@@ -15,6 +23,15 @@ func (a *Assertion) Panic(fn func(), message ...string) error {
 
 // PanicNow expects the function fn to panic. It'll set the result to fail if the function doesn't
 // panic, and stop the execution.
+//
+//	assertion.PanicNow(func() {
+//	  panic("some error")
+//	}) // success
+//
+//	assertion.PanicNow(func() {
+//	  // no panic
+//	}) // fail
+//	// never run
 func (a *Assertion) PanicNow(fn func(), message ...string) error {
 	a.Helper()
 
@@ -23,6 +40,14 @@ func (a *Assertion) PanicNow(fn func(), message ...string) error {
 
 // NotPanic asserts that the function fn does not panic, and it'll set the result to fail if the
 // function panic.
+//
+//	assertion.NotPanic(func() {
+//	  // no panic
+//	}) // success
+//
+//	assertion.NotPanic(func() {
+//	  panic("some error")
+//	}) // fail
 func (a *Assertion) NotPanic(fn func(), message ...string) error {
 	a.Helper()
 
@@ -31,6 +56,15 @@ func (a *Assertion) NotPanic(fn func(), message ...string) error {
 
 // NotPanicNow asserts that the function fn does not panic. It'll set the result to fail if the
 // function panic, and it also stops the execution.
+//
+//	assertion.NotPanicNow(func() {
+//	  // no panic
+//	}) // success
+//
+//	assertion.NotPanicNow(func() {
+//	  panic("some error")
+//	}) // fail and terminate
+//	// never run
 func (a *Assertion) NotPanicNow(fn func(), message ...string) error {
 	a.Helper()
 

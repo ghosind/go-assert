@@ -10,7 +10,7 @@ import (
 //	pattern := regexp.MustCompile(`^https?:\/\/`)
 //	assertion.Match("http://example.com", pattern) // success
 //	assertion.Match("example.com", pattern) // fail
-func (a *Assertion) Match(val string, pattern *regexp.Regexp, message ...string) error {
+func (a *Assertion) Match(val string, pattern *regexp.Regexp, message ...any) error {
 	a.Helper()
 
 	return tryMatchRegexp(a.T, false, val, pattern, "", message...)
@@ -23,7 +23,7 @@ func (a *Assertion) Match(val string, pattern *regexp.Regexp, message ...string)
 //	assertion.MatchNow("http://example.com", pattern) // success
 //	assertion.MatchNow("example.com", pattern) // fail and terminate
 //	// never run
-func (a *Assertion) MatchNow(val string, pattern *regexp.Regexp, message ...string) error {
+func (a *Assertion) MatchNow(val string, pattern *regexp.Regexp, message ...any) error {
 	a.Helper()
 
 	return tryMatchRegexp(a.T, true, val, pattern, "", message...)
@@ -34,7 +34,7 @@ func (a *Assertion) MatchNow(val string, pattern *regexp.Regexp, message ...stri
 //
 //	assertion.MatchString("http://example.com", `^https?:\/\/`) // success
 //	assertion.MatchString("example.com", `^https?:\/\/`) // fail
-func (a *Assertion) MatchString(val, pattern string, message ...string) error {
+func (a *Assertion) MatchString(val, pattern string, message ...any) error {
 	a.Helper()
 
 	return tryMatchRegexp(a.T, false, val, nil, pattern, message...)
@@ -47,7 +47,7 @@ func (a *Assertion) MatchString(val, pattern string, message ...string) error {
 //	assertion.MatchStringNow("http://example.com", `^https?:\/\/`) // success
 //	assertion.MatchStringNow("example.com", `^https?:\/\/`) // fail and terminate
 //	// never run
-func (a *Assertion) MatchStringNow(val, pattern string, message ...string) error {
+func (a *Assertion) MatchStringNow(val, pattern string, message ...any) error {
 	a.Helper()
 
 	return tryMatchRegexp(a.T, true, val, nil, pattern, message...)
@@ -59,7 +59,7 @@ func (a *Assertion) MatchStringNow(val, pattern string, message ...string) error
 //	pattern := regexp.MustCompile(`^https?:\/\/`)
 //	assertion.NotMatch("example.com", pattern) // success
 //	assertion.NotMatch("http://example.com", pattern) // fail
-func (a *Assertion) NotMatch(val string, pattern *regexp.Regexp, message ...string) error {
+func (a *Assertion) NotMatch(val string, pattern *regexp.Regexp, message ...any) error {
 	a.Helper()
 
 	return tryNotMatchRegexp(a.T, false, val, pattern, "", message...)
@@ -72,7 +72,7 @@ func (a *Assertion) NotMatch(val string, pattern *regexp.Regexp, message ...stri
 //	assertion.NotMatchNow("example.com", pattern) // success
 //	assertion.NotMatchNow("http://example.com", pattern) // fail and terminate
 //	// never run
-func (a *Assertion) NotMatchNow(val string, pattern *regexp.Regexp, message ...string) error {
+func (a *Assertion) NotMatchNow(val string, pattern *regexp.Regexp, message ...any) error {
 	a.Helper()
 
 	return tryNotMatchRegexp(a.T, true, val, pattern, "", message...)
@@ -84,7 +84,7 @@ func (a *Assertion) NotMatchNow(val string, pattern *regexp.Regexp, message ...s
 //
 //	assertion.NotMatchString("example.com", `^https?:\/\/`) // success
 //	assertion.NotMatchString("http://example.com", `^https?:\/\/`) // fail
-func (a *Assertion) NotMatchString(val, pattern string, message ...string) error {
+func (a *Assertion) NotMatchString(val, pattern string, message ...any) error {
 	a.Helper()
 
 	return tryNotMatchRegexp(a.T, false, val, nil, pattern, message...)
@@ -98,7 +98,7 @@ func (a *Assertion) NotMatchString(val, pattern string, message ...string) error
 //	assertion.NotMatchStringNow("example.com", `^https?:\/\/`) // success
 //	assertion.NotMatchStringNow("http://example.com", `^https?:\/\/`) // fail and terminate
 //	// never run
-func (a *Assertion) NotMatchStringNow(val, pattern string, message ...string) error {
+func (a *Assertion) NotMatchStringNow(val, pattern string, message ...any) error {
 	a.Helper()
 
 	return tryNotMatchRegexp(a.T, true, val, nil, pattern, message...)
@@ -112,7 +112,7 @@ func tryMatchRegexp(
 	val string,
 	pattern *regexp.Regexp,
 	patternStr string,
-	message ...string,
+	message ...any,
 ) error {
 	t.Helper()
 
@@ -137,7 +137,7 @@ func tryNotMatchRegexp(
 	val string,
 	pattern *regexp.Regexp,
 	patternStr string,
-	message ...string,
+	message ...any,
 ) error {
 	t.Helper()
 

@@ -12,7 +12,7 @@ func test(
 	fn func() bool,
 	failedNow bool,
 	defaultMessage string,
-	message ...string,
+	message ...any,
 ) error {
 	t.Helper()
 

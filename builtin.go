@@ -12,7 +12,7 @@ import (
 //	DeepEqual(t, "ABC", "ABC") // success
 //	DeepEqual(t, 1, 0) // fail
 //	DeepEqual(t, 1, int64(1)) // fail
-func DeepEqual(t *testing.T, actual, expect any, message ...string) error {
+func DeepEqual(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
 
 	return tryDeepEqual(t, false, actual, expect, message...)
@@ -25,7 +25,7 @@ func DeepEqual(t *testing.T, actual, expect any, message ...string) error {
 //	DeepEqualNow(t, "ABC", "ABC") // success
 //	DeepEqualNow(t, 1, int64(1)) // fail and terminate
 //	// never run
-func DeepEqualNow(t *testing.T, actual, expect any, message ...string) error {
+func DeepEqualNow(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
 
 	return tryDeepEqual(t, true, actual, expect, message...)
@@ -38,7 +38,7 @@ func DeepEqualNow(t *testing.T, actual, expect any, message ...string) error {
 //	NotDeepEqual(t, 1, int64(1)) // success
 //	NotDeepEqual(t, 1, 1) // fail
 //	NotDeepEqual(t, "ABC", "ABC") // fail
-func NotDeepEqual(t *testing.T, actual, expect any, message ...string) error {
+func NotDeepEqual(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
 
 	return tryNotDeepEqual(t, false, actual, expect, message...)
@@ -51,7 +51,7 @@ func NotDeepEqual(t *testing.T, actual, expect any, message ...string) error {
 //	NotDeepEqual(t, 1, int64(1)) // success
 //	NotDeepEqual(t, "ABC", "ABC") // fail and terminate
 //	// never run
-func NotDeepEqualNow(t *testing.T, actual, expect any, message ...string) error {
+func NotDeepEqualNow(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
 
 	return tryNotDeepEqual(t, true, actual, expect, message...)
@@ -65,7 +65,7 @@ func NotDeepEqualNow(t *testing.T, actual, expect any, message ...string) error 
 //	Equal(t, 1, int64(1)) // success
 //	Equal(t, 1, uint64(1)) // success
 //	Equal(t, 1, 0) // fail
-func Equal(t *testing.T, actual, expect any, message ...string) error {
+func Equal(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
 
 	return tryEqual(t, false, actual, expect, message...)
@@ -80,7 +80,7 @@ func Equal(t *testing.T, actual, expect any, message ...string) error {
 //	EqualNow(t, 1, uint64(1)) // success
 //	EqualNow(t, 1, 0) // fail and terminate
 //	never run
-func EqualNow(t *testing.T, actual, expect any, message ...string) error {
+func EqualNow(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
 
 	return tryEqual(t, true, actual, expect, message...)
@@ -95,7 +95,7 @@ func EqualNow(t *testing.T, actual, expect any, message ...string) error {
 //	NotEqual(t, "ABC", "ABC") // fail
 //	NotEqual(t, 1, int64(1)) // fail
 //	NotEqual(t, 1, uint64(1)) // fail
-func NotEqual(t *testing.T, actual, expect any, message ...string) error {
+func NotEqual(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
 
 	return tryNotEqual(t, false, actual, expect, message...)
@@ -108,7 +108,7 @@ func NotEqual(t *testing.T, actual, expect any, message ...string) error {
 //	NotEqualNow(t, "ABC", "CBA") // success
 //	NotEqualNow(t, 1, 1) // fail and terminate
 //	// never run
-func NotEqualNow(t *testing.T, actual, expect any, message ...string) error {
+func NotEqualNow(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
 
 	return tryNotEqual(t, true, actual, expect, message...)
@@ -119,7 +119,7 @@ func NotEqualNow(t *testing.T, actual, expect any, message ...string) error {
 //	pattern := regexp.MustCompile(`^https?:\/\/`)
 //	Match(t, "http://example.com", pattern) // success
 //	Match(t, "example.com", pattern) // fail
-func Match(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
+func Match(t *testing.T, val string, pattern *regexp.Regexp, message ...any) error {
 	t.Helper()
 
 	return tryMatchRegexp(t, false, val, pattern, "", message...)
@@ -132,7 +132,7 @@ func Match(t *testing.T, val string, pattern *regexp.Regexp, message ...string) 
 //	MatchNow(t, "http://example.com", pattern) // success
 //	MatchNow(t, "example.com", pattern) // fail and terminate
 //	// never run
-func MatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
+func MatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...any) error {
 	t.Helper()
 
 	return tryMatchRegexp(t, true, val, pattern, "", message...)
@@ -143,7 +143,7 @@ func MatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...strin
 //
 //	MatchString(t, "http://example.com", `^https?:\/\/`) // success
 //	MatchString(t, "example.com", `^https?:\/\/`) // fail
-func MatchString(t *testing.T, val, pattern string, message ...string) error {
+func MatchString(t *testing.T, val, pattern string, message ...any) error {
 	t.Helper()
 
 	return tryMatchRegexp(t, false, val, nil, pattern, message...)
@@ -156,7 +156,7 @@ func MatchString(t *testing.T, val, pattern string, message ...string) error {
 //	MatchStringNow(t, "http://example.com", `^https?:\/\/`) // success
 //	MatchStringNow(t, "example.com", `^https?:\/\/`) // fail and terminate
 //	// never run
-func MatchStringNow(t *testing.T, val, pattern string, message ...string) error {
+func MatchStringNow(t *testing.T, val, pattern string, message ...any) error {
 	t.Helper()
 
 	return tryMatchRegexp(t, true, val, nil, pattern, message...)
@@ -168,7 +168,7 @@ func MatchStringNow(t *testing.T, val, pattern string, message ...string) error 
 //	pattern := regexp.MustCompile(`^https?:\/\/`)
 //	NotMatch(t, "example.com", pattern) // success
 //	NotMatch(t, "http://example.com", pattern) // fail
-func NotMatch(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
+func NotMatch(t *testing.T, val string, pattern *regexp.Regexp, message ...any) error {
 	t.Helper()
 
 	return tryNotMatchRegexp(t, false, val, pattern, "", message...)
@@ -181,7 +181,7 @@ func NotMatch(t *testing.T, val string, pattern *regexp.Regexp, message ...strin
 //	NotMatchNow(t, "example.com", pattern) // success
 //	NotMatchNow(t, "http://example.com", pattern) // fail and terminate
 //	// never run
-func NotMatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
+func NotMatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...any) error {
 	t.Helper()
 
 	return tryNotMatchRegexp(t, true, val, pattern, "", message...)
@@ -193,7 +193,7 @@ func NotMatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...st
 //
 //	NotMatchString(t, "example.com", `^https?:\/\/`) // success
 //	NotMatchString(t, "http://example.com", `^https?:\/\/`) // fail
-func NotMatchString(t *testing.T, val, pattern string, message ...string) error {
+func NotMatchString(t *testing.T, val, pattern string, message ...any) error {
 	t.Helper()
 
 	return tryNotMatchRegexp(t, false, val, nil, pattern, message...)
@@ -207,7 +207,7 @@ func NotMatchString(t *testing.T, val, pattern string, message ...string) error 
 //	NotMatchStringNow(t, "example.com", `^https?:\/\/`) // success
 //	NotMatchStringNow(t, "http://example.com", `^https?:\/\/`) // fail and terminate
 //	// never run
-func NotMatchStringNow(t *testing.T, val, pattern string, message ...string) error {
+func NotMatchStringNow(t *testing.T, val, pattern string, message ...any) error {
 	t.Helper()
 
 	return tryNotMatchRegexp(t, true, val, nil, pattern, message...)
@@ -222,7 +222,7 @@ func NotMatchStringNow(t *testing.T, val, pattern string, message ...string) err
 //
 //	err = errors.New("some error")
 //	Nil(t, err) // fail
-func Nil(t *testing.T, val any, message ...string) error {
+func Nil(t *testing.T, val any, message ...any) error {
 	t.Helper()
 
 	return tryNil(t, false, val, message...)
@@ -240,7 +240,7 @@ func Nil(t *testing.T, val any, message ...string) error {
 //	err = errors.New("some error")
 //	NilNow(t, err) // fail and terminate
 //	// never run
-func NilNow(t *testing.T, val any, message ...string) error {
+func NilNow(t *testing.T, val any, message ...any) error {
 	t.Helper()
 
 	return tryNil(t, true, val, message...)
@@ -255,7 +255,7 @@ func NilNow(t *testing.T, val any, message ...string) error {
 //
 //	err = errors.New("some error")
 //	NotNil(t, err) // success
-func NotNil(t *testing.T, val any, message ...string) error {
+func NotNil(t *testing.T, val any, message ...any) error {
 	t.Helper()
 
 	return tryNotNil(t, false, val, message...)
@@ -273,7 +273,7 @@ func NotNil(t *testing.T, val any, message ...string) error {
 //	err = nil
 //	NotNilNow(t, err) // fail and terminate
 //	// never run
-func NotNilNow(t *testing.T, val any, message ...string) error {
+func NotNilNow(t *testing.T, val any, message ...any) error {
 	t.Helper()
 
 	return tryNotNil(t, true, val, message...)
@@ -289,7 +289,7 @@ func NotNilNow(t *testing.T, val any, message ...string) error {
 //	Panic(t, func() {
 //	  // no panic
 //	}) // fail
-func Panic(t *testing.T, fn func(), message ...string) error {
+func Panic(t *testing.T, fn func(), message ...any) error {
 	t.Helper()
 
 	return tryPanic(t, false, fn, message...)
@@ -306,7 +306,7 @@ func Panic(t *testing.T, fn func(), message ...string) error {
 //	  // no panic
 //	}) // fail
 //	// never run
-func PanicNow(t *testing.T, fn func(), message ...string) error {
+func PanicNow(t *testing.T, fn func(), message ...any) error {
 	t.Helper()
 
 	return tryPanic(t, true, fn, message...)
@@ -322,7 +322,7 @@ func PanicNow(t *testing.T, fn func(), message ...string) error {
 //	NotPanic(t, func() {
 //	  panic("some error")
 //	}) // fail
-func NotPanic(t *testing.T, fn func(), message ...string) error {
+func NotPanic(t *testing.T, fn func(), message ...any) error {
 	t.Helper()
 
 	return tryNotPanic(t, false, fn, message...)
@@ -339,7 +339,7 @@ func NotPanic(t *testing.T, fn func(), message ...string) error {
 //	  panic("some error")
 //	}) // fail and terminate
 //	// never run
-func NotPanicNow(t *testing.T, fn func(), message ...string) error {
+func NotPanicNow(t *testing.T, fn func(), message ...any) error {
 	t.Helper()
 
 	return tryNotPanic(t, true, fn, message...)
@@ -354,7 +354,7 @@ func NotPanicNow(t *testing.T, fn func(), message ...string) error {
 //	True(t, "test") // success
 //	True(t, 0) // fail
 //	True(t, "") // fail
-func True(t *testing.T, val any, message ...string) error {
+func True(t *testing.T, val any, message ...any) error {
 	t.Helper()
 
 	return tryTrue(t, false, val, message...)
@@ -371,7 +371,7 @@ func True(t *testing.T, val any, message ...string) error {
 //	TrueNow(t, "test") // success
 //	TrueNow(t, "") // fail and terminate
 //	// never run
-func TrueNow(t *testing.T, val any, message ...string) error {
+func TrueNow(t *testing.T, val any, message ...any) error {
 	t.Helper()
 
 	return tryTrue(t, true, val, message...)
@@ -386,7 +386,7 @@ func TrueNow(t *testing.T, val any, message ...string) error {
 //	NotTrue(t, "") // success
 //	NotTrue(t, 1) // fail
 //	NotTrue(t, "test") // fail
-func NotTrue(t *testing.T, val any, message ...string) error {
+func NotTrue(t *testing.T, val any, message ...any) error {
 	t.Helper()
 
 	return tryNotTrue(t, false, val, message...)
@@ -403,7 +403,7 @@ func NotTrue(t *testing.T, val any, message ...string) error {
 //	NotTrueNow(t, "") // success
 //	NotTrueNow(t, "test") // fail and terminate
 //	// never run
-func NotTrueNow(t *testing.T, val any, message ...string) error {
+func NotTrueNow(t *testing.T, val any, message ...any) error {
 	t.Helper()
 
 	return tryNotTrue(t, true, val, message...)

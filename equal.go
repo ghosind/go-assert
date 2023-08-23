@@ -13,7 +13,7 @@ import (
 //	assertion.DeepEqual("ABC", "ABC") // success
 //	assertion.DeepEqual(1, 0) // fail
 //	assertion.DeepEqual(1, int64(1)) // fail
-func (a *Assertion) DeepEqual(actual, expect any, message ...string) error {
+func (a *Assertion) DeepEqual(actual, expect any, message ...any) error {
 	a.Helper()
 
 	return tryDeepEqual(a.T, false, actual, expect, message...)
@@ -26,7 +26,7 @@ func (a *Assertion) DeepEqual(actual, expect any, message ...string) error {
 //	assertion.DeepEqualNow("ABC", "ABC") // success
 //	assertion.DeepEqualNow(1, int64(1)) // fail and terminate
 //	// never run
-func (a *Assertion) DeepEqualNow(actual, expect any, message ...string) error {
+func (a *Assertion) DeepEqualNow(actual, expect any, message ...any) error {
 	a.Helper()
 
 	return tryDeepEqual(a.T, true, actual, expect, message...)
@@ -39,7 +39,7 @@ func (a *Assertion) DeepEqualNow(actual, expect any, message ...string) error {
 //	assertion.NotDeepEqual(1, int64(1)) // success
 //	assertion.NotDeepEqual(1, 1) // fail
 //	assertion.NotDeepEqual("ABC", "ABC") // fail
-func (a *Assertion) NotDeepEqual(actual, expect any, message ...string) error {
+func (a *Assertion) NotDeepEqual(actual, expect any, message ...any) error {
 	a.Helper()
 
 	return tryNotDeepEqual(a.T, false, actual, expect, message...)
@@ -52,7 +52,7 @@ func (a *Assertion) NotDeepEqual(actual, expect any, message ...string) error {
 //	assertion.NotDeepEqual1, int64(1)) // success
 //	assertion.NotDeepEqual"ABC", "ABC") // fail and terminate
 //	// never run
-func (a *Assertion) NotDeepEqualNow(actual, expect any, message ...string) error {
+func (a *Assertion) NotDeepEqualNow(actual, expect any, message ...any) error {
 	a.Helper()
 
 	return tryNotDeepEqual(a.T, true, actual, expect, message...)
@@ -60,7 +60,7 @@ func (a *Assertion) NotDeepEqualNow(actual, expect any, message ...string) error
 
 // tryDeepEqual try to testing the deeply equality between actual and expect values, and it'll
 // fail if the values are not deeply equal.
-func tryDeepEqual(t *testing.T, failedNow bool, actual, expect any, message ...string) error {
+func tryDeepEqual(t *testing.T, failedNow bool, actual, expect any, message ...any) error {
 	t.Helper()
 
 	return test(
@@ -74,7 +74,7 @@ func tryDeepEqual(t *testing.T, failedNow bool, actual, expect any, message ...s
 
 // tryNotDeepEqual try to testing the deeply inequality between actual and expect values, and it'll
 // fail if the values are deeply equal.
-func tryNotDeepEqual(t *testing.T, failedNow bool, actual, expect any, message ...string) error {
+func tryNotDeepEqual(t *testing.T, failedNow bool, actual, expect any, message ...any) error {
 	t.Helper()
 
 	return test(
@@ -94,7 +94,7 @@ func tryNotDeepEqual(t *testing.T, failedNow bool, actual, expect any, message .
 //	assertion.Equal(1, int64(1)) // success
 //	assertion.Equal(1, uint64(1)) // success
 //	assertion.Equal(1, 0) // fail
-func (a *Assertion) Equal(actual, expect any, message ...string) error {
+func (a *Assertion) Equal(actual, expect any, message ...any) error {
 	a.Helper()
 
 	return tryEqual(a.T, false, actual, expect, message...)
@@ -109,7 +109,7 @@ func (a *Assertion) Equal(actual, expect any, message ...string) error {
 //	assertion.EqualNow(1, uint64(1)) // success
 //	assertion.EqualNow(1, 0) // fail and terminate
 //	never run
-func (a *Assertion) EqualNow(actual, expect any, message ...string) error {
+func (a *Assertion) EqualNow(actual, expect any, message ...any) error {
 	a.Helper()
 
 	return tryEqual(a.T, true, actual, expect, message...)
@@ -124,7 +124,7 @@ func (a *Assertion) EqualNow(actual, expect any, message ...string) error {
 //	assertion.NotEqual("ABC", "ABC") // fail
 //	assertion.NotEqual(1, int64(1)) // fail
 //	assertion.NotEqual(1, uint64(1)) // fail
-func (a *Assertion) NotEqual(actual, expect any, message ...string) error {
+func (a *Assertion) NotEqual(actual, expect any, message ...any) error {
 	a.Helper()
 
 	return tryNotEqual(a.T, false, actual, expect, message...)
@@ -137,7 +137,7 @@ func (a *Assertion) NotEqual(actual, expect any, message ...string) error {
 //	assertion.NotEqualNow("ABC", "CBA") // success
 //	assertion.NotEqualNow(1, 1) // fail and terminate
 //	// never run
-func (a *Assertion) NotEqualNow(actual, expect any, message ...string) error {
+func (a *Assertion) NotEqualNow(actual, expect any, message ...any) error {
 	a.Helper()
 
 	return tryNotEqual(a.T, true, actual, expect, message...)
@@ -145,7 +145,7 @@ func (a *Assertion) NotEqualNow(actual, expect any, message ...string) error {
 
 // tryEqual try to testing the equality between actual and expect values, and it'll fail if the
 // values are not equal.
-func tryEqual(t *testing.T, failedNow bool, actual, expect any, message ...string) error {
+func tryEqual(t *testing.T, failedNow bool, actual, expect any, message ...any) error {
 	t.Helper()
 
 	return test(
@@ -159,7 +159,7 @@ func tryEqual(t *testing.T, failedNow bool, actual, expect any, message ...strin
 
 // tryNotEqual try to testing the inequality between actual and expect values, and it'll fail if
 // the values are equal.
-func tryNotEqual(t *testing.T, failedNow bool, actual, expect any, message ...string) error {
+func tryNotEqual(t *testing.T, failedNow bool, actual, expect any, message ...any) error {
 	t.Helper()
 
 	return test(
@@ -180,7 +180,7 @@ func tryNotEqual(t *testing.T, failedNow bool, actual, expect any, message ...st
 //
 //	err = errors.New("some error")
 //	assertion.Nil(err) // fail
-func (a *Assertion) Nil(val any, message ...string) error {
+func (a *Assertion) Nil(val any, message ...any) error {
 	a.Helper()
 
 	return tryNil(a.T, false, val, message...)
@@ -198,7 +198,7 @@ func (a *Assertion) Nil(val any, message ...string) error {
 //	err = errors.New("some error")
 //	assertion.NilNow(err) // fail and terminate
 //	// never run
-func (a *Assertion) NilNow(val any, message ...string) error {
+func (a *Assertion) NilNow(val any, message ...any) error {
 	a.Helper()
 
 	return tryNil(a.T, true, val, message...)
@@ -213,7 +213,7 @@ func (a *Assertion) NilNow(val any, message ...string) error {
 //
 //	err = errors.New("some error")
 //	assertion.NotNil(err) // success
-func (a *Assertion) NotNil(val any, message ...string) error {
+func (a *Assertion) NotNil(val any, message ...any) error {
 	a.Helper()
 
 	return tryNotNil(a.T, false, val, message...)
@@ -231,14 +231,14 @@ func (a *Assertion) NotNil(val any, message ...string) error {
 //	err = nil
 //	assertion.NotNilNow(err) // fail and terminate
 //	// never run
-func (a *Assertion) NotNilNow(val any, message ...string) error {
+func (a *Assertion) NotNilNow(val any, message ...any) error {
 	a.Helper()
 
 	return tryNotNil(a.T, true, val, message...)
 }
 
 // tryNil try to testing a value is nil or not, and it'll fail the value is nil.
-func tryNil(t *testing.T, failedNow bool, val any, message ...string) error {
+func tryNil(t *testing.T, failedNow bool, val any, message ...any) error {
 	t.Helper()
 
 	return test(
@@ -251,7 +251,7 @@ func tryNil(t *testing.T, failedNow bool, val any, message ...string) error {
 }
 
 // tryNotNil try to testing a value is nil or not, and it'll fail the value is not nil.
-func tryNotNil(t *testing.T, failedNow bool, val any, message ...string) error {
+func tryNotNil(t *testing.T, failedNow bool, val any, message ...any) error {
 	t.Helper()
 
 	return test(
@@ -272,7 +272,7 @@ func tryNotNil(t *testing.T, failedNow bool, val any, message ...string) error {
 //	assertion.True("test") // success
 //	assertion.True(0) // fail
 //	assertion.True("") // fail
-func (a *Assertion) True(val any, message ...string) error {
+func (a *Assertion) True(val any, message ...any) error {
 	a.Helper()
 
 	return tryTrue(a.T, false, val, message...)
@@ -289,7 +289,7 @@ func (a *Assertion) True(val any, message ...string) error {
 //	assertion.TrueNow("test") // success
 //	assertion.TrueNow("") // fail and terminate
 //	// never run
-func (a *Assertion) TrueNow(val any, message ...string) error {
+func (a *Assertion) TrueNow(val any, message ...any) error {
 	a.Helper()
 
 	return tryTrue(a.T, true, val, message...)
@@ -304,7 +304,7 @@ func (a *Assertion) TrueNow(val any, message ...string) error {
 //	assertion.NotTrue("") // success
 //	assertion.NotTrue(1) // fail
 //	assertion.NotTrue("test") // fail
-func (a *Assertion) NotTrue(val any, message ...string) error {
+func (a *Assertion) NotTrue(val any, message ...any) error {
 	a.Helper()
 
 	return tryNotTrue(a.T, false, val, message...)
@@ -321,14 +321,14 @@ func (a *Assertion) NotTrue(val any, message ...string) error {
 //	assertion.NotTrueNow("") // success
 //	assertion.NotTrueNow("test") // fail and terminate
 //	// never run
-func (a *Assertion) NotTrueNow(val any, message ...string) error {
+func (a *Assertion) NotTrueNow(val any, message ...any) error {
 	a.Helper()
 
 	return tryNotTrue(a.T, true, val, message...)
 }
 
 // tryTrue try to testing a value is truthy or falsy, and it'll fail the value is falsy.
-func tryTrue(t *testing.T, failedNow bool, val any, message ...string) error {
+func tryTrue(t *testing.T, failedNow bool, val any, message ...any) error {
 	t.Helper()
 
 	return test(
@@ -343,7 +343,7 @@ func tryTrue(t *testing.T, failedNow bool, val any, message ...string) error {
 }
 
 // tryNotTrue try to testing a value is truthy or falsy, and it'll fail the value is truthy.
-func tryNotTrue(t *testing.T, failedNow bool, val any, message ...string) error {
+func tryNotTrue(t *testing.T, failedNow bool, val any, message ...any) error {
 	t.Helper()
 
 	return test(

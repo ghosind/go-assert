@@ -15,7 +15,7 @@ import (
 //	assertion.Panic(func() {
 //	  // no panic
 //	}) // fail
-func (a *Assertion) Panic(fn func(), message ...string) error {
+func (a *Assertion) Panic(fn func(), message ...any) error {
 	a.Helper()
 
 	return tryPanic(a.T, false, fn, message...)
@@ -32,7 +32,7 @@ func (a *Assertion) Panic(fn func(), message ...string) error {
 //	  // no panic
 //	}) // fail
 //	// never run
-func (a *Assertion) PanicNow(fn func(), message ...string) error {
+func (a *Assertion) PanicNow(fn func(), message ...any) error {
 	a.Helper()
 
 	return tryPanic(a.T, true, fn, message...)
@@ -48,7 +48,7 @@ func (a *Assertion) PanicNow(fn func(), message ...string) error {
 //	assertion.NotPanic(func() {
 //	  panic("some error")
 //	}) // fail
-func (a *Assertion) NotPanic(fn func(), message ...string) error {
+func (a *Assertion) NotPanic(fn func(), message ...any) error {
 	a.Helper()
 
 	return tryNotPanic(a.T, false, fn, message...)
@@ -65,7 +65,7 @@ func (a *Assertion) NotPanic(fn func(), message ...string) error {
 //	  panic("some error")
 //	}) // fail and terminate
 //	// never run
-func (a *Assertion) NotPanicNow(fn func(), message ...string) error {
+func (a *Assertion) NotPanicNow(fn func(), message ...any) error {
 	a.Helper()
 
 	return tryNotPanic(a.T, true, fn, message...)
@@ -73,7 +73,7 @@ func (a *Assertion) NotPanicNow(fn func(), message ...string) error {
 
 // tryPanic executes the function fn, and try to catching the panic error. It expect the function
 // fn to panic, and returns error if fn does not panic.
-func tryPanic(t *testing.T, failedNow bool, fn func(), message ...string) error {
+func tryPanic(t *testing.T, failedNow bool, fn func(), message ...any) error {
 	t.Helper()
 
 	e := isPanic(fn)
@@ -89,7 +89,7 @@ func tryPanic(t *testing.T, failedNow bool, fn func(), message ...string) error 
 
 // tryNotPanic executes the function fn, and try to catching the panic error. It expect the
 // function fn does not to panic, and returns error if panic.
-func tryNotPanic(t *testing.T, failedNow bool, fn func(), message ...string) error {
+func tryNotPanic(t *testing.T, failedNow bool, fn func(), message ...any) error {
 	t.Helper()
 
 	e := isPanic(fn)

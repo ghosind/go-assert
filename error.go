@@ -1,5 +1,7 @@
 package assert
 
+import "fmt"
+
 const (
 	defaultErrMessageEqual    string = "%v == %v"
 	defaultErrMessageNotEqual string = "%v != %v"
@@ -19,12 +21,16 @@ type AssertionError struct {
 }
 
 // newAssertionError creates a new error with custom message or default message.
-func newAssertionError(defaultMsg string, message ...string) AssertionError {
+func newAssertionError(defaultMsg string, message ...any) AssertionError {
 	err := AssertionError{}
 
 	if len(message) > 0 {
-		err.message = message[0]
-	} else {
+		if format, ok := message[0].(string); ok {
+			err.message = fmt.Sprintf(format, message[1:]...)
+		}
+	}
+
+	if err.message == "" {
 		err.message = "assert error: " + defaultMsg
 	}
 

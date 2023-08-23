@@ -6,6 +6,27 @@ import (
 	"testing"
 )
 
+// test tries to run the test function, and creates an assertion error if the result is fail.
+func test(
+	t *testing.T,
+	fn func() bool,
+	failedNow bool,
+	defaultMessage string,
+	message ...string,
+) error {
+	t.Helper()
+
+	if fn() {
+		return nil
+	}
+
+	err := newAssertionError(defaultMessage, message...)
+
+	failed(t, err, failedNow)
+
+	return err
+}
+
 // failed handles the assertion error with the specific testing.T or the assertion's t. It will set
 // marks the function has failed if the err is not nil. It'll also stops the execution if failedNow
 // set to true.

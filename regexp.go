@@ -13,7 +13,7 @@ import (
 func (a *Assertion) Match(val string, pattern *regexp.Regexp, message ...string) error {
 	a.Helper()
 
-	return tryMatchRegexp(a.T, false, val, pattern, message...)
+	return tryMatchRegexp(a.T, false, val, pattern, "", message...)
 }
 
 // MatchNow tests whether the string matches the regular expression or not, and it will terminate
@@ -26,7 +26,7 @@ func (a *Assertion) Match(val string, pattern *regexp.Regexp, message ...string)
 func (a *Assertion) MatchNow(val string, pattern *regexp.Regexp, message ...string) error {
 	a.Helper()
 
-	return tryMatchRegexp(a.T, true, val, pattern, message...)
+	return tryMatchRegexp(a.T, true, val, pattern, "", message...)
 }
 
 // MatchString will compile the pattern and test whether the string matches the regular expression
@@ -37,9 +37,7 @@ func (a *Assertion) MatchNow(val string, pattern *regexp.Regexp, message ...stri
 func (a *Assertion) MatchString(val, pattern string, message ...string) error {
 	a.Helper()
 
-	regPattern := regexp.MustCompile(pattern)
-
-	return tryMatchRegexp(a.T, false, val, regPattern, message...)
+	return tryMatchRegexp(a.T, false, val, nil, pattern, message...)
 }
 
 // MatchStringNow will compile the pattern and test whether the string matches the regular
@@ -52,9 +50,7 @@ func (a *Assertion) MatchString(val, pattern string, message ...string) error {
 func (a *Assertion) MatchStringNow(val, pattern string, message ...string) error {
 	a.Helper()
 
-	regPattern := regexp.MustCompile(pattern)
-
-	return tryMatchRegexp(a.T, true, val, regPattern, message...)
+	return tryMatchRegexp(a.T, true, val, nil, pattern, message...)
 }
 
 // NotMatch tests whether the string matches the regular expression or not, and it set the result
@@ -66,7 +62,7 @@ func (a *Assertion) MatchStringNow(val, pattern string, message ...string) error
 func (a *Assertion) NotMatch(val string, pattern *regexp.Regexp, message ...string) error {
 	a.Helper()
 
-	return tryNotMatchRegexp(a.T, false, val, pattern, message...)
+	return tryNotMatchRegexp(a.T, false, val, pattern, "", message...)
 }
 
 // NotMatchNow tests whether the string matches the regular expression or not, and it will
@@ -79,7 +75,7 @@ func (a *Assertion) NotMatch(val string, pattern *regexp.Regexp, message ...stri
 func (a *Assertion) NotMatchNow(val string, pattern *regexp.Regexp, message ...string) error {
 	a.Helper()
 
-	return tryNotMatchRegexp(a.T, true, val, pattern, message...)
+	return tryNotMatchRegexp(a.T, true, val, pattern, "", message...)
 }
 
 // MatchString will compile the pattern and test whether the string matches the regular expression
@@ -91,9 +87,7 @@ func (a *Assertion) NotMatchNow(val string, pattern *regexp.Regexp, message ...s
 func (a *Assertion) NotMatchString(val, pattern string, message ...string) error {
 	a.Helper()
 
-	regPattern := regexp.MustCompile(pattern)
-
-	return tryNotMatchRegexp(a.T, false, val, regPattern, message...)
+	return tryNotMatchRegexp(a.T, false, val, nil, pattern, message...)
 }
 
 // NotMatchStringNow will compile the pattern and test whether the string matches the regular
@@ -107,9 +101,7 @@ func (a *Assertion) NotMatchString(val, pattern string, message ...string) error
 func (a *Assertion) NotMatchStringNow(val, pattern string, message ...string) error {
 	a.Helper()
 
-	regPattern := regexp.MustCompile(pattern)
-
-	return tryNotMatchRegexp(a.T, true, val, regPattern, message...)
+	return tryNotMatchRegexp(a.T, true, val, nil, pattern, message...)
 }
 
 // tryMatchRegexp tries to test whether the string matches the regular expression pattern or not,
@@ -119,17 +111,22 @@ func tryMatchRegexp(
 	failedNow bool,
 	val string,
 	pattern *regexp.Regexp,
+	patternStr string,
 	message ...string,
 ) error {
 	t.Helper()
 
-	if pattern.Match([]byte(val)) {
-		return nil
+	if pattern == nil {
+		pattern = regexp.MustCompile(patternStr)
 	}
 
-	err := newAssertionError("The input did not match the regular expression", message...)
-	failed(t, err, failedNow)
-	return err
+	return test(
+		t,
+		func() bool { return pattern.Match([]byte(val)) },
+		failedNow,
+		defaultErrMessageMatch,
+		message...,
+	)
 }
 
 // tryNotMatchRegexp tries to test whether the string matches the regular expression pattern or
@@ -139,15 +136,20 @@ func tryNotMatchRegexp(
 	failedNow bool,
 	val string,
 	pattern *regexp.Regexp,
+	patternStr string,
 	message ...string,
 ) error {
 	t.Helper()
 
-	if !pattern.Match([]byte(val)) {
-		return nil
+	if pattern == nil {
+		pattern = regexp.MustCompile(patternStr)
 	}
 
-	err := newAssertionError("The input match the regular expression", message...)
-	failed(t, err, failedNow)
-	return err
+	return test(
+		t,
+		func() bool { return !pattern.Match([]byte(val)) },
+		failedNow,
+		defaultErrMessageNotMatch,
+		message...,
+	)
 }

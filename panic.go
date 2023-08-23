@@ -81,7 +81,7 @@ func tryPanic(t *testing.T, failedNow bool, fn func(), message ...string) error 
 		return nil
 	}
 
-	err := newAssertionError("missing expected panic", message...)
+	err := newAssertionError(defaultErrMessagePanic, message...)
 	failed(t, err, failedNow)
 
 	return err
@@ -97,7 +97,7 @@ func tryNotPanic(t *testing.T, failedNow bool, fn func(), message ...string) err
 		return nil
 	}
 
-	err := newAssertionError(fmt.Sprintf("got unwanted error: %v", e), message...)
+	err := newAssertionError(fmt.Sprintf(defaultErrMessageNotPanic, e), message...)
 	failed(t, err, failedNow)
 	return err
 }

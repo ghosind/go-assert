@@ -1,5 +1,18 @@
 package assert
 
+const (
+	defaultErrMessageEqual    string = "%v == %v"
+	defaultErrMessageNotEqual string = "%v != %v"
+	defaultErrMessageMatch    string = "the input did not match the regular expression"
+	defaultErrMessageNotMatch string = "the input match the regular expression"
+	defaultErrMessageNil      string = "expect nil, got %v"
+	defaultErrMessageNotNil   string = "expect not nil, got nil"
+	defaultErrMessagePanic    string = "missing expected panic"
+	defaultErrMessageNotPanic string = "got unwanted error: %v"
+	defaultErrMessageTrue     string = "the expression evaluated to a falsy value"
+	defaultErrMessageNotTrue  string = "the expression evaluated to a truthy value"
+)
+
 // AssertionError indicates the failure of an assertion.
 type AssertionError struct {
 	message string

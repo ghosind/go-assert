@@ -122,7 +122,7 @@ func NotEqualNow(t *testing.T, actual, expect any, message ...string) error {
 func Match(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
 	t.Helper()
 
-	return tryMatchRegexp(t, false, val, pattern, message...)
+	return tryMatchRegexp(t, false, val, pattern, "", message...)
 }
 
 // MatchNow tests whether the string matches the regular expression or not, and it will terminate
@@ -135,7 +135,7 @@ func Match(t *testing.T, val string, pattern *regexp.Regexp, message ...string) 
 func MatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
 	t.Helper()
 
-	return tryMatchRegexp(t, true, val, pattern, message...)
+	return tryMatchRegexp(t, true, val, pattern, "", message...)
 }
 
 // MatchString will compile the pattern and test whether the string matches the regular expression
@@ -146,9 +146,7 @@ func MatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...strin
 func MatchString(t *testing.T, val, pattern string, message ...string) error {
 	t.Helper()
 
-	regPattern := regexp.MustCompile(pattern)
-
-	return tryMatchRegexp(t, false, val, regPattern, message...)
+	return tryMatchRegexp(t, false, val, nil, pattern, message...)
 }
 
 // MatchStringNow will compile the pattern and test whether the string matches the regular
@@ -161,9 +159,7 @@ func MatchString(t *testing.T, val, pattern string, message ...string) error {
 func MatchStringNow(t *testing.T, val, pattern string, message ...string) error {
 	t.Helper()
 
-	regPattern := regexp.MustCompile(pattern)
-
-	return tryMatchRegexp(t, true, val, regPattern, message...)
+	return tryMatchRegexp(t, true, val, nil, pattern, message...)
 }
 
 // NotMatch tests whether the string matches the regular expression or not, and it set the result
@@ -175,7 +171,7 @@ func MatchStringNow(t *testing.T, val, pattern string, message ...string) error 
 func NotMatch(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
 	t.Helper()
 
-	return tryNotMatchRegexp(t, false, val, pattern, message...)
+	return tryNotMatchRegexp(t, false, val, pattern, "", message...)
 }
 
 // NotMatchNow tests whether the string matches the regular expression or not, and it will
@@ -188,7 +184,7 @@ func NotMatch(t *testing.T, val string, pattern *regexp.Regexp, message ...strin
 func NotMatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...string) error {
 	t.Helper()
 
-	return tryNotMatchRegexp(t, true, val, pattern, message...)
+	return tryNotMatchRegexp(t, true, val, pattern, "", message...)
 }
 
 // MatchString will compile the pattern and test whether the string matches the regular expression
@@ -200,9 +196,7 @@ func NotMatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...st
 func NotMatchString(t *testing.T, val, pattern string, message ...string) error {
 	t.Helper()
 
-	regPattern := regexp.MustCompile(pattern)
-
-	return tryNotMatchRegexp(t, false, val, regPattern, message...)
+	return tryNotMatchRegexp(t, false, val, nil, pattern, message...)
 }
 
 // NotMatchStringNow will compile the pattern and test whether the string matches the regular
@@ -216,9 +210,7 @@ func NotMatchString(t *testing.T, val, pattern string, message ...string) error 
 func NotMatchStringNow(t *testing.T, val, pattern string, message ...string) error {
 	t.Helper()
 
-	regPattern := regexp.MustCompile(pattern)
-
-	return tryNotMatchRegexp(t, true, val, regPattern, message...)
+	return tryNotMatchRegexp(t, true, val, nil, pattern, message...)
 }
 
 // Nil tests whether a value is nil or not, and it'll fail when the value is not nil. It will

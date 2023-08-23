@@ -63,14 +63,13 @@ func (a *Assertion) NotDeepEqualNow(actual, expect any, message ...string) error
 func tryDeepEqual(t *testing.T, failedNow bool, actual, expect any, message ...string) error {
 	t.Helper()
 
-	if reflect.DeepEqual(actual, expect) {
-		return nil
-	}
-
-	err := newAssertionError(fmt.Sprintf("%v == %v", actual, expect), message...)
-	failed(t, err, failedNow)
-
-	return err
+	return test(
+		t,
+		func() bool { return reflect.DeepEqual(actual, expect) },
+		failedNow,
+		fmt.Sprintf(defaultErrMessageEqual, actual, expect),
+		message...,
+	)
 }
 
 // tryNotDeepEqual try to testing the deeply inequality between actual and expect values, and it'll
@@ -78,14 +77,13 @@ func tryDeepEqual(t *testing.T, failedNow bool, actual, expect any, message ...s
 func tryNotDeepEqual(t *testing.T, failedNow bool, actual, expect any, message ...string) error {
 	t.Helper()
 
-	if !reflect.DeepEqual(actual, expect) {
-		return nil
-	}
-
-	err := newAssertionError(fmt.Sprintf("%v != %v", actual, expect), message...)
-	failed(t, err, failedNow)
-
-	return err
+	return test(
+		t,
+		func() bool { return !reflect.DeepEqual(actual, expect) },
+		failedNow,
+		fmt.Sprintf(defaultErrMessageNotEqual, actual, expect),
+		message...,
+	)
 }
 
 // Equal tests the equality between actual and expect parameters. It'll set the result to fail if
@@ -150,14 +148,13 @@ func (a *Assertion) NotEqualNow(actual, expect any, message ...string) error {
 func tryEqual(t *testing.T, failedNow bool, actual, expect any, message ...string) error {
 	t.Helper()
 
-	if isEqual(actual, expect) {
-		return nil
-	}
-
-	err := newAssertionError(fmt.Sprintf("%v == %v", actual, expect), message...)
-	failed(t, err, failedNow)
-
-	return err
+	return test(
+		t,
+		func() bool { return isEqual(actual, expect) },
+		failedNow,
+		fmt.Sprintf(defaultErrMessageEqual, actual, expect),
+		message...,
+	)
 }
 
 // tryNotEqual try to testing the inequality between actual and expect values, and it'll fail if
@@ -165,14 +162,13 @@ func tryEqual(t *testing.T, failedNow bool, actual, expect any, message ...strin
 func tryNotEqual(t *testing.T, failedNow bool, actual, expect any, message ...string) error {
 	t.Helper()
 
-	if !isEqual(actual, expect) {
-		return nil
-	}
-
-	err := newAssertionError(fmt.Sprintf("%v != %v", actual, expect), message...)
-	failed(t, err, failedNow)
-
-	return err
+	return test(
+		t,
+		func() bool { return !isEqual(actual, expect) },
+		failedNow,
+		fmt.Sprintf(defaultErrMessageNotEqual, actual, expect),
+		message...,
+	)
 }
 
 // Nil tests whether a value is nil or not, and it'll fail when the value is not nil. It will
@@ -245,28 +241,26 @@ func (a *Assertion) NotNilNow(val any, message ...string) error {
 func tryNil(t *testing.T, failedNow bool, val any, message ...string) error {
 	t.Helper()
 
-	if isNil(val) {
-		return nil
-	}
-
-	err := newAssertionError(fmt.Sprintf("expect nil, got %v", val), message...)
-	failed(t, err, failedNow)
-
-	return err
+	return test(
+		t,
+		func() bool { return isNil(val) },
+		failedNow,
+		fmt.Sprintf(defaultErrMessageNil, val),
+		message...,
+	)
 }
 
 // tryNotNil try to testing a value is nil or not, and it'll fail the value is not nil.
 func tryNotNil(t *testing.T, failedNow bool, val any, message ...string) error {
 	t.Helper()
 
-	if !isNil(val) {
-		return nil
-	}
-
-	err := newAssertionError("expect not nil, got nil", message...)
-	failed(t, err, failedNow)
-
-	return err
+	return test(
+		t,
+		func() bool { return !isNil(val) },
+		failedNow,
+		defaultErrMessageNotNil,
+		message...,
+	)
 }
 
 // True tests whether a value is truthy or not. It'll set the result to fail if the value is a
@@ -337,26 +331,28 @@ func (a *Assertion) NotTrueNow(val any, message ...string) error {
 func tryTrue(t *testing.T, failedNow bool, val any, message ...string) error {
 	t.Helper()
 
-	if isTrue(val) {
-		return nil
-	}
-
-	err := newAssertionError("the expression evaluated to a falsy value")
-	failed(t, err, failedNow)
-
-	return err
+	return test(
+		t,
+		func() bool {
+			return isTrue(val)
+		},
+		failedNow,
+		defaultErrMessageTrue,
+		message...,
+	)
 }
 
 // tryNotTrue try to testing a value is truthy or falsy, and it'll fail the value is truthy.
 func tryNotTrue(t *testing.T, failedNow bool, val any, message ...string) error {
 	t.Helper()
 
-	if !isTrue(val) {
-		return nil
-	}
-
-	err := newAssertionError("the expression evaluated to a truthy value")
-	failed(t, err, failedNow)
-
-	return err
+	return test(
+		t,
+		func() bool {
+			return !isTrue(val)
+		},
+		failedNow,
+		defaultErrMessageNotTrue,
+		message...,
+	)
 }

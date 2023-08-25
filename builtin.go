@@ -5,6 +5,58 @@ import (
 	"testing"
 )
 
+// ContainsString tests whether the string contains the substring or not, and it set the result to
+// fail if the string does not contains the substring.
+//
+//	ContainsString(t, "Hello world", "") // success
+//	ContainsString(t, "Hello world", "Hello") // success
+//	ContainsString(t, "Hello world", "world") // success
+//	ContainsString(t, "Hello world", "hello") // fail
+func ContainsString(t *testing.T, str, substr string, message ...any) error {
+	t.Helper()
+
+	return tryContainsString(t, false, str, substr, message...)
+}
+
+// ContainsStringNow tests whether the string contains the substring or not, and it will terminate the
+// execution if the string does not contains the substring.
+//
+//	ContainsStringNow(t, "Hello world", "") // success
+//	ContainsStringNow(t, "Hello world", "Hello") // success
+//	ContainsStringNow(t, "Hello world", "world") // success
+//	ContainsStringNow(t, "Hello world", "hello") // fail and stop the execution
+//	// never runs
+func ContainsStringNow(t *testing.T, str, substr string, message ...any) error {
+	t.Helper()
+
+	return tryContainsString(t, true, str, substr, message...)
+}
+
+// NotContainsString tests whether the string contains the substring or not, and it set the result
+// to fail if the string contains the substring.
+//
+//	NotContainsString(t, "Hello world", "") // fail
+//	NotContainsString(t, "Hello world", "Hello") // fail
+//	NotContainsString(t, "Hello world", "world") // fail
+//	NotContainsString(t, "Hello world", "hello") // success
+func NotContainsString(t *testing.T, str, substr string, message ...any) error {
+	t.Helper()
+
+	return tryNotContainsString(t, false, str, substr, message...)
+}
+
+// NotContainsStringNow tests whether the string contains the substring or not, and it will terminate the
+// execution if the string does not contains the substring.
+//
+//	NotContainsStringNow(t, "Hello world", "hello") // success
+//	NotContainsStringNow(t, "Hello world", "Hello") // fail and stop the execution
+//	// never runs
+func NotContainsStringNow(t *testing.T, str, substr string, message ...any) error {
+	t.Helper()
+
+	return tryNotContainsString(t, true, str, substr, message...)
+}
+
 // DeepEqual tests the deep equality between actual and expect parameters. It'll set the result to
 // fail if they are not deeply equal, and it doesn't stop the execution.
 //
@@ -112,6 +164,110 @@ func NotEqualNow(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
 
 	return tryNotEqual(t, true, actual, expect, message...)
+}
+
+// HasPrefixString tests whether the string has the prefix string or not, and it set the result to
+// fail if the string does not have the prefix string.
+//
+//	HasPrefixString(t, "Hello world", "") // success
+//	HasPrefixString(t, "Hello world", "Hello") // success
+//	HasPrefixString(t, "Hello world", "world") // fail
+//	HasPrefixString(t, "Hello world", "hello") // fail
+func HasPrefixString(t *testing.T, str, prefix string, message ...any) error {
+	t.Helper()
+
+	return tryHasPrefixString(t, false, str, prefix, message...)
+}
+
+// HasPrefixStringNow tests whether the string has the prefix string or not, and it will terminate
+// the execution if the string does not have the prefix string.
+//
+//	HasPrefixStringNow(t, "Hello world", "") // success
+//	HasPrefixStringNow(t, "Hello world", "Hello") // success
+//	HasPrefixStringNow(t, "Hello world", "hello") // fail and stop the execution
+//	// never runs
+func HasPrefixStringNow(t *testing.T, str, prefix string, message ...any) error {
+	t.Helper()
+
+	return tryHasPrefixString(t, true, str, prefix, message...)
+}
+
+// NotHasPrefixString tests whether the string has the prefix string or not, and it set the result
+// to fail if the string have the prefix string.
+//
+//	NotHasPrefixString(t, "Hello world", "hello") // success
+//	NotHasPrefixString(t, "Hello world", "world") // success
+//	NotHasPrefixString(t, "Hello world", "") // fail
+//	NotHasPrefixString(t, "Hello world", "Hello") // fail
+func NotHasPrefixString(t *testing.T, str, prefix string, message ...any) error {
+	t.Helper()
+
+	return tryNotHasPrefixString(t, false, str, prefix, message...)
+}
+
+// NotHasPrefixStringNow tests whether the string has the prefix string or not, and it will
+// terminate the execution if the string have the prefix string.
+//
+//	NotHasPrefixStringNow(t, "Hello world", "hello") // success
+//	NotHasPrefixStringNow(t, "Hello world", "world") // success
+//	NotHasPrefixStringNow(t, "Hello world", "Hello") // fail and stop the execution
+//	// never runs
+func NotHasPrefixStringNow(t *testing.T, str, prefix string, message ...any) error {
+	t.Helper()
+
+	return tryNotHasPrefixString(t, true, str, prefix, message...)
+}
+
+// HasSuffixString tests whether the string has the suffix string or not, and it set the result to
+// fail if the string does not have the suffix string.
+//
+//	HasSuffixString(t, "Hello world", "") // success
+//	HasSuffixString(t, "Hello world", "world") // success
+//	HasSuffixString(t, "Hello world", "World") // fail
+//	HasSuffixString(t, "Hello world", "hello") // fail
+func HasSuffixString(t *testing.T, str, suffix string, message ...any) error {
+	t.Helper()
+
+	return tryHasSuffixString(t, false, str, suffix, message...)
+}
+
+// HasSuffixStringNow tests whether the string has the suffix string or not, and it will terminate
+// the execution if the string does not have the suffix string.
+//
+//	HasSuffixStringNow(t, "Hello world", "") // success
+//	HasSuffixStringNow(t, "Hello world", "world") // success
+//	HasSuffixStringNow(t, "Hello world", "World") // fail and stop the execution
+//	// never runs
+func HasSuffixStringNow(t *testing.T, str, suffix string, message ...any) error {
+	t.Helper()
+
+	return tryHasSuffixString(t, true, str, suffix, message...)
+}
+
+// NotHasSuffixString tests whether the string has the suffix string or not, and it set the result
+// to fail if the string have the suffix string.
+//
+//	NotHasSuffixString(t, "Hello world", "Hello") // success
+//	NotHasSuffixString(t, "Hello world", "World") // success
+//	NotHasSuffixString(t, "Hello world", "") // fail
+//	NotHasSuffixString(t, "Hello world", "world") // fail
+func NotHasSuffixString(t *testing.T, str, suffix string, message ...any) error {
+	t.Helper()
+
+	return tryNotHasSuffixString(t, false, str, suffix, message...)
+}
+
+// NotHasSuffixStringNow tests whether the string has the suffix string or not, and it will
+// terminate the execution if the string have the suffix string.
+//
+//	NotHasSuffixStringNow(t, "Hello world", "hello") // success
+//	NotHasSuffixStringNow(t, "Hello world", "World") // success
+//	NotHasSuffixStringNow(t, "Hello world", "world") // fail and stop the execution
+//	// never runs
+func NotHasSuffixStringNow(t *testing.T, str, suffix string, message ...any) error {
+	t.Helper()
+
+	return tryNotHasSuffixString(t, true, str, suffix, message...)
 }
 
 // Match tests whether the string matches the regular expression or not.

@@ -3,16 +3,22 @@ package assert
 import "fmt"
 
 const (
-	defaultErrMessageEqual    string = "%v == %v"
-	defaultErrMessageNotEqual string = "%v != %v"
-	defaultErrMessageMatch    string = "the input did not match the regular expression"
-	defaultErrMessageNotMatch string = "the input match the regular expression"
-	defaultErrMessageNil      string = "expect nil, got %v"
-	defaultErrMessageNotNil   string = "expect not nil, got nil"
-	defaultErrMessagePanic    string = "missing expected panic"
-	defaultErrMessageNotPanic string = "got unwanted error: %v"
-	defaultErrMessageTrue     string = "the expression evaluated to a falsy value"
-	defaultErrMessageNotTrue  string = "the expression evaluated to a truthy value"
+	defaultErrMessageEqual              string = "%v == %v"
+	defaultErrMessageNotEqual           string = "%v != %v"
+	defaultErrMessageContainsString     string = "expect contains \"%s\""
+	defaultErrMessageNotContainsString  string = "expect did not contain \"%s\""
+	defaultErrMessageHasPrefixString    string = "expect has prefix \"%s\""
+	defaultErrMessageNotHasPrefixString string = "expect has no prefix \"%s\""
+	defaultErrMessageHasSuffixString    string = "expect has suffix \"%s\""
+	defaultErrMessageNotHasSuffixString string = "expect has no suffix \"%s\""
+	defaultErrMessageMatch              string = "the input did not match the regular expression"
+	defaultErrMessageNotMatch           string = "the input match the regular expression"
+	defaultErrMessageNil                string = "expect nil, got %v"
+	defaultErrMessageNotNil             string = "expect not nil, got nil"
+	defaultErrMessagePanic              string = "missing expected panic"
+	defaultErrMessageNotPanic           string = "got unwanted error: %v"
+	defaultErrMessageTrue               string = "the expression evaluated to a falsy value"
+	defaultErrMessageNotTrue            string = "the expression evaluated to a truthy value"
 )
 
 // AssertionError indicates the failure of an assertion.

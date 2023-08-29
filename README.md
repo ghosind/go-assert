@@ -130,13 +130,28 @@ func TestExample(t *testing.T) {
 
 ## Available Assertions
 
+### Equality
+
 - [`DeepEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.DeepEqual) and [`NotDeepEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotDeepEqual): assert the deep equality or inequality.
 - [`Equal`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Equal) and [`NotEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotEqual): assert the equality or inequality.
+
+### Value
+
+- [`Nil`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Nil) and [`NotNil`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotNil): assert the value is nil or not.
+- [`True`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.True) and [`NotTrue`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotTrue): assert the truthy of the value.
+
+### String
+
+- [`ContainsString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.ContainsString) and [`NotContainsString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotContainsString): assert whether the string contains the substring or not.
+- [`HasPrefixString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.HasPrefixString) and [`NotHasPrefixString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotHasPrefixString): assert whether the string have the prefix string or not.
+- [`HasSuffixString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.HasSuffixString) and [`NotHasSuffixString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotHasSuffixString): assert whether the string have the suffix string or not.
 - [`Match`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Match) and [`NotMatch`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotMatch): assert whether the string matches the regular expression pattern or not.
 - [`MatchString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.MatchString) and [`NotMatchString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotMatchString): compile the regular expression pattern and assert whether the string matches the pattern or not.
-- [`Nil`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Nil) and [`NotNil`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotNil): assert the value is nil or not.
+
+### Error Handling
+
 - [`Panic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Panic) and [`NotPanic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotPanic): assert the function will panic or not.
-- [`True`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.True) and [`NotTrue`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotTrue): assert the truthy of the value.
+
 
 ## License
 

@@ -62,13 +62,54 @@ func isComparable(v any) bool {
 	}
 }
 
+// isContainsElement checks whether the array or slice contains the specific element or not. It'll
+// panic if the source is not an array or a slice, and it'll also panic if the element's type is
+// not the same as the source's element.
+func isContainsElement(source, elem any) bool {
+	st := reflect.ValueOf(source)
+	if st.Kind() == reflect.Ptr {
+		st = st.Elem()
+	}
+	if st.Kind() != reflect.Array && st.Kind() != reflect.Slice {
+		panic("require array or slice")
+	}
+	if ok, isMixed := isSameType(st.Type().Elem(), reflect.TypeOf(elem)); !ok && !isMixed {
+		panic("require same type")
+	}
+
+	if st.Len() == 0 {
+		return false
+	}
+
+	ev := reflect.ValueOf(elem)
+
+	for i := 0; i < st.Len(); i++ {
+		ok := isEqual(st.Index(i), ev)
+		if ok {
+			return true
+		}
+	}
+	return false
+}
+
 // isEqual checks the equality of the values.
 func isEqual(x, y any) bool {
 	if x == nil || y == nil {
 		return x == y
 	}
-	v1 := reflect.ValueOf(x)
-	v2 := reflect.ValueOf(y)
+
+	var v1, v2 reflect.Value
+	if xv, ok := x.(reflect.Value); ok {
+		v1 = xv
+	} else {
+		v1 = reflect.ValueOf(x)
+	}
+	if yv, ok := y.(reflect.Value); ok {
+		v2 = yv
+	} else {
+		v2 = reflect.ValueOf(y)
+	}
+
 	if isSame, isMixSign := isSameType(v1.Type(), v2.Type()); !isSame {
 		if isMixSign {
 			return isEqualForMixSignInt(v1, v2)
@@ -86,6 +127,8 @@ func isEqual(x, y any) bool {
 		return v1.Float() == v2.Float()
 	case reflect.Complex64, reflect.Complex128:
 		return v1.Complex() == v2.Complex()
+	case reflect.String:
+		return v1.String() == v2.String()
 	case reflect.Slice:
 		return isSliceEqual(v1, v2)
 	default:

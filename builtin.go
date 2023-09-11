@@ -46,7 +46,7 @@ func NotContainsString(t *testing.T, str, substr string, message ...any) error {
 }
 
 // NotContainsStringNow tests whether the string contains the substring or not, and it will terminate the
-// execution if the string does not contains the substring.
+// execution if the string contains the substring.
 //
 //	NotContainsStringNow(t, "Hello world", "hello") // success
 //	NotContainsStringNow(t, "Hello world", "Hello") // fail and stop the execution

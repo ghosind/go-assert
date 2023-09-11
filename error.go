@@ -5,6 +5,8 @@ import "fmt"
 const (
 	defaultErrMessageEqual              string = "%v == %v"
 	defaultErrMessageNotEqual           string = "%v != %v"
+	defaultErrMessageContainsElement    string = "expect contains %v"
+	defaultErrMessageNotContainsElement string = "expect did not contains %v"
 	defaultErrMessageContainsString     string = "expect contains \"%s\""
 	defaultErrMessageNotContainsString  string = "expect did not contain \"%s\""
 	defaultErrMessageHasPrefixString    string = "expect has prefix \"%s\""

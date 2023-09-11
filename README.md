@@ -148,6 +148,10 @@ func TestExample(t *testing.T) {
 - [`Match`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Match) and [`NotMatch`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotMatch): assert whether the string matches the regular expression pattern or not.
 - [`MatchString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.MatchString) and [`NotMatchString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotMatchString): compile the regular expression pattern and assert whether the string matches the pattern or not.
 
+### Slice or Array
+
+- [`ContainsElement`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.ContainsElement) and [`NotContainsElement`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotContainsElement): assert whether the array or slice contains the specified element or not.
+
 ### Error Handling
 
 - [`Panic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Panic) and [`NotPanic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotPanic): assert the function will panic or not.

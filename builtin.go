@@ -5,6 +5,60 @@ import (
 	"testing"
 )
 
+// NotContainsElement tests whether the array or slice contains the specified element or not, and
+// it set the result to fail if the array or slice does not contain the specified element. It'll
+// panic if the `source` is not an array or a slice.
+//
+//	assertion.ContainsElement([]int{1, 2, 3}, 1) // success
+//	assertion.ContainsElement([]int{1, 2, 3}, 3) // success
+//	assertion.ContainsElement([]int{1, 2, 3}, 4) // fail
+func ContainsElement(t *testing.T, source, expect any, message ...any) error {
+	t.Helper()
+
+	return tryContainsElement(t, false, source, expect, message...)
+}
+
+// ContainsElementNow tests whether the array or slice contains the specified element or not, and
+// it will terminate the execution if the array or slice does not contain the specified element.
+// It'll panic if the `source` is not an array or a slice.
+//
+//	assertion.ContainsElementNow([]int{1, 2, 3}, 1) // success
+//	assertion.ContainsElementNow([]int{1, 2, 3}, 3) // success
+//	assertion.ContainsElementNow([]int{1, 2, 3}, 4) // fail and stop the execution
+//	// never runs
+func ContainsElementNow(t *testing.T, source, expect any, message ...any) error {
+	t.Helper()
+
+	return tryContainsElement(t, true, source, expect, message...)
+}
+
+// NotContainsElement tests whether the array or slice contains the specified element or not, and
+// it set the result to fail if the array or slice contains the specified element. It'll panic if
+// the `source` is not an array or a slice.
+//
+//	assertion.NotContainsElement([]int{1, 2, 3}, 4) // success
+//	assertion.NotContainsElement([]int{1, 2, 3}, 0) // success
+//	assertion.NotContainsElement([]int{1, 2, 3}, 1) // fail
+func NotContainsElement(t *testing.T, source, expect any, message ...any) error {
+	t.Helper()
+
+	return tryNotContainsElement(t, false, source, expect, message...)
+}
+
+// NotContainsElementNow tests whether the array or slice contains the specified element or not,
+// and it will terminate the execution if the array or slice contains the specified element. It'll
+// panic if the `source` is not an array or a slice.
+//
+//	assertion.NotContainsElementNow([]int{1, 2, 3}, 4) // success
+//	assertion.NotContainsElementNow([]int{1, 2, 3}, 0) // success
+//	assertion.NotContainsElementNow([]int{1, 2, 3}, 1) // fail and stop the execution
+//	// never runs
+func NotContainsElementNow(t *testing.T, source, expect any, message ...any) error {
+	t.Helper()
+
+	return tryNotContainsElement(t, true, source, expect, message...)
+}
+
 // ContainsString tests whether the string contains the substring or not, and it set the result to
 // fail if the string does not contains the substring.
 //

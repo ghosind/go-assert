@@ -12,15 +12,15 @@ func TestFailedHandler(t *testing.T) {
 	assert := New(t)
 
 	failed(mockT, nil, false)
-	assert.DeepEqual(mockT.Failed(), false)
+	assert.NotTrue(mockT.Failed(), false)
 
 	failed(mockT, newAssertionError("Test error"), false)
-	assert.DeepEqual(mockT.Failed(), true)
+	assert.True(mockT.Failed())
 
 	isTerminated := internal.CheckTermination(func() {
 		failed(mockT, newAssertionError("Test error"), true)
 	})
-	assert.DeepEqual(isTerminated, true)
+	assert.True(isTerminated)
 }
 
 func TestIsContainsElement(t *testing.T) {
@@ -132,12 +132,12 @@ func TestIsComparable(t *testing.T) {
 func TestIsNil(t *testing.T) {
 	assert := New(t)
 
-	assert.DeepEqual(isNil(1), false)  // int
-	assert.DeepEqual(isNil(""), false) // string
-	assert.DeepEqual(isNil(nil), true)
+	assert.NotTrue(isNil(1))  // int
+	assert.NotTrue(isNil("")) // string
+	assert.True(isNil(nil))
 	var testAssert *Assertion
-	assert.DeepEqual(isNil(testAssert), true)
-	assert.DeepEqual(isNil(assert), false)
+	assert.True(isNil(testAssert))
+	assert.NotTrue(isNil(assert))
 }
 
 func TestIsPanic(t *testing.T) {
@@ -153,18 +153,18 @@ func TestIsTrue(t *testing.T) {
 	assert := New(t)
 
 	// reflect.Invalid
-	assert.DeepEqual(isTrue(nil), false)
+	assert.NotTrue(isTrue(nil))
 
 	// reflect.Slice
-	assert.DeepEqual(isTrue([]int{0}), true)
-	assert.DeepEqual(isTrue([]int{}), false)
+	assert.True(isTrue([]int{0}))
+	assert.NotTrue(isTrue([]int{}))
 
 	// other kinds
-	assert.DeepEqual(isTrue(1), true)
-	assert.DeepEqual(isTrue(0), false)
-	assert.DeepEqual(isTrue(1.0), true)
-	assert.DeepEqual(isTrue(0.0), false)
-	assert.DeepEqual(isTrue("Hello"), true)
-	assert.DeepEqual(isTrue(""), false)
-	assert.DeepEqual(isTrue(func() {}), true)
+	assert.True(isTrue(1))
+	assert.NotTrue(isTrue(0))
+	assert.True(isTrue(1.0))
+	assert.NotTrue(isTrue(0.0))
+	assert.True(isTrue("Hello"))
+	assert.NotTrue(isTrue(""))
+	assert.True(isTrue(func() {}))
 }

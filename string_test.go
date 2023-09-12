@@ -3,541 +3,236 @@ package assert
 import (
 	"regexp"
 	"testing"
-
-	"github.com/ghosind/go-assert/internal"
 )
 
 func TestStringContainsAndNotContains(t *testing.T) {
-	mockT := new(testing.T)
-	assert := New(mockT)
+	a := New(t)
+	mockA := New(new(testing.T))
 
-	testStringContainsAndNotContains(t, assert, "", "", true)
-	testStringContainsAndNotContains(t, assert, "Hello world", "", true)
-	testStringContainsAndNotContains(t, assert, "Hello world", "Hello", true)
-	testStringContainsAndNotContains(t, assert, "Hello world", "hello", false)
-	testStringContainsAndNotContains(t, assert, "", "Hello", false)
-	testStringContainsAndNotContains(t, assert, "", "world", false)
-	testStringContainsAndNotContains(t, assert, "Hello world", "world", true)
-	testStringContainsAndNotContains(t, assert, "Hello world", "o w", true)
+	testStringContainsAndNotContains(a, mockA, "", "", true)
+	testStringContainsAndNotContains(a, mockA, "Hello world", "", true)
+	testStringContainsAndNotContains(a, mockA, "Hello world", "Hello", true)
+	testStringContainsAndNotContains(a, mockA, "Hello world", "hello", false)
+	testStringContainsAndNotContains(a, mockA, "", "Hello", false)
+	testStringContainsAndNotContains(a, mockA, "", "world", false)
+	testStringContainsAndNotContains(a, mockA, "Hello world", "world", true)
+	testStringContainsAndNotContains(a, mockA, "Hello world", "o w", true)
 }
 
 func testStringContainsAndNotContains(
-	t *testing.T,
-	assertion *Assertion,
+	a, mockA *Assertion,
 	str, substr string,
 	isContains bool,
 ) {
-	testContainsString(t, assertion, str, substr, isContains)
+	// ContainsString
+	testAssertionFunction(a, "ContainsString", func() error {
+		return ContainsString(mockA.T, str, substr)
+	}, isContains)
+	testAssertionFunction(a, "Assertion.ContainsString", func() error {
+		return mockA.ContainsString(str, substr)
+	}, isContains)
 
-	testNotContainsString(t, assertion, str, substr, isContains)
+	// NotContainsString
+	testAssertionFunction(a, "NotContainsString", func() error {
+		return NotContainsString(mockA.T, str, substr)
+	}, !isContains)
+	testAssertionFunction(a, "Assertion.NotContainsString", func() error {
+		return mockA.NotContainsString(str, substr)
+	}, !isContains)
 
-	testContainsStringNow(t, assertion, str, substr, isContains)
+	// ContainsStringNow
+	testAssertionNowFunction(a, "ContainsStringNow", func() {
+		ContainsStringNow(mockA.T, str, substr)
+	}, !isContains)
+	testAssertionNowFunction(a, "Assertion.ContainsStringNow", func() {
+		mockA.ContainsStringNow(str, substr)
+	}, !isContains)
 
-	testNotContainsStringNow(t, assertion, str, substr, isContains)
-}
-
-func testContainsString(
-	t *testing.T,
-	assertion *Assertion,
-	str, substr string,
-	isContains bool,
-) {
-	err := assertion.ContainsString(str, substr)
-	if isContains && err != nil {
-		t.Errorf("ContainsString(\"%s\", \"%s\") = %v, want nil", str, substr, err)
-	} else if !isContains && err == nil {
-		t.Errorf("ContainsString(\"%s\", \"%s\") = nil, want error", str, substr)
-	}
-
-	err = ContainsString(assertion.T, str, substr)
-	if isContains && err != nil {
-		t.Errorf("ContainsString(\"%s\", \"%s\") = %v, want nil", str, substr, err)
-	} else if !isContains && err == nil {
-		t.Errorf("ContainsString(\"%s\", \"%s\") = nil, want error", str, substr)
-	}
-}
-
-func testNotContainsString(
-	t *testing.T,
-	assertion *Assertion,
-	str, substr string,
-	isContains bool,
-) {
-	err := assertion.NotContainsString(str, substr)
-	if isContains && err == nil {
-		t.Errorf("NotContainsString(\"%s\", \"%s\") = nil, want error", str, substr)
-	} else if !isContains && err != nil {
-		t.Errorf("NotContainsString(\"%s\", \"%s\") = %v, want nil", str, substr, err)
-	}
-
-	err = NotContainsString(assertion.T, str, substr)
-	if isContains && err == nil {
-		t.Errorf("NotContainsString(\"%s\", \"%s\") = nil, want error", str, substr)
-	} else if !isContains && err != nil {
-		t.Errorf("NotContainsString(\"%s\", \"%s\") = %v, want nil", str, substr, err)
-	}
-}
-
-func testContainsStringNow(
-	t *testing.T,
-	assertion *Assertion,
-	str, substr string,
-	isContains bool,
-) {
-	isTerminated := internal.CheckTermination(func() {
-		assertion.ContainsStringNow(str, substr)
-	})
-	if isContains && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if !isContains && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-
-	isTerminated = internal.CheckTermination(func() {
-		ContainsStringNow(assertion.T, str, substr)
-	})
-	if isContains && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if !isContains && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-}
-
-func testNotContainsStringNow(
-	t *testing.T,
-	assertion *Assertion,
-	str, substr string,
-	isContains bool,
-) {
-	isTerminated := internal.CheckTermination(func() {
-		assertion.NotContainsStringNow(str, substr)
-	})
-	if !isContains && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if isContains && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-
-	isTerminated = internal.CheckTermination(func() {
-		NotContainsStringNow(assertion.T, str, substr)
-	})
-	if !isContains && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if isContains && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
+	// NotContainsStringNow
+	testAssertionNowFunction(a, "NotContainsStringNow", func() {
+		NotContainsStringNow(mockA.T, str, substr)
+	}, isContains)
+	testAssertionNowFunction(a, "Assertion.NotContainsStringNow", func() {
+		mockA.NotContainsStringNow(str, substr)
+	}, isContains)
 }
 
 func TestStringHasPrefixAndNotHasPrefix(t *testing.T) {
-	mockT := new(testing.T)
-	assert := New(mockT)
+	a := New(t)
+	mockA := New(new(testing.T))
 
-	testStringHasPrefixAndNotHasPrefix(t, assert, "", "", true)
-	testStringHasPrefixAndNotHasPrefix(t, assert, "Hello world", "", true)
-	testStringHasPrefixAndNotHasPrefix(t, assert, "Hello world", "Hello", true)
-	testStringHasPrefixAndNotHasPrefix(t, assert, "Hello world", "hello", false)
-	testStringHasPrefixAndNotHasPrefix(t, assert, "", "Hello", false)
-	testStringHasPrefixAndNotHasPrefix(t, assert, "", "world", false)
-	testStringHasPrefixAndNotHasPrefix(t, assert, "Hello world", "world", false)
+	testStringHasPrefixAndNotHasPrefix(a, mockA, "", "", true)
+	testStringHasPrefixAndNotHasPrefix(a, mockA, "Hello world", "", true)
+	testStringHasPrefixAndNotHasPrefix(a, mockA, "Hello world", "Hello", true)
+	testStringHasPrefixAndNotHasPrefix(a, mockA, "Hello world", "hello", false)
+	testStringHasPrefixAndNotHasPrefix(a, mockA, "", "Hello", false)
+	testStringHasPrefixAndNotHasPrefix(a, mockA, "", "world", false)
+	testStringHasPrefixAndNotHasPrefix(a, mockA, "Hello world", "world", false)
 }
 
 func testStringHasPrefixAndNotHasPrefix(
-	t *testing.T,
-	assertion *Assertion,
-	str, substr string,
+	a, mockA *Assertion,
+	str, prefix string,
 	isHasPrefix bool,
 ) {
-	testHasPrefixString(t, assertion, str, substr, isHasPrefix)
+	// HasPrefixString
+	testAssertionFunction(a, "HasPrefixString", func() error {
+		return HasPrefixString(mockA.T, str, prefix)
+	}, isHasPrefix)
+	testAssertionFunction(a, "Assertion.HasPrefixString", func() error {
+		return mockA.HasPrefixString(str, prefix)
+	}, isHasPrefix)
 
-	testNotHasPrefixString(t, assertion, str, substr, isHasPrefix)
+	// NotHasPrefixString
+	testAssertionFunction(a, "NotHasPrefixString", func() error {
+		return NotHasPrefixString(mockA.T, str, prefix)
+	}, !isHasPrefix)
+	testAssertionFunction(a, "Assertion.NotHasPrefixString", func() error {
+		return mockA.NotHasPrefixString(str, prefix)
+	}, !isHasPrefix)
 
-	testHasPrefixStringNow(t, assertion, str, substr, isHasPrefix)
+	// HasPrefixStringNow
+	testAssertionNowFunction(a, "HasPrefixStringNow", func() {
+		HasPrefixStringNow(mockA.T, str, prefix)
+	}, !isHasPrefix)
+	testAssertionNowFunction(a, "Assertion.HasPrefixStringNow", func() {
+		mockA.HasPrefixStringNow(str, prefix)
+	}, !isHasPrefix)
 
-	testNotHasPrefixStringNow(t, assertion, str, substr, isHasPrefix)
-}
-
-func testHasPrefixString(
-	t *testing.T,
-	assertion *Assertion,
-	str, substr string,
-	isHasPrefix bool,
-) {
-	err := assertion.HasPrefixString(str, substr)
-	if isHasPrefix && err != nil {
-		t.Errorf("HasPrefixString(\"%s\", \"%s\") = %v, want nil", str, substr, err)
-	} else if !isHasPrefix && err == nil {
-		t.Errorf("HasPrefixString(\"%s\", \"%s\") = nil, want error", str, substr)
-	}
-
-	err = HasPrefixString(assertion.T, str, substr)
-	if isHasPrefix && err != nil {
-		t.Errorf("HasPrefixString(\"%s\", \"%s\") = %v, want nil", str, substr, err)
-	} else if !isHasPrefix && err == nil {
-		t.Errorf("HasPrefixString(\"%s\", \"%s\") = nil, want error", str, substr)
-	}
-}
-
-func testNotHasPrefixString(
-	t *testing.T,
-	assertion *Assertion,
-	str, substr string,
-	isHasPrefix bool,
-) {
-	err := assertion.NotHasPrefixString(str, substr)
-	if isHasPrefix && err == nil {
-		t.Errorf("NotHasPrefixString(\"%s\", \"%s\") = nil, want error", str, substr)
-	} else if !isHasPrefix && err != nil {
-		t.Errorf("NotHasPrefixString(\"%s\", \"%s\") = %v, want nil", str, substr, err)
-	}
-
-	err = NotHasPrefixString(assertion.T, str, substr)
-	if isHasPrefix && err == nil {
-		t.Errorf("NotHasPrefixString(\"%s\", \"%s\") = nil, want error", str, substr)
-	} else if !isHasPrefix && err != nil {
-		t.Errorf("NotHasPrefixString(\"%s\", \"%s\") = %v, want nil", str, substr, err)
-	}
-}
-
-func testHasPrefixStringNow(
-	t *testing.T,
-	assertion *Assertion,
-	str, substr string,
-	isHasPrefix bool,
-) {
-	isTerminated := internal.CheckTermination(func() {
-		assertion.HasPrefixStringNow(str, substr)
-	})
-	if isHasPrefix && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if !isHasPrefix && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-
-	isTerminated = internal.CheckTermination(func() {
-		HasPrefixStringNow(assertion.T, str, substr)
-	})
-	if isHasPrefix && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if !isHasPrefix && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-}
-
-func testNotHasPrefixStringNow(
-	t *testing.T,
-	assertion *Assertion,
-	str, substr string,
-	isHasPrefix bool,
-) {
-	isTerminated := internal.CheckTermination(func() {
-		assertion.NotHasPrefixStringNow(str, substr)
-	})
-	if !isHasPrefix && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if isHasPrefix && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-
-	isTerminated = internal.CheckTermination(func() {
-		NotHasPrefixStringNow(assertion.T, str, substr)
-	})
-	if !isHasPrefix && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if isHasPrefix && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
+	// NotHasPrefixStringNow
+	testAssertionNowFunction(a, "NotHasPrefixStringNow", func() {
+		NotHasPrefixStringNow(mockA.T, str, prefix)
+	}, isHasPrefix)
+	testAssertionNowFunction(a, "Assertion.NotHasPrefixStringNow", func() {
+		mockA.NotHasPrefixStringNow(str, prefix)
+	}, isHasPrefix)
 }
 
 func TestStringHasSuffixAndNotHasSuffix(t *testing.T) {
-	mockT := new(testing.T)
-	assert := New(mockT)
+	a := New(t)
+	mockA := New(new(testing.T))
 
-	testStringHasSuffixAndNotHasSuffix(t, assert, "", "", true)
-	testStringHasSuffixAndNotHasSuffix(t, assert, "Hello world", "", true)
-	testStringHasSuffixAndNotHasSuffix(t, assert, "Hello world", "Hello", false)
-	testStringHasSuffixAndNotHasSuffix(t, assert, "Hello world", "hello", false)
-	testStringHasSuffixAndNotHasSuffix(t, assert, "", "Hello", false)
-	testStringHasSuffixAndNotHasSuffix(t, assert, "", "world", false)
-	testStringHasSuffixAndNotHasSuffix(t, assert, "Hello world", "world", true)
+	testStringHasSuffixAndNotHasSuffix(a, mockA, "", "", true)
+	testStringHasSuffixAndNotHasSuffix(a, mockA, "Hello world", "", true)
+	testStringHasSuffixAndNotHasSuffix(a, mockA, "Hello world", "Hello", false)
+	testStringHasSuffixAndNotHasSuffix(a, mockA, "Hello world", "hello", false)
+	testStringHasSuffixAndNotHasSuffix(a, mockA, "", "Hello", false)
+	testStringHasSuffixAndNotHasSuffix(a, mockA, "", "world", false)
+	testStringHasSuffixAndNotHasSuffix(a, mockA, "Hello world", "world", true)
 }
 
 func testStringHasSuffixAndNotHasSuffix(
-	t *testing.T,
-	assertion *Assertion,
-	str, substr string,
+	a, mockA *Assertion,
+	str, suffix string,
 	isHasSuffix bool,
 ) {
-	testHasSuffixString(t, assertion, str, substr, isHasSuffix)
+	// HasSuffixString
+	testAssertionFunction(a, "HasSuffixString", func() error {
+		return HasSuffixString(mockA.T, str, suffix)
+	}, isHasSuffix)
+	testAssertionFunction(a, "Assertion.HasSuffixString", func() error {
+		return mockA.HasSuffixString(str, suffix)
+	}, isHasSuffix)
 
-	testNotHasSuffixString(t, assertion, str, substr, isHasSuffix)
+	// NotHasSuffixString
+	testAssertionFunction(a, "NotHasSuffixString", func() error {
+		return NotHasSuffixString(mockA.T, str, suffix)
+	}, !isHasSuffix)
+	testAssertionFunction(a, "Assertion.NotHasSuffixString", func() error {
+		return mockA.NotHasSuffixString(str, suffix)
+	}, !isHasSuffix)
 
-	testHasSuffixStringNow(t, assertion, str, substr, isHasSuffix)
+	// HasSuffixStringNow
+	testAssertionNowFunction(a, "HasSuffixStringNow", func() {
+		HasSuffixStringNow(mockA.T, str, suffix)
+	}, !isHasSuffix)
+	testAssertionNowFunction(a, "Assertion.HasSuffixStringNow", func() {
+		mockA.HasSuffixStringNow(str, suffix)
+	}, !isHasSuffix)
 
-	testNotHasSuffixStringNow(t, assertion, str, substr, isHasSuffix)
-}
-
-func testHasSuffixString(
-	t *testing.T,
-	assertion *Assertion,
-	str, substr string,
-	isHasSuffix bool,
-) {
-	err := assertion.HasSuffixString(str, substr)
-	if isHasSuffix && err != nil {
-		t.Errorf("HasSuffixString(\"%s\", \"%s\") = %v, want nil", str, substr, err)
-	} else if !isHasSuffix && err == nil {
-		t.Errorf("HasSuffixString(\"%s\", \"%s\") = nil, want error", str, substr)
-	}
-
-	err = HasSuffixString(assertion.T, str, substr)
-	if isHasSuffix && err != nil {
-		t.Errorf("HasSuffixString(\"%s\", \"%s\") = %v, want nil", str, substr, err)
-	} else if !isHasSuffix && err == nil {
-		t.Errorf("HasSuffixString(\"%s\", \"%s\") = nil, want error", str, substr)
-	}
-}
-
-func testNotHasSuffixString(
-	t *testing.T,
-	assertion *Assertion,
-	str, substr string,
-	isHasSuffix bool,
-) {
-	err := assertion.NotHasSuffixString(str, substr)
-	if isHasSuffix && err == nil {
-		t.Errorf("NotHasSuffixString(\"%s\", \"%s\") = nil, want error", str, substr)
-	} else if !isHasSuffix && err != nil {
-		t.Errorf("NotHasSuffixString(\"%s\", \"%s\") = %v, want nil", str, substr, err)
-	}
-
-	err = NotHasSuffixString(assertion.T, str, substr)
-	if isHasSuffix && err == nil {
-		t.Errorf("NotHasSuffixString(\"%s\", \"%s\") = nil, want error", str, substr)
-	} else if !isHasSuffix && err != nil {
-		t.Errorf("NotHasSuffixString(\"%s\", \"%s\") = %v, want nil", str, substr, err)
-	}
-}
-
-func testHasSuffixStringNow(
-	t *testing.T,
-	assertion *Assertion,
-	str, substr string,
-	isHasSuffix bool,
-) {
-	isTerminated := internal.CheckTermination(func() {
-		assertion.HasSuffixStringNow(str, substr)
-	})
-	if isHasSuffix && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if !isHasSuffix && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-
-	isTerminated = internal.CheckTermination(func() {
-		HasSuffixStringNow(assertion.T, str, substr)
-	})
-	if isHasSuffix && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if !isHasSuffix && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-}
-
-func testNotHasSuffixStringNow(
-	t *testing.T,
-	assertion *Assertion,
-	str, substr string,
-	isHasSuffix bool,
-) {
-	isTerminated := internal.CheckTermination(func() {
-		assertion.NotHasSuffixStringNow(str, substr)
-	})
-	if !isHasSuffix && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if isHasSuffix && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-
-	isTerminated = internal.CheckTermination(func() {
-		NotHasSuffixStringNow(assertion.T, str, substr)
-	})
-	if !isHasSuffix && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if isHasSuffix && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
+	// NotHasSuffixStringNow
+	testAssertionNowFunction(a, "NotHasSuffixStringNow", func() {
+		NotHasSuffixStringNow(mockA.T, str, suffix)
+	}, isHasSuffix)
+	testAssertionNowFunction(a, "Assertion.NotHasSuffixStringNow", func() {
+		mockA.NotHasSuffixStringNow(str, suffix)
+	}, isHasSuffix)
 }
 
 func TestMatchAndNotMatch(t *testing.T) {
-	mockT := new(testing.T)
-	a := New(mockT)
+	a := New(t)
+	mockA := New(new(testing.T))
 
-	testMatchAndNotMatch(t, a, "Hello", `.+`, true)
-	testMatchAndNotMatch(t, a, "", `.+`, false)
-	testMatchAndNotMatch(t, a, "Hello", `^H`, true)
-	testMatchAndNotMatch(t, a, "hello", `^H`, false)
+	testMatchAndNotMatch(a, mockA, "Hello", `.+`, true)
+	testMatchAndNotMatch(a, mockA, "", `.+`, false)
+	testMatchAndNotMatch(a, mockA, "Hello", `^H`, true)
+	testMatchAndNotMatch(a, mockA, "hello", `^H`, false)
 }
 
-func testMatchAndNotMatch(t *testing.T, a *Assertion, val string, pattern string, isMatch bool) {
+func testMatchAndNotMatch(a, mockA *Assertion, val string, pattern string, isMatch bool) {
 	regPattern := regexp.MustCompile(pattern)
 
-	testMatch(t, a, val, regPattern, isMatch)
+	// MatchString
+	testAssertionFunction(a, "MatchString", func() error {
+		return MatchString(mockA.T, val, pattern)
+	}, isMatch)
+	testAssertionFunction(a, "Assertion.MatchString", func() error {
+		return mockA.MatchString(val, pattern)
+	}, isMatch)
 
-	testNotMatch(t, a, val, regPattern, isMatch)
+	// NotMatchString
+	testAssertionFunction(a, "NotMatchString", func() error {
+		return NotMatchString(mockA.T, val, pattern)
+	}, !isMatch)
+	testAssertionFunction(a, "Assertion.NotMatchString", func() error {
+		return mockA.NotMatchString(val, pattern)
+	}, !isMatch)
 
-	testMatchNow(t, a, val, regPattern, isMatch)
+	// MatchStringNow
+	testAssertionNowFunction(a, "MatchStringNow", func() {
+		MatchStringNow(mockA.T, val, pattern)
+	}, !isMatch)
+	testAssertionNowFunction(a, "Assertion.MatchStringNow", func() {
+		mockA.MatchStringNow(val, pattern)
+	}, !isMatch)
 
-	testNotMatchNow(t, a, val, regPattern, isMatch)
+	// NotMatchStringNow
+	testAssertionNowFunction(a, "NotMatchStringNow", func() {
+		NotMatchStringNow(mockA.T, val, pattern)
+	}, isMatch)
+	testAssertionNowFunction(a, "Assertion.NotMatchStringNow", func() {
+		mockA.NotMatchStringNow(val, pattern)
+	}, isMatch)
 
-	testMatchString(t, a, val, pattern, isMatch)
+	// Match
+	testAssertionFunction(a, "Match", func() error {
+		return Match(mockA.T, val, regPattern)
+	}, isMatch)
+	testAssertionFunction(a, "Assertion.Match", func() error {
+		return mockA.Match(val, regPattern)
+	}, isMatch)
 
-	testNotMatchString(t, a, val, pattern, isMatch)
+	// NotMatch
+	testAssertionFunction(a, "NotMatch", func() error {
+		return NotMatch(mockA.T, val, regPattern)
+	}, !isMatch)
+	testAssertionFunction(a, "Assertion.NotMatch", func() error {
+		return mockA.NotMatch(val, regPattern)
+	}, !isMatch)
 
-	testMatchStringNow(t, a, val, pattern, isMatch)
+	// MatchNow
+	testAssertionNowFunction(a, "MatchNow", func() {
+		MatchNow(mockA.T, val, regPattern)
+	}, !isMatch)
+	testAssertionNowFunction(a, "Assertion.MatchNow", func() {
+		mockA.MatchNow(val, regPattern)
+	}, !isMatch)
 
-	testNotMatchStringNow(t, a, val, pattern, isMatch)
-}
-
-func testMatch(t *testing.T, a *Assertion, val string, pattern *regexp.Regexp, isMatch bool) {
-	err := a.Match(val, pattern)
-	if isMatch && err != nil {
-		t.Errorf("Match(%s) = %v, want = nil", val, err)
-	} else if !isMatch && err == nil {
-		t.Errorf("Match(%s) = nil, want = error", val)
-	}
-
-	err = Match(a.T, val, pattern)
-	if isMatch && err != nil {
-		t.Errorf("Match(%s) = %v, want = nil", val, err)
-	} else if !isMatch && err == nil {
-		t.Errorf("Match(%s) = nil, want = error", val)
-	}
-}
-
-func testNotMatch(t *testing.T, a *Assertion, val string, pattern *regexp.Regexp, isMatch bool) {
-	err := a.NotMatch(val, pattern)
-	if isMatch && err == nil {
-		t.Errorf("NotMatch(%s) = nil, want = error", val)
-	} else if !isMatch && err != nil {
-		t.Errorf("NotMatch(%s) = %v, want = nil", val, err)
-	}
-
-	err = NotMatch(a.T, val, pattern)
-	if isMatch && err == nil {
-		t.Errorf("NotMatch(%s) = nil, want = error", val)
-	} else if !isMatch && err != nil {
-		t.Errorf("NotMatch(%s) = %v, want = nil", val, err)
-	}
-}
-
-func testMatchNow(t *testing.T, a *Assertion, val string, pattern *regexp.Regexp, isMatch bool) {
-	isTerminated := internal.CheckTermination(func() {
-		a.MatchNow(val, pattern)
-	})
-	if isMatch && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if !isMatch && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-
-	isTerminated = internal.CheckTermination(func() {
-		MatchNow(a.T, val, pattern)
-	})
-	if isMatch && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if !isMatch && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-}
-
-func testNotMatchNow(t *testing.T, a *Assertion, val string, pattern *regexp.Regexp, isMatch bool) {
-	isTerminated := internal.CheckTermination(func() {
-		a.NotMatchNow(val, pattern)
-	})
-	if !isMatch && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if isMatch && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-
-	isTerminated = internal.CheckTermination(func() {
-		NotMatchNow(a.T, val, pattern)
-	})
-	if !isMatch && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if isMatch && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-}
-
-func testMatchString(t *testing.T, a *Assertion, val, pattern string, isMatch bool) {
-	err := a.MatchString(val, pattern)
-	if isMatch && err != nil {
-		t.Errorf("MatchString(%s) = %v, want = nil", val, err)
-	} else if !isMatch && err == nil {
-		t.Errorf("MatchString(%s) = nil, want = error", val)
-	}
-
-	err = MatchString(a.T, val, pattern)
-	if isMatch && err != nil {
-		t.Errorf("MatchString(%s) = %v, want = nil", val, err)
-	} else if !isMatch && err == nil {
-		t.Errorf("MatchString(%s) = nil, want = error", val)
-	}
-}
-
-func testNotMatchString(t *testing.T, a *Assertion, val, pattern string, isMatch bool) {
-	err := a.NotMatchString(val, pattern)
-	if isMatch && err == nil {
-		t.Errorf("NotMatchString(%s) = nil, want = error", val)
-	} else if !isMatch && err != nil {
-		t.Errorf("NotMatchString(%s) = %v, want = nil", val, err)
-	}
-
-	err = NotMatchString(a.T, val, pattern)
-	if isMatch && err == nil {
-		t.Errorf("NotMatchString(%s) = nil, want = error", val)
-	} else if !isMatch && err != nil {
-		t.Errorf("NotMatchString(%s) = %v, want = nil", val, err)
-	}
-}
-
-func testMatchStringNow(t *testing.T, a *Assertion, val, pattern string, isMatch bool) {
-	isTerminated := internal.CheckTermination(func() {
-		a.MatchStringNow(val, pattern)
-	})
-	if isMatch && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if !isMatch && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-
-	isTerminated = internal.CheckTermination(func() {
-		MatchStringNow(a.T, val, pattern)
-	})
-	if isMatch && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if !isMatch && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-}
-
-func testNotMatchStringNow(t *testing.T, a *Assertion, val, pattern string, isMatch bool) {
-	isTerminated := internal.CheckTermination(func() {
-		a.NotMatchStringNow(val, pattern)
-	})
-	if !isMatch && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if isMatch && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-
-	isTerminated = internal.CheckTermination(func() {
-		NotMatchStringNow(a.T, val, pattern)
-	})
-	if !isMatch && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if isMatch && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
+	// NotMatchNow
+	testAssertionNowFunction(a, "NotMatchNow", func() {
+		NotMatchNow(mockA.T, val, regPattern)
+	}, isMatch)
+	testAssertionNowFunction(a, "Assertion.NotMatchNow", func() {
+		mockA.NotMatchNow(val, regPattern)
+	}, isMatch)
 }

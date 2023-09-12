@@ -2,127 +2,56 @@ package assert
 
 import (
 	"testing"
-
-	"github.com/ghosind/go-assert/internal"
 )
 
 func TestElementContainsAndNotContains(t *testing.T) {
-	mockT := new(testing.T)
-	assert := New(mockT)
+	a := New(t)
+	mockA := New(new(testing.T))
 
-	testElementContainsAndNotContains(t, assert, []int{1}, 1, true)
-	testElementContainsAndNotContains(t, assert, []int{1, 2, 3}, 3, true)
-	testElementContainsAndNotContains(t, assert, []int{1, 2, 3}, 4, false)
-	testElementContainsAndNotContains(t, assert, []int{}, 1, false)
-	testElementContainsAndNotContains(t, assert, [1]int{1}, 1, true)
-	testElementContainsAndNotContains(t, assert, [3]int{1, 2, 3}, 3, true)
-	testElementContainsAndNotContains(t, assert, [3]int{1, 2, 3}, 4, false)
-	testElementContainsAndNotContains(t, assert, [0]int{}, 1, false)
+	testElementContainsAndNotContains(a, mockA, []int{1}, 1, true)
+	testElementContainsAndNotContains(a, mockA, []int{1, 2, 3}, 3, true)
+	testElementContainsAndNotContains(a, mockA, []int{1, 2, 3}, 4, false)
+	testElementContainsAndNotContains(a, mockA, []int{}, 1, false)
+	testElementContainsAndNotContains(a, mockA, [1]int{1}, 1, true)
+	testElementContainsAndNotContains(a, mockA, [3]int{1, 2, 3}, 3, true)
+	testElementContainsAndNotContains(a, mockA, [3]int{1, 2, 3}, 4, false)
+	testElementContainsAndNotContains(a, mockA, [0]int{}, 1, false)
 }
 
 func testElementContainsAndNotContains(
-	t *testing.T,
-	assertion *Assertion,
+	a, mockA *Assertion,
 	source, expect any,
 	isContains bool,
 ) {
-	testContainsElement(t, assertion, source, expect, isContains)
+	// ContainsElement
+	testAssertionFunction(a, "ContainsElement", func() error {
+		return ContainsElement(mockA.T, source, expect)
+	}, isContains)
+	testAssertionFunction(a, "Assertion.ContainsElement", func() error {
+		return mockA.ContainsElement(source, expect)
+	}, isContains)
 
-	testNotContainsElement(t, assertion, source, expect, isContains)
+	// NotContainsElement
+	testAssertionFunction(a, "NotContainsElement", func() error {
+		return NotContainsElement(mockA.T, source, expect)
+	}, !isContains)
+	testAssertionFunction(a, "Assertion.NotContainsElement", func() error {
+		return mockA.NotContainsElement(source, expect)
+	}, !isContains)
 
-	testContainsElementNow(t, assertion, source, expect, isContains)
+	// ContainsElementNow
+	testAssertionNowFunction(a, "ContainsElementNow", func() {
+		ContainsElementNow(mockA.T, source, expect)
+	}, !isContains)
+	testAssertionNowFunction(a, "Assertion.ContainsElementNow", func() {
+		mockA.ContainsElementNow(source, expect)
+	}, !isContains)
 
-	testNotContainsElementNow(t, assertion, source, expect, isContains)
-}
-
-func testContainsElement(
-	t *testing.T,
-	assertion *Assertion,
-	source, expect any,
-	isContains bool,
-) {
-	err := assertion.ContainsElement(source, expect)
-	if isContains && err != nil {
-		t.Errorf("ContainsElement(\"%v\", \"%v\") = %v, want nil", source, expect, err)
-	} else if !isContains && err == nil {
-		t.Errorf("ContainsElement(\"%v\", \"%v\") = nil, want error", source, expect)
-	}
-
-	err = ContainsElement(assertion.T, source, expect)
-	if isContains && err != nil {
-		t.Errorf("ContainsElement(\"%v\", \"%v\") = %v, want nil", source, expect, err)
-	} else if !isContains && err == nil {
-		t.Errorf("ContainsElement(\"%v\", \"%v\") = nil, want error", source, expect)
-	}
-}
-
-func testNotContainsElement(
-	t *testing.T,
-	assertion *Assertion,
-	source, expect any,
-	isContains bool,
-) {
-	err := assertion.NotContainsElement(source, expect)
-	if isContains && err == nil {
-		t.Errorf("NotContainsElement(\"%v\", \"%v\") = nil, want error", source, expect)
-	} else if !isContains && err != nil {
-		t.Errorf("NotContainsElement(\"%v\", \"%v\") = %v, want nil", source, expect, err)
-	}
-
-	err = NotContainsElement(assertion.T, source, expect)
-	if isContains && err == nil {
-		t.Errorf("NotContainsElement(\"%v\", \"%v\") = nil, want error", source, expect)
-	} else if !isContains && err != nil {
-		t.Errorf("NotContainsElement(\"%v\", \"%v\") = %v, want nil", source, expect, err)
-	}
-}
-
-func testContainsElementNow(
-	t *testing.T,
-	assertion *Assertion,
-	source, expect any,
-	isContains bool,
-) {
-	isTerminated := internal.CheckTermination(func() {
-		assertion.ContainsElementNow(source, expect)
-	})
-	if isContains && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if !isContains && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-
-	isTerminated = internal.CheckTermination(func() {
-		ContainsElementNow(assertion.T, source, expect)
-	})
-	if isContains && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if !isContains && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-}
-
-func testNotContainsElementNow(
-	t *testing.T,
-	assertion *Assertion,
-	source, expect any,
-	isContains bool,
-) {
-	isTerminated := internal.CheckTermination(func() {
-		assertion.NotContainsElementNow(source, expect)
-	})
-	if !isContains && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if isContains && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
-
-	isTerminated = internal.CheckTermination(func() {
-		NotContainsElementNow(assertion.T, source, expect)
-	})
-	if !isContains && isTerminated {
-		t.Error("execution stopped, want do not stop")
-	} else if isContains && !isTerminated {
-		t.Error("execution do not stopped, want stop")
-	}
+	// NotContainsElementNow
+	testAssertionNowFunction(a, "NotContainsElementNow", func() {
+		NotContainsElementNow(mockA.T, source, expect)
+	}, isContains)
+	testAssertionNowFunction(a, "Assertion.NotContainsElementNow", func() {
+		mockA.NotContainsElementNow(source, expect)
+	}, isContains)
 }

@@ -8,6 +8,16 @@
 
 A collection of Golang assertion functions for verifying invariants.
 
+- [Installation](#installation)
+- [Getting Started](#getting-started)
+- [Available Assertions](#available-assertions)
+  - [Equality](#equality)
+  - [Value](#value)
+  - [String](#string)
+  - [Slice or Array](#slice-or-array)
+  - [Error Handling](#error-handling)
+- [License](#license)
+
 ## Installation
 
 To install this library, just use `go get` command like the following line:
@@ -65,6 +75,16 @@ func TestExample(t *testing.T) {
 
   // you can also use `MatchString` to test it without compiling the regexp pattern
   assert.MatchString(t, "https://example.com", `^https?:\/\/`) // success
+}
+```
+
+Since v0.2.0, we also provided some assertions for array/slice, for example, you can use `ContainsElement` to check whether an array or a slice contains a specified element.
+
+```go
+func TestExample(t *testing.T) {
+  arr := []int{1, 2, 3}
+  assert.ContainsElement(arr, 1) // success
+  assert.ContainsElement(arr, 4) // fail
 }
 ```
 
@@ -133,29 +153,56 @@ func TestExample(t *testing.T) {
 ### Equality
 
 - [`DeepEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.DeepEqual) and [`NotDeepEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotDeepEqual): assert the deep equality or inequality.
+
+  > Since v0.1.0
+
 - [`Equal`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Equal) and [`NotEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotEqual): assert the equality or inequality.
+
+  > Since v0.1.5
 
 ### Value
 
 - [`Nil`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Nil) and [`NotNil`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotNil): assert the value is nil or not.
+
+  > Since v0.1.1
+
 - [`True`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.True) and [`NotTrue`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotTrue): assert the truthy of the value.
+
+  > Since v0.1.4
 
 ### String
 
 - [`ContainsString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.ContainsString) and [`NotContainsString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotContainsString): assert whether the string contains the substring or not.
+
+  > Since v0.1.7
+
 - [`HasPrefixString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.HasPrefixString) and [`NotHasPrefixString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotHasPrefixString): assert whether the string have the prefix string or not.
+
+  > Since v0.1.7
+
 - [`HasSuffixString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.HasSuffixString) and [`NotHasSuffixString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotHasSuffixString): assert whether the string have the suffix string or not.
+
+  > Since v0.1.7
+
 - [`Match`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Match) and [`NotMatch`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotMatch): assert whether the string matches the regular expression pattern or not.
+
+  > Since v0.1.5
+
 - [`MatchString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.MatchString) and [`NotMatchString`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotMatchString): compile the regular expression pattern and assert whether the string matches the pattern or not.
+
+  > Since v0.1.5
 
 ### Slice or Array
 
 - [`ContainsElement`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.ContainsElement) and [`NotContainsElement`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotContainsElement): assert whether the array or slice contains the specified element or not.
 
+  > Since v0.2.0
+
 ### Error Handling
 
 - [`Panic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Panic) and [`NotPanic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotPanic): assert the function will panic or not.
 
+  > Since v0.1.0
 
 ## License
 

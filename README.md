@@ -16,6 +16,7 @@ A collection of Golang assertion functions for verifying invariants.
   - [String](#string)
   - [Slice or Array](#slice-or-array)
   - [Error Handling](#error-handling)
+- [Custom Error Message](#custom-error-message)
 - [License](#license)
 
 ## Installation
@@ -203,6 +204,25 @@ func TestExample(t *testing.T) {
 - [`Panic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Panic) and [`NotPanic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotPanic): assert the function will panic or not.
 
   > Since v0.1.0
+
+## Custom Error Message
+
+You can customize the error message if you don't like the default message. Every assertion function accepts an optional message arguments list, and the first argument is the argument is the format string of the custom message.
+
+```go
+actual := 1
+expect := 2
+assert.Equal(actual, expect)
+// assert error: 1 != 2
+
+assert.Equal(actual, expect, "unexpected result")
+// unexpected result
+
+assert.Equal(actual, expect, "actual = %v, expect = %v", actual, expect)
+// actual = 1, expect = 2
+```
+
+For custom error messages, the first argument of messages must be the format string, it'll fall back to the default error message if not a string.
 
 ## License
 

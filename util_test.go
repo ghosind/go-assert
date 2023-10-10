@@ -129,6 +129,56 @@ func TestIsComparable(t *testing.T) {
 	assert.Equal(isComparable([]int{1, 2, 3}), false)
 }
 
+func TestIsMapHasKKey(t *testing.T) {
+	assert := New(t)
+
+	assert.NotTrue(isMapHasKey(nil, nil))
+	assert.NotTrue(isMapHasKey(map[string]int{}, "a"))
+	assert.True(isMapHasKey(map[string]int{
+		"a": 1,
+		"b": 2,
+	}, "a"))
+	assert.NotTrue(isMapHasKey(map[string]int{
+		"a": 1,
+		"b": 2,
+	}, "c"))
+	assert.NotTrue(isMapHasKey(map[string]int{
+		"a": 1,
+		"b": 2,
+	}, 1))
+	assert.True(isMapHasKey(map[any]int{
+		"a": 1,
+		1:   2,
+	}, 1))
+	assert.True(isMapHasKey(map[any]int{
+		"a": 1,
+		1:   2,
+	}, "a"))
+	assert.NotTrue(isMapHasKey(map[any]int{
+		"a": 1,
+		1:   2,
+	}, 1.1))
+}
+
+func TestIsMapHasValue(t *testing.T) {
+	assert := New(t)
+
+	assert.NotTrue(isMapHasValue(nil, nil))
+	assert.NotTrue(isMapHasValue(map[string]int{}, 3))
+	assert.True(isMapHasValue(map[string]int{
+		"a": 1,
+		"b": 2,
+	}, 1))
+	assert.NotTrue(isMapHasValue(map[string]int{
+		"a": 1,
+		"b": 2,
+	}, 3))
+	assert.NotTrue(isMapHasValue(map[string]int{
+		"a": 1,
+		"b": 2,
+	}, true))
+}
+
 func TestIsNil(t *testing.T) {
 	assert := New(t)
 

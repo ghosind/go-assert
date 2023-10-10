@@ -155,6 +155,52 @@ func isEqualForMixSignInt(v1, v2 reflect.Value) bool {
 	return intVal.Int() == int64(uintVal.Uint())
 }
 
+// isMapHasValue checks whether the map contains the specified key or not.
+func isMapHasKey(m, k any) bool {
+	if m == nil || reflect.TypeOf(m).Kind() != reflect.Map {
+		return false
+	}
+
+	mv := reflect.ValueOf(m)
+	if mv.Len() == 0 {
+		return false
+	}
+
+	if !reflect.TypeOf(k).AssignableTo(mv.Type().Key()) {
+		return false
+	}
+
+	return mv.MapIndex(reflect.ValueOf(k)).Kind() != reflect.Invalid
+}
+
+// isMapHasValue checks whether the map contains the specified value or not.
+func isMapHasValue(m, v any) bool {
+	if m == nil || reflect.TypeOf(m).Kind() != reflect.Map {
+		return false
+	}
+
+	mv := reflect.ValueOf(m)
+	if mv.Len() == 0 {
+		return false
+	}
+
+	if !reflect.TypeOf(v).AssignableTo(mv.Type().Elem()) {
+		return false
+	}
+
+	vv := reflect.ValueOf(v)
+	iter := mv.MapRange()
+
+	for iter.Next() {
+		mvv := iter.Value()
+		if isEqual(mvv, vv) {
+			return true
+		}
+	}
+
+	return false
+}
+
 // isNil checks whether a value is nil or not. It'll always return false if the value is not a
 // channel, a function, a map, a point, an unsafe point, an interface, or a slice.
 func isNil(val any) bool {

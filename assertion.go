@@ -5,6 +5,9 @@ import (
 )
 
 // Assertion is the extension of the Go builtin `testing.T`.
+//
+// Please do not create an Assertion instance without the New function, every assertion function
+// will panic if no inner testing.T set.
 type Assertion struct {
 	*testing.T
 }

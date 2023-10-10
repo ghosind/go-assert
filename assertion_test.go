@@ -16,6 +16,14 @@ func TestNewAssertion(t *testing.T) {
 	})
 }
 
+func TestAssertionWithoutNew(t *testing.T) {
+	Panic(t, func() {
+		a := new(Assertion)
+
+		a.True(true)
+	})
+}
+
 func TestRun(t *testing.T) {
 	a := New(t)
 	isSubTestRun := false

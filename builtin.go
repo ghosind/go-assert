@@ -324,6 +324,112 @@ func NotHasSuffixStringNow(t *testing.T, str, suffix string, message ...any) err
 	return tryNotHasSuffixString(t, true, str, suffix, message...)
 }
 
+// MapHasKey tests whether the map contains the specified key or not, it will fail if the map does
+// not contain the key, or the type of the key cannot assign to the type of the key of the map.
+//
+//	assertion.MapHasKey(map[string]int{"a":1}, "a") // success
+//	assertion.MapHasKey(map[string]int{"a":1}, "b") // fail
+//	assertion.MapHasKey(map[string]int{"a":1}, 1) // fail
+func MapHasKey(t *testing.T, m, key any, message ...any) error {
+	t.Helper()
+
+	return tryMapHasKey(t, false, m, key, message...)
+}
+
+// MapHasKeyNow tests whether the map contains the specified key or not, and it will terminate the
+// execution if the test fails. It will fail if the map does not contain the key, or the type of
+// the key cannot assign to the type of the key of the map.
+//
+//	assertion.MapHasKeyNow(map[string]int{"a":1}, "a") // success
+//	assertion.MapHasKeyNow(map[string]int{"a":1}, "b") // fail and terminate
+//	// never run
+func MapHasKeyNow(t *testing.T, m, key any, message ...any) error {
+	t.Helper()
+
+	return tryMapHasKey(t, true, m, key, message...)
+}
+
+// NotMapHasKey tests whether the map contains the specified key or not, it will fail if the map
+// contain the key. It will also set the test result to success if the type of the key cannot
+// assign to the type of the key of the map.
+//
+//	assertion.NotMapHasKey(map[string]int{"a":1}, "b") // success
+//	assertion.NotMapHasKey(map[string]int{"a":1}, 1) // success
+//	assertion.NotMapHasKey(map[string]int{"a":1}, "a") // fail
+func NotMapHasKey(t *testing.T, m, key any, message ...any) error {
+	t.Helper()
+
+	return tryNotMapHasKey(t, false, m, key, message...)
+}
+
+// NotMapHasKeyNow tests whether the map contains the specified key or not, it will fail if the map
+// contain the key, and it will terminate the execution if the test fails. It will also set the
+// test result to success if the type of the key cannot assign to the type of the key of the map.
+//
+//	assertion.NotMapHasKeyNow(map[string]int{"a":1}, "b") // success
+//	assertion.NotMapHasKeyNow(map[string]int{"a":1}, 1) // success
+//	assertion.NotMapHasKeyNow(map[string]int{"a":1}, "a") // fail and terminate
+//	// never run
+func NotMapHasKeyNow(t *testing.T, m, key any, message ...any) error {
+	t.Helper()
+
+	return tryNotMapHasKey(t, true, m, key, message...)
+}
+
+// MapHasValue tests whether the map contains the specified value or not, it will fail if the map
+// does not contain the value, or the type of the value cannot assign to the type of the values of
+// the map.
+//
+//	assertion.MapHasValue(map[string]int{"a":1}, 1) // success
+//	assertion.MapHasValue(map[string]int{"a":1}, 2) // fail
+//	assertion.MapHasValue(map[string]int{"a":1}, "a") // fail
+func MapHasValue(t *testing.T, m, value any, message ...any) error {
+	t.Helper()
+
+	return tryMapHasValue(t, false, m, value, message...)
+}
+
+// MapHasValueNow tests whether the map contains the specified value or not, and it will terminate
+// the execution if the test fails. It will fail if the map does not contain the value, or the type
+// of the value cannot assign to the type of the value of the map.
+//
+//	assertion.MapHasValueNow(map[string]int{"a":1}, 1) // success
+//	assertion.MapHasValueNow(map[string]int{"a":1}, 2) // fail and terminate
+//	// never run
+func MapHasValueNow(t *testing.T, m, value any, message ...any) error {
+	t.Helper()
+
+	return tryMapHasValue(t, true, m, value, message...)
+}
+
+// NotMapHasValue tests whether the map contains the specified value or not, it will fail if the
+// map contain the value. It will also set the test result to success if the type of the value
+// cannot assign to the type of the value of the map.
+//
+//	assertion.NotMapHasValue(map[string]int{"a":1}, 2) // success
+//	assertion.NotMapHasValue(map[string]int{"a":1}, "a") // success
+//	assertion.NotMapHasValue(map[string]int{"a":1}, 1) // fail
+func NotMapHasValue(t *testing.T, m, value any, message ...any) error {
+	t.Helper()
+
+	return tryNotMapHasValue(t, false, m, value, message...)
+}
+
+// NotMapHasValueNow tests whether the map contains the specified value or not, it will fail if the
+// map contain the value, and it will terminate the execution if the test fails. It will also set
+// the test result to success if the type of the value cannot assign to the type of the value of
+// the map.
+//
+//	assertion.NotMapHasValueNow(map[string]int{"a":1}, 2) // success
+//	assertion.NotMapHasValueNow(map[string]int{"a":1}, "a") // success
+//	assertion.NotMapHasValueNow(map[string]int{"a":1}, 1) // fail and terminate
+//	// never run
+func NotMapHasValueNow(t *testing.T, m, value any, message ...any) error {
+	t.Helper()
+
+	return tryNotMapHasValue(t, true, m, value, message...)
+}
+
 // Match tests whether the string matches the regular expression or not.
 //
 //	pattern := regexp.MustCompile(`^https?:\/\/`)

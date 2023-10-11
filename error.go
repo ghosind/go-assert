@@ -21,6 +21,10 @@ const (
 	defaultErrMessageNotPanic           string = "got unwanted error: %v"
 	defaultErrMessageTrue               string = "the expression evaluated to a falsy value"
 	defaultErrMessageNotTrue            string = "the expression evaluated to a truthy value"
+	defaultErrMessageMapHasKey          string = "expect map has key %v"
+	defaultErrMessageNotMapHasKey       string = "expect map has no key %v"
+	defaultErrMessageMapHasValue        string = "expect map has value %v"
+	defaultErrMessageNotMapHasValue     string = "expect map has no value %v"
 )
 
 // AssertionError indicates the failure of an assertion.

@@ -129,7 +129,7 @@ func TestIsComparable(t *testing.T) {
 	assert.Equal(isComparable([]int{1, 2, 3}), false)
 }
 
-func TestIsMapHasKKey(t *testing.T) {
+func TestIsMapHasKey(t *testing.T) {
 	assert := New(t)
 
 	assert.NotTrue(isMapHasKey(nil, nil))

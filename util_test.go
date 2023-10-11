@@ -157,6 +157,14 @@ func TestIsMapHasKey(t *testing.T) {
 	assert.NotTrue(isMapHasKey(map[any]int{
 		"a": 1,
 		1:   2,
+	}, 2))
+	assert.NotTrue(isMapHasKey(map[any]int{
+		"a": 1,
+		1:   2,
+	}, "b"))
+	assert.NotTrue(isMapHasKey(map[any]int{
+		"a": 1,
+		1:   2,
 	}, 1.1))
 }
 
@@ -177,6 +185,26 @@ func TestIsMapHasValue(t *testing.T) {
 		"a": 1,
 		"b": 2,
 	}, true))
+	assert.True(isMapHasValue(map[any]any{
+		"a": "b",
+		1:   2,
+	}, "b"))
+	assert.True(isMapHasValue(map[any]any{
+		"a": "b",
+		1:   2,
+	}, 2))
+	assert.NotTrue(isMapHasValue(map[any]any{
+		"a": "b",
+		1:   2,
+	}, "a"))
+	assert.NotTrue(isMapHasValue(map[any]any{
+		"a": "b",
+		1:   2,
+	}, 1))
+	assert.NotTrue(isMapHasValue(map[any]any{
+		"a": "b",
+		1:   2,
+	}, 1.1))
 }
 
 func TestIsNil(t *testing.T) {

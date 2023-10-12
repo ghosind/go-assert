@@ -132,7 +132,7 @@ func isEqual(x, y any) bool {
 	case reflect.Slice:
 		return isSliceEqual(v1, v2)
 	default:
-		return x == y
+		return v1.Interface() == v2.Interface()
 	}
 }
 
@@ -193,7 +193,7 @@ func isMapHasValue(m, v any) bool {
 
 	for iter.Next() {
 		mvv := iter.Value()
-		if isEqual(mvv, vv) {
+		if isEqual(mvv, vv.Convert(mvv.Type())) {
 			return true
 		}
 	}

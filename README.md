@@ -199,6 +199,16 @@ func TestExample(t *testing.T) {
 
   > Since v0.2.0
 
+### Map
+
+- [`MapHasKey`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.MapHasKey) and [`NotMapHasKey`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotMapHasKey): assert whether the map contains the specified key or not.
+
+  > Since v0.2.1
+
+- [`MapHasValue`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.MapHasValue) and [`NotMapHasValue`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotMapHasValue): assert whether the map contains the specified value or not.
+
+  > Since v0.2.1
+
 ### Error Handling
 
 - [`Panic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Panic) and [`NotPanic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotPanic): assert the function will panic or not.

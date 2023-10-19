@@ -15,6 +15,7 @@ A collection of Golang assertion functions for verifying invariants.
   - [Value](#value)
   - [String](#string)
   - [Slice or Array](#slice-or-array)
+  - [Map](#map)
   - [Error Handling](#error-handling)
 - [Custom Error Message](#custom-error-message)
 - [License](#license)

@@ -1,6 +1,7 @@
 # Assertion for Golang
 
 ![test](https://github.com/ghosind/go-assert/workflows/test/badge.svg)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ghosind/go-assert)](https://goreportcard.com/report/github.com/ghosind/go-assert)
 [![codecov](https://codecov.io/gh/ghosind/go-assert/branch/main/graph/badge.svg)](https://codecov.io/gh/ghosind/go-assert)
 ![Version Badge](https://img.shields.io/github/v/release/ghosind/go-assert)
 ![License Badge](https://img.shields.io/github/license/ghosind/go-assert)

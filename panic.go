@@ -101,3 +101,17 @@ func tryNotPanic(t *testing.T, failedNow bool, fn func(), message ...any) error 
 	failed(t, err, failedNow)
 	return err
 }
+
+// isPanic executes the function, and tries to catching and returns the return value from
+// recover().
+func isPanic(fn func()) (err any) {
+	defer func() {
+		if e := recover(); e != nil {
+			err = e
+		}
+	}()
+
+	fn()
+
+	return
+}

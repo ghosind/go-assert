@@ -49,3 +49,12 @@ func testPanicAndNotPanic(a, mockA *Assertion, fn func(), isPanic bool) {
 		mockA.NotPanicNow(fn)
 	}, isPanic)
 }
+
+func TestIsPanic(t *testing.T) {
+	Nil(t, isPanic(func() {
+		// no panic
+	}))
+	NotNil(t, isPanic(func() {
+		panic("unexpected panic")
+	}))
+}

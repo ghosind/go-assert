@@ -105,3 +105,81 @@ func tesMapHasValueAndNotMapHasValue(
 		mockA.NotMapHasValueNow(m, key)
 	}, isHasValue)
 }
+
+func TestIsMapHasKey(t *testing.T) {
+	assert := New(t)
+
+	assert.NotTrue(isMapHasKey(nil, nil))
+	assert.NotTrue(isMapHasKey(map[string]int{}, "a"))
+	assert.True(isMapHasKey(map[string]int{
+		"a": 1,
+		"b": 2,
+	}, "a"))
+	assert.NotTrue(isMapHasKey(map[string]int{
+		"a": 1,
+		"b": 2,
+	}, "c"))
+	assert.NotTrue(isMapHasKey(map[string]int{
+		"a": 1,
+		"b": 2,
+	}, 1))
+	assert.True(isMapHasKey(map[any]int{
+		"a": 1,
+		1:   2,
+	}, 1))
+	assert.True(isMapHasKey(map[any]int{
+		"a": 1,
+		1:   2,
+	}, "a"))
+	assert.NotTrue(isMapHasKey(map[any]int{
+		"a": 1,
+		1:   2,
+	}, 2))
+	assert.NotTrue(isMapHasKey(map[any]int{
+		"a": 1,
+		1:   2,
+	}, "b"))
+	assert.NotTrue(isMapHasKey(map[any]int{
+		"a": 1,
+		1:   2,
+	}, 1.1))
+}
+
+func TestIsMapHasValue(t *testing.T) {
+	assert := New(t)
+
+	assert.NotTrue(isMapHasValue(nil, nil))
+	assert.NotTrue(isMapHasValue(map[string]int{}, 3))
+	assert.True(isMapHasValue(map[string]int{
+		"a": 1,
+		"b": 2,
+	}, 1))
+	assert.NotTrue(isMapHasValue(map[string]int{
+		"a": 1,
+		"b": 2,
+	}, 3))
+	assert.NotTrue(isMapHasValue(map[string]int{
+		"a": 1,
+		"b": 2,
+	}, true))
+	assert.True(isMapHasValue(map[any]any{
+		"a": "b",
+		1:   2,
+	}, "b"))
+	assert.True(isMapHasValue(map[any]any{
+		"a": "b",
+		1:   2,
+	}, 2))
+	assert.NotTrue(isMapHasValue(map[any]any{
+		"a": "b",
+		1:   2,
+	}, "a"))
+	assert.NotTrue(isMapHasValue(map[any]any{
+		"a": "b",
+		1:   2,
+	}, 1))
+	assert.NotTrue(isMapHasValue(map[any]any{
+		"a": "b",
+		1:   2,
+	}, 1.1))
+}

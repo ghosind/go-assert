@@ -2,6 +2,7 @@ package assert
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 )
 
@@ -185,4 +186,50 @@ func tryNotMapHasValue(
 		fmt.Sprintf(defaultErrMessageNotMapHasValue, value),
 		message...,
 	)
+}
+
+// isMapHasValue checks whether the map contains the specified key or not.
+func isMapHasKey(m, k any) bool {
+	if m == nil || reflect.TypeOf(m).Kind() != reflect.Map {
+		return false
+	}
+
+	mv := reflect.ValueOf(m)
+	if mv.Len() == 0 {
+		return false
+	}
+
+	if !reflect.TypeOf(k).AssignableTo(mv.Type().Key()) {
+		return false
+	}
+
+	return mv.MapIndex(reflect.ValueOf(k)).Kind() != reflect.Invalid
+}
+
+// isMapHasValue checks whether the map contains the specified value or not.
+func isMapHasValue(m, v any) bool {
+	if m == nil || reflect.TypeOf(m).Kind() != reflect.Map {
+		return false
+	}
+
+	mv := reflect.ValueOf(m)
+	if mv.Len() == 0 {
+		return false
+	}
+
+	if !reflect.TypeOf(v).AssignableTo(mv.Type().Elem()) {
+		return false
+	}
+
+	vv := reflect.ValueOf(v)
+	iter := mv.MapRange()
+
+	for iter.Next() {
+		mvv := iter.Value()
+		if isEqual(mvv, vv.Convert(mvv.Type())) {
+			return true
+		}
+	}
+
+	return false
 }

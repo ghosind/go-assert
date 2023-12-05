@@ -2,6 +2,7 @@ package assert
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 )
 
@@ -95,4 +96,49 @@ func tryNotContainsElement(
 		fmt.Sprintf(defaultErrMessageNotContainsElement, elem),
 		message...,
 	)
+}
+
+// isContainsElement checks whether the array or slice contains the specific element or not. It'll
+// panic if the source is not an array or a slice, and it'll also panic if the element's type is
+// not the same as the source's element.
+func isContainsElement(source, elem any) bool {
+	st := reflect.ValueOf(source)
+	if st.Kind() == reflect.Ptr {
+		st = st.Elem()
+	}
+	if st.Kind() != reflect.Array && st.Kind() != reflect.Slice {
+		panic("require array or slice")
+	}
+	if ok, isMixed := isSameType(st.Type().Elem(), reflect.TypeOf(elem)); !ok && !isMixed {
+		panic("require same type")
+	}
+
+	if st.Len() == 0 {
+		return false
+	}
+
+	ev := reflect.ValueOf(elem)
+
+	for i := 0; i < st.Len(); i++ {
+		ok := isEqual(st.Index(i), ev)
+		if ok {
+			return true
+		}
+	}
+	return false
+}
+
+// isSliceEqual checks the equality of each elements in the slices.
+func isSliceEqual(v1, v2 reflect.Value) bool {
+	if v1.Len() != v2.Len() {
+		return false
+	}
+
+	for i := 0; i < v1.Len(); i++ {
+		if v1.Index(i).Interface() != v2.Index(i).Interface() {
+			return false
+		}
+	}
+
+	return true
 }

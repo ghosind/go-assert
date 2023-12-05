@@ -2,6 +2,7 @@ package assert
 
 import (
 	"fmt"
+	"math"
 	"reflect"
 	"testing"
 )
@@ -355,4 +356,115 @@ func tryNotTrue(t *testing.T, failedNow bool, val any, message ...any) error {
 		defaultErrMessageNotTrue,
 		message...,
 	)
+}
+
+// isEqual checks the equality of the values.
+func isEqual(x, y any) bool {
+	if x == nil || y == nil {
+		return x == y
+	}
+
+	var v1, v2 reflect.Value
+	if xv, ok := x.(reflect.Value); ok {
+		v1 = xv
+	} else {
+		v1 = reflect.ValueOf(x)
+	}
+	if yv, ok := y.(reflect.Value); ok {
+		v2 = yv
+	} else {
+		v2 = reflect.ValueOf(y)
+	}
+
+	if isSame, isMixSign := isSameType(v1.Type(), v2.Type()); !isSame {
+		if isMixSign {
+			return isEqualForMixSignInt(v1, v2)
+		}
+		return false
+	}
+
+	switch v1.Kind() {
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		return v1.Int() == v2.Int()
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,
+		reflect.Uintptr:
+		return v1.Uint() == v2.Uint()
+	case reflect.Float32, reflect.Float64:
+		return v1.Float() == v2.Float()
+	case reflect.Complex64, reflect.Complex128:
+		return v1.Complex() == v2.Complex()
+	case reflect.String:
+		return v1.String() == v2.String()
+	case reflect.Slice:
+		return isSliceEqual(v1, v2)
+	default:
+		return v1.Interface() == v2.Interface()
+	}
+}
+
+// isEqualForMixSignInt checks the equality of two integers one of an integer is signed, but
+// another one is unsigned.
+func isEqualForMixSignInt(v1, v2 reflect.Value) bool {
+	intVal := v1
+	uintVal := v2
+	if v1.Kind() >= reflect.Uint && v1.Kind() <= reflect.Uintptr {
+		intVal = v2
+		uintVal = v1
+	}
+
+	if intVal.Int() < 0 {
+		return false
+	} else if uintVal.Uint() > uint64(math.MaxInt64) {
+		return false
+	}
+
+	return intVal.Int() == int64(uintVal.Uint())
+}
+
+// isNil checks whether a value is nil or not. It'll always return false if the value is not a
+// channel, a function, a map, a point, an unsafe point, an interface, or a slice.
+func isNil(val any) bool {
+	if val == nil {
+		return true
+	}
+
+	v := reflect.ValueOf(val)
+
+	switch v.Kind() {
+	case reflect.Chan, reflect.Func, reflect.Map, reflect.Pointer, reflect.UnsafePointer,
+		reflect.Interface, reflect.Slice:
+		return v.IsNil()
+	default:
+		return false
+	}
+}
+
+// isTrue checks whether a value is truthy or not. It'll return true if the value is not the zero
+// value for its type. For a slice, a truthy value should not be the zero value and the length must
+// be greater than 0. For nil, it'll always return false.
+func isTrue(v any) bool {
+	rv := reflect.ValueOf(v)
+
+	switch rv.Kind() {
+	case reflect.Invalid:
+		return false // always false
+	case reflect.Slice:
+		return v != nil && rv.Len() > 0
+	default:
+		return !rv.IsZero()
+	}
+}
+
+// isComparable gets the type of the value, and checks whether the type is comparable or not.
+func isComparable(v any) bool {
+	switch v.(type) {
+	case
+		int, int8, int16, int32, int64, // Signed integer
+		uint, uint8, uint16, uint32, uint64, uintptr, // Unsigned integer
+		float32, float64, // Floating-point number
+		string: // string
+		return true
+	default:
+		return false
+	}
 }

@@ -55,3 +55,27 @@ func testElementContainsAndNotContains(
 		mockA.NotContainsElementNow(source, expect)
 	}, isContains)
 }
+
+func TestIsContainsElement(t *testing.T) {
+	assert := New(t)
+
+	assert.PanicNow(func() {
+		isContainsElement("not array or slice", 1)
+	})
+	assert.PanicNow(func() {
+		isContainsElement([]string{"a", "b", "c"}, 1)
+	})
+
+	assert.NotTrueNow(isContainsElement([]string{}, "c"))
+	assert.TrueNow(isContainsElement([]string{"a", "b", "c"}, "c"))
+	assert.NotTrueNow(isContainsElement([]string{"a", "b", "c"}, "d"))
+	assert.TrueNow(isContainsElement([]int{1, 2, 3}, 3))
+	assert.NotTrueNow(isContainsElement([]int{1, 2, 3}, 4))
+	assert.TrueNow(isContainsElement([]int64{1, 2, 3}, 3))
+	assert.NotTrueNow(isContainsElement([]int64{1, 2, 3}, 4))
+	assert.TrueNow(isContainsElement([]uint64{1, 2, 3}, 3))
+	assert.NotTrueNow(isContainsElement([]uint64{1, 2, 3}, 4))
+	assert.TrueNow(isContainsElement(&[]int{1, 2, 3}, 3))
+	assert.TrueNow(isContainsElement([3]int{1, 2, 3}, 3))
+	assert.NotTrueNow(isContainsElement([3]int{1, 2, 3}, 4))
+}

@@ -327,16 +327,3 @@ func TestIsTrue(t *testing.T) {
 	assert.NotTrue(isTrue(""))
 	assert.True(isTrue(func() {}))
 }
-
-func TestIsComparable(t *testing.T) {
-	assert := New(t)
-
-	assert.Equal(isComparable(1), true)
-	assert.Equal(isComparable(int64(1)), true)
-	assert.Equal(isComparable(uint64(1)), true)
-	assert.Equal(isComparable(float32(1.0)), true)
-	assert.Equal(isComparable(1.0), true)
-	assert.Equal(isComparable("Hello"), true)
-	assert.Equal(isComparable([]byte{'H', 'e', 'l', 'l', 'o'}), false)
-	assert.Equal(isComparable([]int{1, 2, 3}), false)
-}

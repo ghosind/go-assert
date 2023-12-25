@@ -2,7 +2,6 @@ package assert
 
 import (
 	"fmt"
-	"math"
 	"reflect"
 	"testing"
 )
@@ -93,7 +92,7 @@ func tryNotDeepEqual(t *testing.T, failedNow bool, actual, expect any, message .
 //	assertion.Equal(1, 1) // success
 //	assertion.Equal("ABC", "ABC") // success
 //	assertion.Equal(1, int64(1)) // success
-//	assertion.Equal(1, uint64(1)) // success
+//	assertion.Equal(1, uint64(1)) // fail
 //	assertion.Equal(1, 0) // fail
 func (a *Assertion) Equal(actual, expect any, message ...any) error {
 	a.Helper()
@@ -107,7 +106,6 @@ func (a *Assertion) Equal(actual, expect any, message ...any) error {
 //	assertion.EqualNow(1, 1) // success
 //	assertion.EqualNow("ABC", "ABC") // success
 //	assertion.EqualNow(1, int64(1)) // success
-//	assertion.EqualNow(1, uint64(1)) // success
 //	assertion.EqualNow(1, 0) // fail and terminate
 //	never run
 func (a *Assertion) EqualNow(actual, expect any, message ...any) error {
@@ -121,10 +119,10 @@ func (a *Assertion) EqualNow(actual, expect any, message ...any) error {
 //
 //	assertion.NotEqual(1, 0) // success
 //	assertion.NotEqual("ABC", "CBA") // success
+//	assertion.NotEqual(1, uint64(1)) // success
 //	assertion.NotEqual(1, 1) // fail
 //	assertion.NotEqual("ABC", "ABC") // fail
 //	assertion.NotEqual(1, int64(1)) // fail
-//	assertion.NotEqual(1, uint64(1)) // fail
 func (a *Assertion) NotEqual(actual, expect any, message ...any) error {
 	a.Helper()
 
@@ -376,10 +374,7 @@ func isEqual(x, y any) bool {
 		v2 = reflect.ValueOf(y)
 	}
 
-	if isSame, isMixSign := isSameType(v1.Type(), v2.Type()); !isSame {
-		if isMixSign {
-			return isEqualForMixSignInt(v1, v2)
-		}
+	if ok := isSameType(v1.Type(), v2.Type()); !ok {
 		return false
 	}
 
@@ -400,25 +395,6 @@ func isEqual(x, y any) bool {
 	default:
 		return v1.Interface() == v2.Interface()
 	}
-}
-
-// isEqualForMixSignInt checks the equality of two integers one of an integer is signed, but
-// another one is unsigned.
-func isEqualForMixSignInt(v1, v2 reflect.Value) bool {
-	intVal := v1
-	uintVal := v2
-	if v1.Kind() >= reflect.Uint && v1.Kind() <= reflect.Uintptr {
-		intVal = v2
-		uintVal = v1
-	}
-
-	if intVal.Int() < 0 {
-		return false
-	} else if uintVal.Uint() > uint64(math.MaxInt64) {
-		return false
-	}
-
-	return intVal.Int() == int64(uintVal.Uint())
 }
 
 // isNil checks whether a value is nil or not. It'll always return false if the value is not a

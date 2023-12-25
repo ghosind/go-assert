@@ -169,7 +169,7 @@ func NotDeepEqualNow(t *testing.T, actual, expect any, message ...any) error {
 //	Equal(t, 1, 1) // success
 //	Equal(t, "ABC", "ABC") // success
 //	Equal(t, 1, int64(1)) // success
-//	Equal(t, 1, uint64(1)) // success
+//	Equal(t, 1, uint64(1)) // fail
 //	Equal(t, 1, 0) // fail
 func Equal(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
@@ -183,7 +183,6 @@ func Equal(t *testing.T, actual, expect any, message ...any) error {
 //	EqualNow(t, 1, 1) // success
 //	EqualNow(t, "ABC", "ABC") // success
 //	EqualNow(t, 1, int64(1)) // success
-//	EqualNow(t, 1, uint64(1)) // success
 //	EqualNow(t, 1, 0) // fail and terminate
 //	never run
 func EqualNow(t *testing.T, actual, expect any, message ...any) error {
@@ -197,10 +196,10 @@ func EqualNow(t *testing.T, actual, expect any, message ...any) error {
 //
 //	NotEqual(t, 1, 0) // success
 //	NotEqual(t, "ABC", "CBA") // success
+//	NotEqual(t, 1, uint64(1)) // success
 //	NotEqual(t, 1, 1) // fail
 //	NotEqual(t, "ABC", "ABC") // fail
 //	NotEqual(t, 1, int64(1)) // fail
-//	NotEqual(t, 1, uint64(1)) // fail
 func NotEqual(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
 

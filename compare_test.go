@@ -1,7 +1,6 @@
 package assert
 
 import (
-	"math"
 	"testing"
 )
 
@@ -74,7 +73,7 @@ func TestEqualAndNotEqual(t *testing.T) {
 	testEqualAndNotEqual(a, mockA, 1, 1, true)
 	testEqualAndNotEqual(a, mockA, 1, 2, false)
 	testEqualAndNotEqual(a, mockA, 1, int64(1), true)
-	testEqualAndNotEqual(a, mockA, 1, uint64(1), true)
+	testEqualAndNotEqual(a, mockA, 1, uint64(1), false)
 	testEqualAndNotEqual(a, mockA, 1, 1.0, false)
 	testEqualAndNotEqual(a, mockA, 1, "1", false)
 	testEqualAndNotEqual(a, mockA, 1, '1', false)
@@ -283,18 +282,6 @@ func TestIsEqual(t *testing.T) {
 	assert.Equal(isEqual(s1, s1), true)
 	assert.Equal(isEqual(&testStruct1{A: 0}, &testStruct1{A: 1}), false)
 	assert.Equal(isEqual(testStruct1{A: 0}, testStruct2{A: 0}), false)
-}
-
-func TestIsEqualOfMixSignInt(t *testing.T) {
-	assert := New(t)
-
-	assert.True(isEqual(0, uint(0)))
-	assert.True(isEqual(1, uint(1)))
-	assert.True(isEqual(uint(1), 1))
-	assert.True(isEqual(math.MaxInt64, uint64(math.MaxInt64)))
-	assert.NotTrue(isEqual(-1, uint64(math.MaxUint64)))
-	assert.NotTrue(isEqual(uint64(math.MaxUint64), -1))
-	assert.NotTrue(isEqual(uint64(math.MaxUint64), 0))
 }
 
 func TestIsNil(t *testing.T) {

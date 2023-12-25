@@ -52,22 +52,20 @@ func failed(t *testing.T, err error, failedNow bool) {
 //
 // It will returns a bool value to tell the callee function that one of the values is an integer,
 // but another one is unsigned. For this case, it needs to check the value to compare them.
-func isSameType(t1, t2 reflect.Type) (isSame bool, isMixSign bool) {
+func isSameType(t1, t2 reflect.Type) bool {
 	kind := t2.Kind()
 
 	switch t1.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		return kind >= reflect.Int && kind <= reflect.Int64,
-			kind >= reflect.Uint && kind <= reflect.Uintptr
+		return kind >= reflect.Int && kind <= reflect.Int64
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,
 		reflect.Uintptr:
-		return kind >= reflect.Uint && kind <= reflect.Uintptr,
-			kind >= reflect.Int && kind <= reflect.Int64
+		return kind >= reflect.Uint && kind <= reflect.Uintptr
 	case reflect.Float32, reflect.Float64:
-		return kind == reflect.Float32 || kind == reflect.Float64, false
+		return kind == reflect.Float32 || kind == reflect.Float64
 	case reflect.Complex64, reflect.Complex128:
-		return kind == reflect.Complex64 || kind == reflect.Complex128, false
+		return kind == reflect.Complex64 || kind == reflect.Complex128
 	default:
-		return t1 == t2, false
+		return t1 == t2
 	}
 }

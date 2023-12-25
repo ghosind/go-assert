@@ -109,7 +109,7 @@ func isContainsElement(source, elem any) bool {
 	if st.Kind() != reflect.Array && st.Kind() != reflect.Slice {
 		panic("require array or slice")
 	}
-	if ok, isMixed := isSameType(st.Type().Elem(), reflect.TypeOf(elem)); !ok && !isMixed {
+	if ok := isSameType(st.Type().Elem(), reflect.TypeOf(elem)); !ok {
 		panic("require same type")
 	}
 

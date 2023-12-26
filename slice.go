@@ -107,10 +107,10 @@ func isContainsElement(source, elem any) bool {
 		st = st.Elem()
 	}
 	if st.Kind() != reflect.Array && st.Kind() != reflect.Slice {
-		panic("require array or slice")
+		panic(ErrNotArray)
 	}
 	if ok := isSameType(st.Type().Elem(), reflect.TypeOf(elem)); !ok {
-		panic("require same type")
+		panic(ErrNotSameType)
 	}
 
 	if st.Len() == 0 {

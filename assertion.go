@@ -21,7 +21,7 @@ func New(t *testing.T) *Assertion {
 	a := new(Assertion)
 
 	if t == nil {
-		panic("parameter t is required")
+		panic(ErrRequireT)
 	}
 	a.T = t
 

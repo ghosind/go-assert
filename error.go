@@ -1,6 +1,9 @@
 package assert
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 const (
 	defaultErrMessageEqual              string = "%v == %v"
@@ -25,6 +28,19 @@ const (
 	defaultErrMessageNotMapHasKey       string = "expect map has no key %v"
 	defaultErrMessageMapHasValue        string = "expect map has value %v"
 	defaultErrMessageNotMapHasValue     string = "expect map has no value %v"
+)
+
+var (
+	// ErrNotArray indicates that the value must be a slice or an array.
+	ErrNotArray error = errors.New("the value must be a slice or an array")
+	// ErrNotMap indicates that the value must be a map.
+	ErrNotMap error = errors.New("the value must be a map")
+	// ErrNotOrderable indicates that the value must be orderable.
+	ErrNotOrderable error = errors.New("the value must be orderable")
+	// ErrNotSameType indicates that both values must be the same type.
+	ErrNotSameType error = errors.New("the values must be the same type")
+	// ErrRequireT indicates that the instance of testing.T is a required parameter.
+	ErrRequireT error = errors.New("testing.T is required")
 )
 
 // AssertionError indicates the failure of an assertion.

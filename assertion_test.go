@@ -48,6 +48,8 @@ func testAssertionFunction(a *Assertion, name string, fn func() error, expectSuc
 }
 
 func testAssertionNowFunction(a *Assertion, name string, fn func(), expectExit bool) {
+	a.T.Helper()
+
 	isTerminated := internal.CheckTermination(fn)
 	if expectExit {
 		a.TrueNow(isTerminated, "%s() execution stopped, want do not stop", name)

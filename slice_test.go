@@ -23,6 +23,8 @@ func testElementContainsAndNotContains(
 	source, expect any,
 	isContains bool,
 ) {
+	a.T.Helper()
+
 	// ContainsElement
 	testAssertionFunction(a, "ContainsElement", func() error {
 		return ContainsElement(mockA.T, source, expect)

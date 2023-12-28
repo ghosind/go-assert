@@ -33,6 +33,8 @@ func TestDeepEqualAndNotDeepEqual(t *testing.T) {
 }
 
 func testDeepEqualAndNotDeepEqual(a, mockA *Assertion, v1, v2 any, isEqual bool) {
+	a.T.Helper()
+
 	// DeepEqual
 	testAssertionFunction(a, "DeepEqual", func() error {
 		return DeepEqual(mockA.T, v1, v2)
@@ -98,6 +100,8 @@ func TestEqualAndNotEqual(t *testing.T) {
 }
 
 func testEqualAndNotEqual(a, mockA *Assertion, v1, v2 any, isEqual bool) {
+	a.T.Helper()
+
 	// Equal
 	testAssertionFunction(a, "Equal", func() error {
 		return Equal(mockA.T, v1, v2)
@@ -144,6 +148,8 @@ func TestNilAndNotNil(t *testing.T) {
 }
 
 func testNilAndNotNil(a, mockA *Assertion, v any, isNil bool) {
+	a.T.Helper()
+
 	// Nil
 	testAssertionFunction(a, "Nil", func() error {
 		return Nil(mockA.T, v)
@@ -194,6 +200,8 @@ func TestTrueAndNotTrue(t *testing.T) {
 }
 
 func testTrueAndNotTrue(a, mockA *Assertion, v any, isTruthy bool) {
+	a.T.Helper()
+
 	// True
 	testAssertionFunction(a, "True", func() error {
 		return True(mockA.T, v)

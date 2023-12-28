@@ -17,6 +17,8 @@ func TestPanicAndNotPanic(t *testing.T) {
 }
 
 func testPanicAndNotPanic(a, mockA *Assertion, fn func(), isPanic bool) {
+	a.T.Helper()
+
 	// Panic
 	testAssertionFunction(a, "Panic", func() error {
 		return Panic(mockA.T, fn)

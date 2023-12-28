@@ -22,6 +22,8 @@ func tesMapHasKeyAndNotMapHasKey(
 	m, key any,
 	isHasKey bool,
 ) {
+	a.T.Helper()
+
 	// MapHasKey
 	testAssertionFunction(a, "MapHasKey", func() error {
 		return MapHasKey(mockA.T, m, key)
@@ -73,6 +75,8 @@ func tesMapHasValueAndNotMapHasValue(
 	m, key any,
 	isHasValue bool,
 ) {
+	a.T.Helper()
+
 	// MapHasValue
 	testAssertionFunction(a, "MapHasValue", func() error {
 		return MapHasValue(mockA.T, m, key)

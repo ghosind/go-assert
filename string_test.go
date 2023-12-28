@@ -24,6 +24,8 @@ func testStringContainsAndNotContains(
 	str, substr string,
 	isContains bool,
 ) {
+	a.T.Helper()
+
 	// ContainsString
 	testAssertionFunction(a, "ContainsString", func() error {
 		return ContainsString(mockA.T, str, substr)
@@ -75,6 +77,8 @@ func testStringHasPrefixAndNotHasPrefix(
 	str, prefix string,
 	isHasPrefix bool,
 ) {
+	a.T.Helper()
+
 	// HasPrefixString
 	testAssertionFunction(a, "HasPrefixString", func() error {
 		return HasPrefixString(mockA.T, str, prefix)
@@ -126,6 +130,8 @@ func testStringHasSuffixAndNotHasSuffix(
 	str, suffix string,
 	isHasSuffix bool,
 ) {
+	a.T.Helper()
+
 	// HasSuffixString
 	testAssertionFunction(a, "HasSuffixString", func() error {
 		return HasSuffixString(mockA.T, str, suffix)
@@ -170,6 +176,8 @@ func TestMatchAndNotMatch(t *testing.T) {
 }
 
 func testMatchAndNotMatch(a, mockA *Assertion, val string, pattern string, isMatch bool) {
+	a.T.Helper()
+
 	regPattern := regexp.MustCompile(pattern)
 
 	// MatchString

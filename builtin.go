@@ -1,6 +1,7 @@
 package assert
 
 import (
+	"fmt"
 	"regexp"
 	"testing"
 )
@@ -84,6 +85,176 @@ func ContainsStringNow(t *testing.T, str, substr string, message ...any) error {
 	t.Helper()
 
 	return tryContainsString(t, true, str, substr, message...)
+}
+
+// Gt compares the values and sets the result to false if the first value is not greater than to
+// the second value.
+//
+//	Gt(t, 2, 1) // success
+//	Gt(t, 3.14, 1.68) // success
+//	Gt(t, "BCD", "ABC") // success
+//	Gt(t, 2, 2) // fail
+//	Gt(t, 1, 2) // fail
+func Gt(t *testing.T, v1, v2 any, message ...string) error {
+	t.Helper()
+
+	return tryCompareOrderableValues(
+		t,
+		false,
+		compareTypeGreater,
+		v1, v2,
+		fmt.Sprintf(defaultErrMessageGt, v1, v2),
+		message...,
+	)
+}
+
+// GtNow compares the values and sets the result to false if the first value is not greater than to
+// the second value. It will panic if they do not match the expected result.
+//
+//	GtNow(t, 2, 1) // success
+//	GtNow(t, 3.14, 1.68) // success
+//	GtNow(t, "BCD", "ABC") // success
+//	GtNow(t, 1, 2) // fail and terminate
+//	// never runs
+func GtNow(t *testing.T, v1, v2 any, message ...string) error {
+	t.Helper()
+
+	return tryCompareOrderableValues(
+		t,
+		true,
+		compareTypeGreater,
+		v1, v2,
+		fmt.Sprintf(defaultErrMessageGt, v1, v2),
+		message...,
+	)
+}
+
+// Gte compares the values and sets the result to false if the first value is not greater than or
+// equal to the second value.
+//
+//	Gte(t, 2, 1) // success
+//	Gte(t, 3.14, 1.68) // success
+//	Gte(t, "BCD", "ABC") // success
+//	Gte(t, 2, 2) // success
+//	Gte(t, 1, 2) // fail
+func Gte(t *testing.T, v1, v2 any, message ...string) error {
+	t.Helper()
+
+	return tryCompareOrderableValues(
+		t,
+		false,
+		compareTypeEqual|compareTypeGreater,
+		v1, v2,
+		fmt.Sprintf(defaultErrMessageGte, v1, v2),
+		message...,
+	)
+}
+
+// GteNow compares the values and sets the result to false if the first value is not greater than
+// or equal to the second value. It will panic if they do not match the expected result.
+//
+//	GteNow(t, 2, 1) // success
+//	GteNow(t, 3.14, 1.68) // success
+//	GteNow(t, "BCD", "ABC") // success
+//	GteNow(t, 2, 2) // success
+//	GteNow(t, 1, 2) // fail and terminate
+//	// never runs
+func GteNow(t *testing.T, v1, v2 any, message ...string) error {
+	t.Helper()
+
+	return tryCompareOrderableValues(
+		t,
+		true,
+		compareTypeEqual|compareTypeGreater,
+		v1, v2,
+		fmt.Sprintf(defaultErrMessageGte, v1, v2),
+		message...,
+	)
+}
+
+// Lt compares the values and sets the result to false if the first value is not less than the
+// second value.
+//
+//	Lt(t, 1, 2) // success
+//	Lt(t, 1.68, 3.14) // success
+//	Lt(t, "ABC", "BCD") // success
+//	Lt(t, 2, 2) // fail
+//	Lt(t, 2, 1) // fail
+func Lt(t *testing.T, v1, v2 any, message ...string) error {
+	t.Helper()
+
+	return tryCompareOrderableValues(
+		t,
+		false,
+		compareTypeLess,
+		v1, v2,
+		fmt.Sprintf(defaultErrMessageLt, v1, v2),
+		message...,
+	)
+}
+
+// LtNow compares the values and sets the result to false if the first value is not less than the
+// second value. It will panic if they do not match the expected result.
+//
+//	LtNow(t, 1, 2) // success
+//	LtNow(t, 1.68, 3.14) // success
+//	LtNow(t, "ABC", "BCD") // success
+//	LtNow(t, 2, 1) // fail and terminate
+//	// never runs
+func LtNow(t *testing.T, v1, v2 any, message ...string) error {
+	t.Helper()
+
+	return tryCompareOrderableValues(
+		t,
+		true,
+		compareTypeLess,
+		v1, v2,
+		fmt.Sprintf(defaultErrMessageLt, v1, v2),
+		message...,
+	)
+}
+
+// Lte compares the values and sets the result to false if the first value is not less than or
+// equal to the second value.
+//
+//	Lte(t, 1, 2) // success
+//	Lte(t, 1.68, 3.14) // success
+//	Lte(t, "ABC", "BCD") // success
+//	Lte(t, 2, 2) // success
+//	Lte(t, 2, 1) // fail
+func Lte(t *testing.T, v1, v2 any, message ...string) error {
+	t.Helper()
+
+	return tryCompareOrderableValues(
+		t,
+		false,
+		compareTypeEqual|compareTypeLess,
+		v1, v2,
+		fmt.Sprintf(defaultErrMessageLte, v1, v2),
+		message...,
+	)
+}
+
+// LteNow compares the values and sets the result to false if the first value is not less than or
+// equal to the second value. It will panic if they do not match the expected result.
+//
+//	LteNow(t, 1, 2) // success
+//	LteNow(t, 1.68, 3.14) // success
+//	LteNow(t, "ABC", "BCD") // success
+//	LteNow(t, 2, 2) // success
+//	LteNow(t, 2, 1) // fail and terminate
+//	// never runs
+func LteNow(t *testing.T, v1, v2 any, message ...string) error {
+	t.Helper()
+
+	return tryCompareOrderableValues(
+		t,
+		true,
+		compareTypeEqual|compareTypeLess,
+		v1, v2,
+		fmt.Sprintf(defaultErrMessageLte, v1, v2),
+		message...,
+	)
 }
 
 // NotContainsString tests whether the string contains the substring or not, and it set the result

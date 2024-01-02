@@ -28,6 +28,10 @@ const (
 	defaultErrMessageNotMapHasKey       string = "expect map has no key %v"
 	defaultErrMessageMapHasValue        string = "expect map has value %v"
 	defaultErrMessageNotMapHasValue     string = "expect map has no value %v"
+	defaultErrMessageGt                 string = "%v must greater than %v"
+	defaultErrMessageGte                string = "%v must greater than or equal to %v"
+	defaultErrMessageLt                 string = "%v must less then %v"
+	defaultErrMessageLte                string = "%v must less then or equal to %v"
 )
 
 var (

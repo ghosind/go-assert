@@ -13,6 +13,7 @@ A collection of Golang assertion functions for verifying invariants.
 - [Getting Started](#getting-started)
 - [Available Assertions](#available-assertions)
   - [Equality](#equality)
+  - [Comparison](#comparison)
   - [Value](#value)
   - [String](#string)
   - [Slice or Array](#slice-or-array)
@@ -162,6 +163,24 @@ func TestExample(t *testing.T) {
 - [`Equal`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Equal) and [`NotEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotEqual): assert the equality or inequality.
 
   > Since v0.1.5
+
+### Comparison
+
+- [`Gt`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Gt): assert the first value is greater than the second value.
+
+  > Since v1.0.0
+
+- [`Gte`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Gte): assert the first value is greater than or equal to the second value.
+
+  > Since v1.0.0
+
+- [`Lt`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Lt): assert the first value is less than the second value.
+
+  > Since v1.0.0
+
+- [`Lte`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Lte): assert the first value is less than or equal to the second value.
+
+  > Since v1.0.0
 
 ### Value
 

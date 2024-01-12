@@ -285,6 +285,12 @@ func TestIsEqual(t *testing.T) {
 	assert.Equal(isEqual(slice1, slice4), false)
 	assert.Equal(isEqual(slice1, slice5), false)
 
+	assert.True(isEqual([][]any{{1}, {2, 3}}, [][]any{{1}, {2, 3}}))
+	assert.NotTrue(isEqual([][]any{{1}, {2, 3}}, [][]any{{1.0}, {2.0, 3.0}}))
+	assert.NotTrue(isEqual([][]any{{1}, {2, 3}}, [][]any{{"1"}, {"2", "3"}}))
+	assert.True(isEqual([][][]any{{{1}, {2}}, {{2, 3}}}, [][][]any{{{1}, {2}}, {{2, 3}}}))
+	assert.NotTrue(isEqual([][][]any{{{1}, {2}}, {{2, 3}}}, [][][]any{{{1}, {2}}, {{2, "3"}}}))
+
 	assert.Equal(isEqual(testStruct1{A: 0}, testStruct1{A: 0}), true)
 	assert.Equal(isEqual(testStruct1{A: 0}, testStruct1{A: 1}), false)
 	assert.Equal(isEqual(s1, s1), true)

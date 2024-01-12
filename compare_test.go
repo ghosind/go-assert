@@ -247,43 +247,43 @@ func TestIsEqual(t *testing.T) {
 
 	var s1 *testStruct1
 
-	assert.Equal(isEqual(nil, nil), true)
-	assert.Equal(isEqual(nil, s1), false) // s1 is nil
-	assert.Equal(isEqual(true, false), false)
-	assert.Equal(isEqual(1, 1), true)
-	assert.Equal(isEqual(1, 2), false)
-	assert.Equal(isEqual(1, int64(1)), true)
-	assert.Equal(isEqual(1, int64(2)), false)
-	assert.Equal(isEqual(uint(1), uint(1)), true)
-	assert.Equal(isEqual(uint(1), uint(2)), false)
-	assert.Equal(isEqual(uint(1), uint64(1)), true)
-	assert.Equal(isEqual(uint(1), uint64(2)), false)
-	assert.Equal(isEqual(uint(1), uintptr(1)), true)
-	assert.Equal(isEqual(1.0, 1.0), true)
-	assert.Equal(isEqual(1.0, 2.0), false)
-	assert.Equal(isEqual(1.0, float32(1.0)), true)
-	assert.Equal(isEqual(1.0, float32(2.0)), false)
-	assert.Equal(isEqual(complex(1, 1), complex(1, 1)), true)
-	assert.Equal(isEqual(complex(1, 1), complex(2, 2)), false)
-	assert.Equal(isEqual(complex(1, 1), complex64(complex(1, 1))), true)
-	assert.Equal(isEqual(complex(1, 1), complex64(complex(2, 2))), false)
-	assert.Equal(isEqual([1]int{0}, [1]int{0}), true)
-	assert.Equal(isEqual([1]int{0}, [1]int{1}), false)
-	assert.Equal(isEqual([1]int{0}, [2]int{0, 0}), false)
-	assert.Equal(isEqual([1]int{0}, [1]float64{0.0}), false)
-	assert.Equal(isEqual("hello", "hello"), true)
-	assert.Equal(isEqual("hello", "world"), false)
+	assert.True(isEqual(nil, nil))
+	assert.NotTrue(isEqual(nil, s1)) // s1 is nil
+	assert.NotTrue(isEqual(true, false))
+	assert.True(isEqual(1, 1))
+	assert.NotTrue(isEqual(1, 2))
+	assert.True(isEqual(1, int64(1)))
+	assert.NotTrue(isEqual(1, int64(2)))
+	assert.True(isEqual(uint(1), uint(1)))
+	assert.NotTrue(isEqual(uint(1), uint(2)))
+	assert.True(isEqual(uint(1), uint64(1)))
+	assert.NotTrue(isEqual(uint(1), uint64(2)))
+	assert.True(isEqual(uint(1), uintptr(1)))
+	assert.True(isEqual(1.0, 1.0))
+	assert.NotTrue(isEqual(1.0, 2.0))
+	assert.True(isEqual(1.0, float32(1.0)))
+	assert.NotTrue(isEqual(1.0, float32(2.0)))
+	assert.True(isEqual(complex(1, 1), complex(1, 1)))
+	assert.NotTrue(isEqual(complex(1, 1), complex(2, 2)))
+	assert.True(isEqual(complex(1, 1), complex64(complex(1, 1))))
+	assert.NotTrue(isEqual(complex(1, 1), complex64(complex(2, 2))))
+	assert.True(isEqual([1]int{0}, [1]int{0}))
+	assert.NotTrue(isEqual([1]int{0}, [1]int{1}))
+	assert.NotTrue(isEqual([1]int{0}, [2]int{0, 0}))
+	assert.NotTrue(isEqual([1]int{0}, [1]float64{0.0}))
+	assert.True(isEqual("hello", "hello"))
+	assert.NotTrue(isEqual("hello", "world"))
 
 	slice1 := []int{0}
 	slice2 := []int{0}
 	slice3 := []int{0, 0}
 	slice4 := []int{1}
 	slice5 := []float64{0.0}
-	assert.Equal(isEqual(slice1, slice1), true)
-	assert.Equal(isEqual(slice1, slice2), true)
-	assert.Equal(isEqual(slice1, slice3), false)
-	assert.Equal(isEqual(slice1, slice4), false)
-	assert.Equal(isEqual(slice1, slice5), false)
+	assert.True(isEqual(slice1, slice1))
+	assert.True(isEqual(slice1, slice2))
+	assert.NotTrue(isEqual(slice1, slice3))
+	assert.NotTrue(isEqual(slice1, slice4))
+	assert.NotTrue(isEqual(slice1, slice5))
 
 	assert.True(isEqual([][]any{{1}, {2, 3}}, [][]any{{1}, {2, 3}}))
 	assert.NotTrue(isEqual([][]any{{1}, {2, 3}}, [][]any{{1.0}, {2.0, 3.0}}))
@@ -291,11 +291,11 @@ func TestIsEqual(t *testing.T) {
 	assert.True(isEqual([][][]any{{{1}, {2}}, {{2, 3}}}, [][][]any{{{1}, {2}}, {{2, 3}}}))
 	assert.NotTrue(isEqual([][][]any{{{1}, {2}}, {{2, 3}}}, [][][]any{{{1}, {2}}, {{2, "3"}}}))
 
-	assert.Equal(isEqual(testStruct1{A: 0}, testStruct1{A: 0}), true)
-	assert.Equal(isEqual(testStruct1{A: 0}, testStruct1{A: 1}), false)
-	assert.Equal(isEqual(s1, s1), true)
-	assert.Equal(isEqual(&testStruct1{A: 0}, &testStruct1{A: 1}), false)
-	assert.Equal(isEqual(testStruct1{A: 0}, testStruct2{A: 0}), false)
+	assert.True(isEqual(testStruct1{A: 0}, testStruct1{A: 0}))
+	assert.NotTrue(isEqual(testStruct1{A: 0}, testStruct1{A: 1}))
+	assert.True(isEqual(s1, s1))
+	assert.NotTrue(isEqual(&testStruct1{A: 0}, &testStruct1{A: 1}))
+	assert.NotTrue(isEqual(testStruct1{A: 0}, testStruct2{A: 0}))
 }
 
 func TestIsNil(t *testing.T) {

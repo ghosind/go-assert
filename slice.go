@@ -135,17 +135,8 @@ func isSliceEqual(v1, v2 reflect.Value) bool {
 	}
 
 	for i := 0; i < v1.Len(); i++ {
-		v1v := v1.Index(i).Interface()
-		v2v := v2.Index(i).Interface()
-
-		if v1.Index(i).Comparable() && v2.Index(i).Comparable() && v1.Type().ConvertibleTo(v2.Type()) {
-			if v1v != v2v {
-				return false
-			}
-		} else {
-			if ok := isEqual(v1v, v2v); !ok {
-				return false
-			}
+		if ok := isEqual(v1.Index(i), v2.Index(i)); !ok {
+			return false
 		}
 	}
 

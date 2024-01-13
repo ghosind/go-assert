@@ -102,6 +102,28 @@ func tryNotPanic(t *testing.T, failedNow bool, fn func(), message ...any) error 
 	return err
 }
 
+// PanicOf expects the function fn to panic by the expected error.
+func (a *Assertion) PanicOf(fn func(), expectErr any, message ...any) error {
+	a.Helper()
+
+	return tryPanicOf(a.T, false, fn, expectErr, message...)
+}
+
+// tryPanicOf executes the function fn, and it expects the function to panic by the expected error.
+func tryPanicOf(t *testing.T, failedNow bool, fn func(), expectError any, message ...any) error {
+	t.Helper()
+
+	e := isPanic(fn)
+	if isEqual(e, expectError) {
+		return nil
+	}
+
+	err := newAssertionError(fmt.Sprintf(defaultErrMessagePanicOf, expectError, e))
+	failed(t, err, failedNow)
+
+	return err
+}
+
 // isPanic executes the function, and tries to catching and returns the return value from
 // recover().
 func isPanic(fn func()) (err any) {

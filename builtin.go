@@ -831,6 +831,13 @@ func NotPanicNow(t *testing.T, fn func(), message ...any) error {
 	return tryNotPanic(t, true, fn, message...)
 }
 
+// PanicOf expects the function fn to panic by the expected error.
+func PanicOf(t *testing.T, fn func(), expectErr any, message ...any) error {
+	t.Helper()
+
+	return tryPanicOf(t, false, fn, expectErr, message...)
+}
+
 // True tests whether a value is truthy or not. It'll set the result to fail if the value is a
 // false value. For most types of value, a falsy value is the zero value for its type. For a
 // slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the

@@ -1,6 +1,7 @@
 package assert
 
 import (
+	"errors"
 	"testing"
 )
 
@@ -50,6 +51,32 @@ func testPanicAndNotPanic(a, mockA *Assertion, fn func(), isPanic bool) {
 	testAssertionNowFunction(a, "Assertion.NotPanicNow", func() {
 		mockA.NotPanicNow(fn)
 	}, isPanic)
+}
+
+func TestPanicOf(t *testing.T) {
+	a := New(t)
+	mockA := New(new(testing.T))
+
+	expectedErr := errors.New("expected error")
+
+	testPanicOf(a, mockA, func() {}, expectedErr, false)
+	testPanicOf(a, mockA, func() {
+		panic(expectedErr)
+	}, expectedErr, true)
+	testPanicOf(a, mockA, func() {
+		panic("not expected error")
+	}, expectedErr, false)
+}
+
+func testPanicOf(a, mockA *Assertion, fn func(), expectErr any, isExpectedPanic bool) {
+	a.Helper()
+
+	testAssertionFunction(a, "PanicOf", func() error {
+		return PanicOf(mockA.T, fn, expectErr)
+	}, isExpectedPanic)
+	testAssertionFunction(a, "Assertion.PanicOf", func() error {
+		return mockA.PanicOf(fn, expectErr)
+	}, isExpectedPanic)
 }
 
 func TestIsPanic(t *testing.T) {

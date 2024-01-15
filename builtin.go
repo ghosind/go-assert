@@ -831,11 +831,76 @@ func NotPanicNow(t *testing.T, fn func(), message ...any) error {
 	return tryNotPanic(t, true, fn, message...)
 }
 
-// PanicOf expects the function fn to panic by the expected error.
+// PanicOf expects the function fn to panic by the expected error. If the function does not panic
+// or panic for another reason, it will set the result to fail.
+//
+//	PanicOf(t, func() {
+//	  panic("expected error")
+//	}, "expected error") // success
+//	PanicOf(t, func() {
+//	  panic("unexpected error")
+//	}, "expected error") // fail
+//	PanicOf(t, func() {
+//	  // ..., no panic
+//	}, "expected error") // fail
 func PanicOf(t *testing.T, fn func(), expectErr any, message ...any) error {
 	t.Helper()
 
 	return tryPanicOf(t, false, fn, expectErr, message...)
+}
+
+// PanicOfNow expects the function fn to panic by the expected error. If the function does not
+// panic or panic for another reason, it will set the result to fail and terminate the execution.
+//
+//	PanicOfNow(t, func() {
+//	  panic("expected error")
+//	}, "expected error") // success
+//	PanicOfNow(t, func() {
+//	  panic("unexpected error")
+//	}, "expected error") // fail and terminated
+//	// never runs
+func PanicOfNow(t *testing.T, fn func(), expectErr any, message ...any) error {
+	t.Helper()
+
+	return tryPanicOf(t, true, fn, expectErr, message...)
+}
+
+// NotPanicOf expects the function fn not panic, or the function does not panic by the unexpected
+// error. If the function panics by the unexpected error, it will set the result to fail.
+//
+//	NotPanicOf(t, func() {
+//	  panic("other error")
+//	}, "unexpected error") // success
+//	NotPanicOf(t, func() {
+//	  // ..., no panic
+//	}, "unexpected error") // success
+//	NotPanicOf(t, func() {
+//	  panic("unexpected error")
+//	}, "unexpected error") // fail
+func NotPanicOf(t *testing.T, fn func(), unexpectedErr any, message ...any) error {
+	t.Helper()
+
+	return tryNotPanicOf(t, false, fn, unexpectedErr, message...)
+}
+
+// NotPanicOfNow expects the function fn not panic, or the function does not panic by the
+// unexpected error. If the function panics by the unexpected error, it will set the result to fail
+// and stop the execution.
+//
+//	NotPanicOfNow(t, func() {
+//	  panic("other error")
+//	}, "unexpected error") // success
+//	NotPanicOfNow(t, func() {
+//	  // ..., no panic
+//	}, "unexpected error") // success
+//	NotPanicOfNow(t, func() {
+//	  panic("unexpected error")
+//	}, "unexpected error") // fail and terminate
+//	// never runs
+func NotPanicOfNow(t *testing.T, fn func(), unexpectedErr any, message ...any) error {
+	t.Helper()
+
+	return tryNotPanicOf(t, true, fn, unexpectedErr, message...)
 }
 
 // True tests whether a value is truthy or not. It'll set the result to fail if the value is a

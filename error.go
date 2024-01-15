@@ -23,6 +23,7 @@ const (
 	defaultErrMessagePanic              string = "missing expected panic"
 	defaultErrMessageNotPanic           string = "got unwanted error: %v"
 	defaultErrMessagePanicOf            string = "expect panic by %v, got %v"
+	defaultErrMessageNotPanicOf         string = "got unexpected panic error: %v"
 	defaultErrMessageTrue               string = "the expression evaluated to a falsy value"
 	defaultErrMessageNotTrue            string = "the expression evaluated to a truthy value"
 	defaultErrMessageMapHasKey          string = "expect map has key %v"

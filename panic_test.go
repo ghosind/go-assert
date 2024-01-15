@@ -66,6 +66,9 @@ func TestPanicOf(t *testing.T) {
 	testPanicOf(a, mockA, func() {
 		panic("not expected error")
 	}, expectedErr, false)
+	testPanicOf(a, mockA, func() {
+		panic("expected error")
+	}, "expected error", true)
 }
 
 func testPanicOf(a, mockA *Assertion, fn func(), expectErr any, isExpectedPanic bool) {
@@ -76,6 +79,27 @@ func testPanicOf(a, mockA *Assertion, fn func(), expectErr any, isExpectedPanic 
 	}, isExpectedPanic)
 	testAssertionFunction(a, "Assertion.PanicOf", func() error {
 		return mockA.PanicOf(fn, expectErr)
+	}, isExpectedPanic)
+
+	testAssertionFunction(a, "NotPanicOf", func() error {
+		return NotPanicOf(mockA.T, fn, expectErr)
+	}, !isExpectedPanic)
+	testAssertionFunction(a, "Assertion.NotPanicOf", func() error {
+		return mockA.NotPanicOf(fn, expectErr)
+	}, !isExpectedPanic)
+
+	testAssertionNowFunction(a, "PanicOfNow", func() {
+		PanicOfNow(mockA.T, fn, expectErr)
+	}, !isExpectedPanic)
+	testAssertionNowFunction(a, "Assertion.PanicOfNow", func() {
+		mockA.PanicOfNow(fn, expectErr)
+	}, !isExpectedPanic)
+
+	testAssertionNowFunction(a, "NotPanicOfNow", func() {
+		NotPanicOfNow(mockA.T, fn, expectErr)
+	}, isExpectedPanic)
+	testAssertionNowFunction(a, "Assertion.NotPanicOfNow", func() {
+		mockA.NotPanicOfNow(fn, expectErr)
 	}, isExpectedPanic)
 }
 

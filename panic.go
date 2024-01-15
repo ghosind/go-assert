@@ -102,11 +102,76 @@ func tryNotPanic(t *testing.T, failedNow bool, fn func(), message ...any) error 
 	return err
 }
 
-// PanicOf expects the function fn to panic by the expected error.
+// PanicOf expects the function fn to panic by the expected error. If the function does not panic
+// or panic for another reason, it will set the result to fail.
+//
+//	assertion.PanicOf(func() {
+//	  panic("expected error")
+//	}, "expected error") // success
+//	assertion.PanicOf(func() {
+//	  panic("unexpected error")
+//	}, "expected error") // fail
+//	assertion.PanicOf(func() {
+//	  // ..., no panic
+//	}, "expected error") // fail
 func (a *Assertion) PanicOf(fn func(), expectErr any, message ...any) error {
 	a.Helper()
 
 	return tryPanicOf(a.T, false, fn, expectErr, message...)
+}
+
+// PanicOfNow expects the function fn to panic by the expected error. If the function does not
+// panic or panic for another reason, it will set the result to fail and terminate the execution.
+//
+//	assertion.PanicOfNow(func() {
+//	  panic("expected error")
+//	}, "expected error") // success
+//	assertion.PanicOfNow(func() {
+//	  panic("unexpected error")
+//	}, "expected error") // fail and terminated
+//	// never runs
+func (a *Assertion) PanicOfNow(fn func(), expectErr any, message ...any) error {
+	a.Helper()
+
+	return tryPanicOf(a.T, true, fn, expectErr, message...)
+}
+
+// NotPanicOf expects the function fn not panic, or the function does not panic by the unexpected
+// error. If the function panics by the unexpected error, it will set the result to fail.
+//
+//	assertion.NotPanicOf(func() {
+//	  panic("other error")
+//	}, "unexpected error") // success
+//	assertion.NotPanicOf(func() {
+//	  // ..., no panic
+//	}, "unexpected error") // success
+//	assertion.NotPanicOf(func() {
+//	  panic("unexpected error")
+//	}, "unexpected error") // fail
+func (a *Assertion) NotPanicOf(fn func(), unexpectedErr any, message ...any) error {
+	a.Helper()
+
+	return tryNotPanicOf(a.T, false, fn, unexpectedErr, message...)
+}
+
+// NotPanicOfNow expects the function fn not panic, or the function does not panic by the
+// unexpected error. If the function panics by the unexpected error, it will set the result to fail
+// and stop the execution.
+//
+//	assertion.NotPanicOfNow(func() {
+//	  panic("other error")
+//	}, "unexpected error") // success
+//	assertion.NotPanicOfNow(func() {
+//	  // ..., no panic
+//	}, "unexpected error") // success
+//	assertion.NotPanicOfNow(func() {
+//	  panic("unexpected error")
+//	}, "unexpected error") // fail and terminate
+//	// never runs
+func (a *Assertion) NotPanicOfNow(fn func(), unexpectedErr any, message ...any) error {
+	a.Helper()
+
+	return tryNotPanicOf(a.T, true, fn, unexpectedErr, message...)
 }
 
 // tryPanicOf executes the function fn, and it expects the function to panic by the expected error.
@@ -119,6 +184,20 @@ func tryPanicOf(t *testing.T, failedNow bool, fn func(), expectError any, messag
 	}
 
 	err := newAssertionError(fmt.Sprintf(defaultErrMessagePanicOf, expectError, e))
+	failed(t, err, failedNow)
+
+	return err
+}
+
+func tryNotPanicOf(t *testing.T, failedNow bool, fn func(), unexpectedError any, message ...any) error {
+	t.Helper()
+
+	e := isPanic(fn)
+	if !isEqual(e, unexpectedError) {
+		return nil
+	}
+
+	err := newAssertionError(fmt.Sprintf(defaultErrMessageNotPanicOf, unexpectedError))
 	failed(t, err, failedNow)
 
 	return err

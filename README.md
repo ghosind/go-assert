@@ -236,6 +236,14 @@ func TestExample(t *testing.T) {
 
   > Since v0.1.0
 
+- [`PanicOf`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.PanicOf): assert the function will panic by the expected error.
+
+  > Since v0.1.0
+
+-  [`NotPanicOf`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotPanicOf): assert the function will not panic, or it will panic but it is not by the unexpected error.
+
+  > Since v0.1.0
+
 ## Custom Error Message
 
 You can customize the error message if you don't like the default message. Every assertion function accepts an optional message arguments list, and the first argument is the argument is the format string of the custom message.

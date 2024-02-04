@@ -3,6 +3,7 @@ package assert
 import (
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestGt(t *testing.T) {
@@ -25,6 +26,9 @@ func TestGt(t *testing.T) {
 	testGt(a, mockA, float32(2.0), 1.0, true)
 	testGt(a, mockA, "ABC", "BCD", false)
 	testGt(a, mockA, "ABC", "AAA", true)
+	testGt(a, mockA, time.Second, time.Millisecond, true)
+	testGt(a, mockA, time.Second, time.Second, false)
+	testGt(a, mockA, time.Second, time.Minute, false)
 }
 
 func testGt(a, mockA *Assertion, v1, v2 any, isGt bool) {
@@ -68,6 +72,9 @@ func TestGte(t *testing.T) {
 	testGte(a, mockA, "ABC", "BCD", false)
 	testGte(a, mockA, "ABC", "AAA", true)
 	testGte(a, mockA, "ABC", "ABC", true)
+	testGte(a, mockA, time.Second, time.Millisecond, true)
+	testGte(a, mockA, time.Second, time.Second, true)
+	testGte(a, mockA, time.Second, time.Minute, false)
 }
 
 func testGte(a, mockA *Assertion, v1, v2 any, isGte bool) {
@@ -108,6 +115,9 @@ func TestLt(t *testing.T) {
 	testLt(a, mockA, float32(1.0), 2.0, true)
 	testLt(a, mockA, "BCD", "ABC", false)
 	testLt(a, mockA, "AAA", "ABC", true)
+	testLt(a, mockA, time.Millisecond, time.Second, true)
+	testLt(a, mockA, time.Second, time.Second, false)
+	testLt(a, mockA, time.Minute, time.Second, false)
 }
 
 func testLt(a, mockA *Assertion, v1, v2 any, isLt bool) {
@@ -151,6 +161,9 @@ func TestLte(t *testing.T) {
 	testLte(a, mockA, "BCD", "ABC", false)
 	testLte(a, mockA, "AAA", "ABC", true)
 	testLte(a, mockA, "ABC", "ABC", true)
+	testLte(a, mockA, time.Millisecond, time.Second, true)
+	testLte(a, mockA, time.Second, time.Second, true)
+	testLte(a, mockA, time.Minute, time.Second, false)
 }
 
 func testLte(a, mockA *Assertion, v1, v2 any, isLte bool) {

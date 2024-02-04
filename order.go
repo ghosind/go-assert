@@ -287,6 +287,10 @@ func isOrderable(v any) bool {
 		string: // string
 		return true
 	default:
-		return false
+		kind := reflect.TypeOf(v).Kind()
+		return (kind >= reflect.Int && kind <= reflect.Int64) ||
+			(kind >= reflect.Uint && kind <= reflect.Uintptr) ||
+			(kind >= reflect.Float32 && kind <= reflect.Float64) ||
+			kind == reflect.String
 	}
 }

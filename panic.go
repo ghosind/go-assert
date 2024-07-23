@@ -183,13 +183,19 @@ func tryPanicOf(t *testing.T, failedNow bool, fn func(), expectError any, messag
 		return nil
 	}
 
-	err := newAssertionError(fmt.Sprintf(defaultErrMessagePanicOf, expectError, e))
+	err := newAssertionError(fmt.Sprintf(defaultErrMessagePanicOf, expectError, e), message...)
 	failed(t, err, failedNow)
 
 	return err
 }
 
-func tryNotPanicOf(t *testing.T, failedNow bool, fn func(), unexpectedError any, message ...any) error {
+func tryNotPanicOf(
+	t *testing.T,
+	failedNow bool,
+	fn func(),
+	unexpectedError any,
+	message ...any,
+) error {
 	t.Helper()
 
 	e := isPanic(fn)
@@ -197,7 +203,7 @@ func tryNotPanicOf(t *testing.T, failedNow bool, fn func(), unexpectedError any,
 		return nil
 	}
 
-	err := newAssertionError(fmt.Sprintf(defaultErrMessageNotPanicOf, unexpectedError))
+	err := newAssertionError(fmt.Sprintf(defaultErrMessageNotPanicOf, unexpectedError), message...)
 	failed(t, err, failedNow)
 
 	return err

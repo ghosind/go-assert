@@ -10,10 +10,11 @@ import (
 // ContainsString tests whether the string contains the substring or not, and it set the result to
 // fail if the string does not contains the substring.
 //
-//	assertion.ContainsString("Hello world", "") // success
-//	assertion.ContainsString("Hello world", "Hello") // success
-//	assertion.ContainsString("Hello world", "world") // success
-//	assertion.ContainsString("Hello world", "hello") // fail
+//	a := assert.New(t)
+//	a.ContainsString("Hello world", "") // success
+//	a.ContainsString("Hello world", "Hello") // success
+//	a.ContainsString("Hello world", "world") // success
+//	a.ContainsString("Hello world", "hello") // fail
 func (a *Assertion) ContainsString(str, substr string, message ...any) error {
 	a.Helper()
 
@@ -23,10 +24,11 @@ func (a *Assertion) ContainsString(str, substr string, message ...any) error {
 // ContainsStringNow tests whether the string contains the substring or not, and it will terminate the
 // execution if the string does not contains the substring.
 //
-//	assertion.ContainsStringNow("Hello world", "") // success
-//	assertion.ContainsStringNow("Hello world", "Hello") // success
-//	assertion.ContainsStringNow("Hello world", "world") // success
-//	assertion.ContainsStringNow("Hello world", "hello") // fail and stop the execution
+//	a := assert.New(t)
+//	a.ContainsStringNow("Hello world", "") // success
+//	a.ContainsStringNow("Hello world", "Hello") // success
+//	a.ContainsStringNow("Hello world", "world") // success
+//	a.ContainsStringNow("Hello world", "hello") // fail and stop the execution
 //	// never runs
 func (a *Assertion) ContainsStringNow(str, substr string, message ...any) error {
 	a.Helper()
@@ -37,10 +39,11 @@ func (a *Assertion) ContainsStringNow(str, substr string, message ...any) error 
 // NotContainsString tests whether the string contains the substring or not, and it set the result
 // to fail if the string contains the substring.
 //
-//	assertion.NotContainsString("Hello world", "hello") // success
-//	assertion.NotContainsString("Hello world", "") // fail
-//	assertion.NotContainsString("Hello world", "Hello") // fail
-//	assertion.NotContainsString("Hello world", "world") // fail
+//	a := assert.New(t)
+//	a.NotContainsString("Hello world", "hello") // success
+//	a.NotContainsString("Hello world", "") // fail
+//	a.NotContainsString("Hello world", "Hello") // fail
+//	a.NotContainsString("Hello world", "world") // fail
 func (a *Assertion) NotContainsString(str, substr string, message ...any) error {
 	a.Helper()
 
@@ -50,8 +53,9 @@ func (a *Assertion) NotContainsString(str, substr string, message ...any) error 
 // NotContainsStringNow tests whether the string contains the substring or not, and it will terminate the
 // execution if the string contains the substring.
 //
-//	assertion.NotContainsStringNow("Hello world", "hello") // success
-//	assertion.NotContainsStringNow("Hello world", "Hello") // fail and stop the execution
+//	a := assert.New(t)
+//	a.NotContainsStringNow("Hello world", "hello") // success
+//	a.NotContainsStringNow("Hello world", "Hello") // fail and stop the execution
 //	// never runs
 func (a *Assertion) NotContainsStringNow(str, substr string, message ...any) error {
 	a.Helper()
@@ -100,10 +104,11 @@ func tryNotContainsString(
 // HasPrefixString tests whether the string has the prefix string or not, and it set the result to
 // fail if the string does not have the prefix string.
 //
-//	assertion.HasPrefixString("Hello world", "") // success
-//	assertion.HasPrefixString("Hello world", "Hello") // success
-//	assertion.HasPrefixString("Hello world", "world") // fail
-//	assertion.HasPrefixString("Hello world", "hello") // fail
+//	a := assert.New(t)
+//	a.HasPrefixString("Hello world", "") // success
+//	a.HasPrefixString("Hello world", "Hello") // success
+//	a.HasPrefixString("Hello world", "world") // fail
+//	a.HasPrefixString("Hello world", "hello") // fail
 func (a *Assertion) HasPrefixString(str, prefix string, message ...any) error {
 	a.Helper()
 
@@ -113,9 +118,10 @@ func (a *Assertion) HasPrefixString(str, prefix string, message ...any) error {
 // HasPrefixStringNow tests whether the string has the prefix string or not, and it will terminate
 // the execution if the string does not have the prefix string.
 //
-//	assertion.HasPrefixStringNow("Hello world", "") // success
-//	assertion.HasPrefixStringNow("Hello world", "Hello") // success
-//	assertion.HasPrefixStringNow("Hello world", "hello") // fail and stop the execution
+//	a := assert.New(t)
+//	a.HasPrefixStringNow("Hello world", "") // success
+//	a.HasPrefixStringNow("Hello world", "Hello") // success
+//	a.HasPrefixStringNow("Hello world", "hello") // fail and stop the execution
 //	// never runs
 func (a *Assertion) HasPrefixStringNow(str, prefix string, message ...any) error {
 	a.Helper()
@@ -126,10 +132,11 @@ func (a *Assertion) HasPrefixStringNow(str, prefix string, message ...any) error
 // NotHasPrefixString tests whether the string has the prefix string or not, and it set the result
 // to fail if the string have the prefix string.
 //
-//	assertion.NotHasPrefixString("Hello world", "hello") // success
-//	assertion.NotHasPrefixString("Hello world", "world") // success
-//	assertion.NotHasPrefixString("Hello world", "") // fail
-//	assertion.NotHasPrefixString("Hello world", "Hello") // fail
+//	a := assert.New(t)
+//	a.NotHasPrefixString("Hello world", "hello") // success
+//	a.NotHasPrefixString("Hello world", "world") // success
+//	a.NotHasPrefixString("Hello world", "") // fail
+//	a.NotHasPrefixString("Hello world", "Hello") // fail
 func (a *Assertion) NotHasPrefixString(str, prefix string, message ...any) error {
 	a.Helper()
 
@@ -139,9 +146,10 @@ func (a *Assertion) NotHasPrefixString(str, prefix string, message ...any) error
 // NotHasPrefixStringNow tests whether the string has the prefix string or not, and it will
 // terminate the execution if the string have the prefix string.
 //
-//	assertion.NotHasPrefixStringNow("Hello world", "hello") // success
-//	assertion.NotHasPrefixStringNow("Hello world", "world") // success
-//	assertion.NotHasPrefixStringNow("Hello world", "Hello") // fail and stop the execution
+//	a := assert.New(t)
+//	a.NotHasPrefixStringNow("Hello world", "hello") // success
+//	a.NotHasPrefixStringNow("Hello world", "world") // success
+//	a.NotHasPrefixStringNow("Hello world", "Hello") // fail and stop the execution
 //	// never runs
 func (a *Assertion) NotHasPrefixStringNow(str, prefix string, message ...any) error {
 	a.Helper()
@@ -190,10 +198,11 @@ func tryNotHasPrefixString(
 // HasSuffixString tests whether the string has the suffix string or not, and it set the result to
 // fail if the string does not have the suffix string.
 //
-//	assertion.HasSuffixString("Hello world", "") // success
-//	assertion.HasSuffixString("Hello world", "world") // success
-//	assertion.HasSuffixString("Hello world", "World") // fail
-//	assertion.HasSuffixString("Hello world", "hello") // fail
+//	a := assert.New(t)
+//	a.HasSuffixString("Hello world", "") // success
+//	a.HasSuffixString("Hello world", "world") // success
+//	a.HasSuffixString("Hello world", "World") // fail
+//	a.HasSuffixString("Hello world", "hello") // fail
 func (a *Assertion) HasSuffixString(str, suffix string, message ...any) error {
 	a.Helper()
 
@@ -203,9 +212,10 @@ func (a *Assertion) HasSuffixString(str, suffix string, message ...any) error {
 // HasSuffixStringNow tests whether the string has the suffix string or not, and it will terminate
 // the execution if the string does not have the suffix string.
 //
-//	assertion.HasSuffixStringNow("Hello world", "") // success
-//	assertion.HasSuffixStringNow("Hello world", "world") // success
-//	assertion.HasSuffixStringNow("Hello world", "World") // fail and stop the execution
+//	a := assert.New(t)
+//	a.HasSuffixStringNow("Hello world", "") // success
+//	a.HasSuffixStringNow("Hello world", "world") // success
+//	a.HasSuffixStringNow("Hello world", "World") // fail and stop the execution
 //	// never runs
 func (a *Assertion) HasSuffixStringNow(str, suffix string, message ...any) error {
 	a.Helper()
@@ -216,10 +226,11 @@ func (a *Assertion) HasSuffixStringNow(str, suffix string, message ...any) error
 // NotHasSuffixString tests whether the string has the suffix string or not, and it set the result
 // to fail if the string have the suffix string.
 //
-//	assertion.NotHasSuffixString("Hello world", "Hello") // success
-//	assertion.NotHasSuffixString("Hello world", "World") // success
-//	assertion.NotHasSuffixString("Hello world", "") // fail
-//	assertion.NotHasSuffixString("Hello world", "world") // fail
+//	a := assert.New(t)
+//	a.NotHasSuffixString("Hello world", "Hello") // success
+//	a.NotHasSuffixString("Hello world", "World") // success
+//	a.NotHasSuffixString("Hello world", "") // fail
+//	a.NotHasSuffixString("Hello world", "world") // fail
 func (a *Assertion) NotHasSuffixString(str, suffix string, message ...any) error {
 	a.Helper()
 
@@ -229,9 +240,10 @@ func (a *Assertion) NotHasSuffixString(str, suffix string, message ...any) error
 // NotHasSuffixStringNow tests whether the string has the suffix string or not, and it will
 // terminate the execution if the string have the suffix string.
 //
-//	assertion.NotHasSuffixStringNow("Hello world", "hello") // success
-//	assertion.NotHasSuffixStringNow("Hello world", "World") // success
-//	assertion.NotHasSuffixStringNow("Hello world", "world") // fail and stop the execution
+//	a := assert.New(t)
+//	a.NotHasSuffixStringNow("Hello world", "hello") // success
+//	a.NotHasSuffixStringNow("Hello world", "World") // success
+//	a.NotHasSuffixStringNow("Hello world", "world") // fail and stop the execution
 //	// never runs
 func (a *Assertion) NotHasSuffixStringNow(str, suffix string, message ...any) error {
 	a.Helper()
@@ -279,9 +291,10 @@ func tryNotHasSuffixString(
 
 // Match tests whether the string matches the regular expression or not.
 //
+//	a := assert.New(t)
 //	pattern := regexp.MustCompile(`^https?:\/\/`)
-//	assertion.Match("http://example.com", pattern) // success
-//	assertion.Match("example.com", pattern) // fail
+//	a.Match("http://example.com", pattern) // success
+//	a.Match("example.com", pattern) // fail
 func (a *Assertion) Match(val string, pattern *regexp.Regexp, message ...any) error {
 	a.Helper()
 
@@ -291,9 +304,10 @@ func (a *Assertion) Match(val string, pattern *regexp.Regexp, message ...any) er
 // MatchNow tests whether the string matches the regular expression or not, and it will terminate
 // the execution if it does not match.
 //
+//	a := assert.New(t)
 //	pattern := regexp.MustCompile(`^https?:\/\/`)
-//	assertion.MatchNow("http://example.com", pattern) // success
-//	assertion.MatchNow("example.com", pattern) // fail and terminate
+//	a.MatchNow("http://example.com", pattern) // success
+//	a.MatchNow("example.com", pattern) // fail and terminate
 //	// never run
 func (a *Assertion) MatchNow(val string, pattern *regexp.Regexp, message ...any) error {
 	a.Helper()
@@ -304,8 +318,9 @@ func (a *Assertion) MatchNow(val string, pattern *regexp.Regexp, message ...any)
 // MatchString will compile the pattern and test whether the string matches the regular expression
 // or not. It will panic if the pattern is not a valid regular expression.
 //
-//	assertion.MatchString("http://example.com", `^https?:\/\/`) // success
-//	assertion.MatchString("example.com", `^https?:\/\/`) // fail
+//	a := assert.New(t)
+//	a.MatchString("http://example.com", `^https?:\/\/`) // success
+//	a.MatchString("example.com", `^https?:\/\/`) // fail
 func (a *Assertion) MatchString(val, pattern string, message ...any) error {
 	a.Helper()
 
@@ -316,8 +331,9 @@ func (a *Assertion) MatchString(val, pattern string, message ...any) error {
 // expression or not. It will terminate the execution if it does not match, and it will panic if
 // the pattern is not a valid regular expression.
 //
-//	assertion.MatchStringNow("http://example.com", `^https?:\/\/`) // success
-//	assertion.MatchStringNow("example.com", `^https?:\/\/`) // fail and terminate
+//	a := assert.New(t)
+//	a.MatchStringNow("http://example.com", `^https?:\/\/`) // success
+//	a.MatchStringNow("example.com", `^https?:\/\/`) // fail and terminate
 //	// never run
 func (a *Assertion) MatchStringNow(val, pattern string, message ...any) error {
 	a.Helper()
@@ -328,9 +344,10 @@ func (a *Assertion) MatchStringNow(val, pattern string, message ...any) error {
 // NotMatch tests whether the string matches the regular expression or not, and it set the result
 // to fail if the string matches the pattern.
 //
+//	a := assert.New(t)
 //	pattern := regexp.MustCompile(`^https?:\/\/`)
-//	assertion.NotMatch("example.com", pattern) // success
-//	assertion.NotMatch("http://example.com", pattern) // fail
+//	a.NotMatch("example.com", pattern) // success
+//	a.NotMatch("http://example.com", pattern) // fail
 func (a *Assertion) NotMatch(val string, pattern *regexp.Regexp, message ...any) error {
 	a.Helper()
 
@@ -340,9 +357,10 @@ func (a *Assertion) NotMatch(val string, pattern *regexp.Regexp, message ...any)
 // NotMatchNow tests whether the string matches the regular expression or not, and it will
 // terminate the execution if the string matches the pattern.
 //
+//	a := assert.New(t)
 //	pattern := regexp.MustCompile(`^https?:\/\/`)
-//	assertion.NotMatchNow("example.com", pattern) // success
-//	assertion.NotMatchNow("http://example.com", pattern) // fail and terminate
+//	a.NotMatchNow("example.com", pattern) // success
+//	a.NotMatchNow("http://example.com", pattern) // fail and terminate
 //	// never run
 func (a *Assertion) NotMatchNow(val string, pattern *regexp.Regexp, message ...any) error {
 	a.Helper()
@@ -354,8 +372,9 @@ func (a *Assertion) NotMatchNow(val string, pattern *regexp.Regexp, message ...a
 // or not, and it set the result to fail if the string matches the pattern. It will also panic if
 // the pattern is not a valid regular expression.
 //
-//	assertion.NotMatchString("example.com", `^https?:\/\/`) // success
-//	assertion.NotMatchString("http://example.com", `^https?:\/\/`) // fail
+//	a := assert.New(t)
+//	a.NotMatchString("example.com", `^https?:\/\/`) // success
+//	a.NotMatchString("http://example.com", `^https?:\/\/`) // fail
 func (a *Assertion) NotMatchString(val, pattern string, message ...any) error {
 	a.Helper()
 
@@ -367,8 +386,9 @@ func (a *Assertion) NotMatchString(val, pattern string, message ...any) error {
 // terminate the execution if the string matches the pattern, and it will panic if the pattern is
 // not a valid regular expression.
 //
-//	assertion.NotMatchStringNow("example.com", `^https?:\/\/`) // success
-//	assertion.NotMatchStringNow("http://example.com", `^https?:\/\/`) // fail and terminate
+//	a := assert.New(t)
+//	a.NotMatchStringNow("example.com", `^https?:\/\/`) // success
+//	a.NotMatchStringNow("http://example.com", `^https?:\/\/`) // fail and terminate
 //	// never run
 func (a *Assertion) NotMatchStringNow(val, pattern string, message ...any) error {
 	a.Helper()

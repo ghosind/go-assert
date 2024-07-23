@@ -9,9 +9,10 @@ import (
 // MapHasKey tests whether the map contains the specified key or not, it will fail if the map does
 // not contain the key, or the type of the key cannot assign to the type of the key of the map.
 //
-//	assertion.MapHasKey(map[string]int{"a":1}, "a") // success
-//	assertion.MapHasKey(map[string]int{"a":1}, "b") // fail
-//	assertion.MapHasKey(map[string]int{"a":1}, 1) // fail
+//	a := assert.New(t)
+//	a.MapHasKey(map[string]int{"a":1}, "a") // success
+//	a.MapHasKey(map[string]int{"a":1}, "b") // fail
+//	a.MapHasKey(map[string]int{"a":1}, 1) // fail
 func (a *Assertion) MapHasKey(m, key any, message ...any) error {
 	a.Helper()
 
@@ -22,8 +23,9 @@ func (a *Assertion) MapHasKey(m, key any, message ...any) error {
 // execution if the test fails. It will fail if the map does not contain the key, or the type of
 // the key cannot assign to the type of the key of the map.
 //
-//	assertion.MapHasKeyNow(map[string]int{"a":1}, "a") // success
-//	assertion.MapHasKeyNow(map[string]int{"a":1}, "b") // fail and terminate
+//	a := assert.New(t)
+//	a.MapHasKeyNow(map[string]int{"a":1}, "a") // success
+//	a.MapHasKeyNow(map[string]int{"a":1}, "b") // fail and terminate
 //	// never run
 func (a *Assertion) MapHasKeyNow(m, key any, message ...any) error {
 	a.Helper()
@@ -35,9 +37,10 @@ func (a *Assertion) MapHasKeyNow(m, key any, message ...any) error {
 // contain the key. It will also set the test result to success if the type of the key cannot
 // assign to the type of the key of the map.
 //
-//	assertion.NotMapHasKey(map[string]int{"a":1}, "b") // success
-//	assertion.NotMapHasKey(map[string]int{"a":1}, 1) // success
-//	assertion.NotMapHasKey(map[string]int{"a":1}, "a") // fail
+//	a := assert.New(t)
+//	a.NotMapHasKey(map[string]int{"a":1}, "b") // success
+//	a.NotMapHasKey(map[string]int{"a":1}, 1) // success
+//	a.NotMapHasKey(map[string]int{"a":1}, "a") // fail
 func (a *Assertion) NotMapHasKey(m, key any, message ...any) error {
 	a.Helper()
 
@@ -48,9 +51,10 @@ func (a *Assertion) NotMapHasKey(m, key any, message ...any) error {
 // contain the key, and it will terminate the execution if the test fails. It will also set the
 // test result to success if the type of the key cannot assign to the type of the key of the map.
 //
-//	assertion.NotMapHasKeyNow(map[string]int{"a":1}, "b") // success
-//	assertion.NotMapHasKeyNow(map[string]int{"a":1}, 1) // success
-//	assertion.NotMapHasKeyNow(map[string]int{"a":1}, "a") // fail and terminate
+//	a := assert.New(t)
+//	a.NotMapHasKeyNow(map[string]int{"a":1}, "b") // success
+//	a.NotMapHasKeyNow(map[string]int{"a":1}, 1) // success
+//	a.NotMapHasKeyNow(map[string]int{"a":1}, "a") // fail and terminate
 //	// never run
 func (a *Assertion) NotMapHasKeyNow(m, key any, message ...any) error {
 	a.Helper()
@@ -100,9 +104,10 @@ func tryNotMapHasKey(
 // does not contain the value, or the type of the value cannot assign to the type of the values of
 // the map.
 //
-//	assertion.MapHasValue(map[string]int{"a":1}, 1) // success
-//	assertion.MapHasValue(map[string]int{"a":1}, 2) // fail
-//	assertion.MapHasValue(map[string]int{"a":1}, "a") // fail
+//	a := assert.New(t)
+//	a.MapHasValue(map[string]int{"a":1}, 1) // success
+//	a.MapHasValue(map[string]int{"a":1}, 2) // fail
+//	a.MapHasValue(map[string]int{"a":1}, "a") // fail
 func (a *Assertion) MapHasValue(m, value any, message ...any) error {
 	a.Helper()
 
@@ -113,8 +118,9 @@ func (a *Assertion) MapHasValue(m, value any, message ...any) error {
 // the execution if the test fails. It will fail if the map does not contain the value, or the type
 // of the value cannot assign to the type of the value of the map.
 //
-//	assertion.MapHasValueNow(map[string]int{"a":1}, 1) // success
-//	assertion.MapHasValueNow(map[string]int{"a":1}, 2) // fail and terminate
+//	a := assert.New(t)
+//	a.MapHasValueNow(map[string]int{"a":1}, 1) // success
+//	a.MapHasValueNow(map[string]int{"a":1}, 2) // fail and terminate
 //	// never run
 func (a *Assertion) MapHasValueNow(m, value any, message ...any) error {
 	a.Helper()
@@ -126,9 +132,10 @@ func (a *Assertion) MapHasValueNow(m, value any, message ...any) error {
 // map contain the value. It will also set the test result to success if the type of the value
 // cannot assign to the type of the value of the map.
 //
-//	assertion.NotMapHasValue(map[string]int{"a":1}, 2) // success
-//	assertion.NotMapHasValue(map[string]int{"a":1}, "a") // success
-//	assertion.NotMapHasValue(map[string]int{"a":1}, 1) // fail
+//	a := assert.New(t)
+//	a.NotMapHasValue(map[string]int{"a":1}, 2) // success
+//	a.NotMapHasValue(map[string]int{"a":1}, "a") // success
+//	a.NotMapHasValue(map[string]int{"a":1}, 1) // fail
 func (a *Assertion) NotMapHasValue(m, value any, message ...any) error {
 	a.Helper()
 
@@ -140,9 +147,10 @@ func (a *Assertion) NotMapHasValue(m, value any, message ...any) error {
 // the test result to success if the type of the value cannot assign to the type of the value of
 // the map.
 //
-//	assertion.NotMapHasValueNow(map[string]int{"a":1}, 2) // success
-//	assertion.NotMapHasValueNow(map[string]int{"a":1}, "a") // success
-//	assertion.NotMapHasValueNow(map[string]int{"a":1}, 1) // fail and terminate
+//	a := assert.New(t)
+//	a.NotMapHasValueNow(map[string]int{"a":1}, 2) // success
+//	a.NotMapHasValueNow(map[string]int{"a":1}, "a") // success
+//	a.NotMapHasValueNow(map[string]int{"a":1}, 1) // fail and terminate
 //	// never run
 func (a *Assertion) NotMapHasValueNow(m, value any, message ...any) error {
 	a.Helper()

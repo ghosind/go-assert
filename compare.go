@@ -9,10 +9,11 @@ import (
 // DeepEqual tests the deep equality between actual and expect parameters. It'll set the result to
 // fail if they are not deeply equal, and it doesn't stop the execution.
 //
-//	assertion.DeepEqual(1, 1) // success
-//	assertion.DeepEqual("ABC", "ABC") // success
-//	assertion.DeepEqual(1, 0) // fail
-//	assertion.DeepEqual(1, int64(1)) // fail
+//	a := assert.New(t)
+//	a.DeepEqual(1, 1) // success
+//	a.DeepEqual("ABC", "ABC") // success
+//	a.DeepEqual(1, 0) // fail
+//	a.DeepEqual(1, int64(1)) // fail
 func (a *Assertion) DeepEqual(actual, expect any, message ...any) error {
 	a.Helper()
 
@@ -22,9 +23,10 @@ func (a *Assertion) DeepEqual(actual, expect any, message ...any) error {
 // DeepEqualNow tests the deep equality between actual and expect parameters, and it'll stop the
 // execution if they are not deeply equal.
 //
-//	assertion.DeepEqualNow(1, 1) // success
-//	assertion.DeepEqualNow("ABC", "ABC") // success
-//	assertion.DeepEqualNow(1, int64(1)) // fail and terminate
+//	a := assert.New(t)
+//	a.DeepEqualNow(1, 1) // success
+//	a.DeepEqualNow("ABC", "ABC") // success
+//	a.DeepEqualNow(1, int64(1)) // fail and terminate
 //	// never run
 func (a *Assertion) DeepEqualNow(actual, expect any, message ...any) error {
 	a.Helper()
@@ -35,10 +37,11 @@ func (a *Assertion) DeepEqualNow(actual, expect any, message ...any) error {
 // NotDeepEqual tests the deep inequality between actual and expected parameters. It'll set the
 // result to fail if they are deeply equal, but it doesn't stop the execution.
 //
-//	assertion.NotDeepEqual(1, 0) // success
-//	assertion.NotDeepEqual(1, int64(1)) // success
-//	assertion.NotDeepEqual(1, 1) // fail
-//	assertion.NotDeepEqual("ABC", "ABC") // fail
+//	a := assert.New(t)
+//	a.NotDeepEqual(1, 0) // success
+//	a.NotDeepEqual(1, int64(1)) // success
+//	a.NotDeepEqual(1, 1) // fail
+//	a.NotDeepEqual("ABC", "ABC") // fail
 func (a *Assertion) NotDeepEqual(actual, expect any, message ...any) error {
 	a.Helper()
 
@@ -48,9 +51,10 @@ func (a *Assertion) NotDeepEqual(actual, expect any, message ...any) error {
 // NotDeepEqualNow tests the deep inequality between actual and expected parameters, and it'll stop
 // the execution if they are deeply equal.
 //
-//	assertion.NotDeepEqual1, 0) // success
-//	assertion.NotDeepEqual1, int64(1)) // success
-//	assertion.NotDeepEqual"ABC", "ABC") // fail and terminate
+//	a := assert.New(t)
+//	a.NotDeepEqual1, 0) // success
+//	a.NotDeepEqual1, int64(1)) // success
+//	a.NotDeepEqual"ABC", "ABC") // fail and terminate
 //	// never run
 func (a *Assertion) NotDeepEqualNow(actual, expect any, message ...any) error {
 	a.Helper()
@@ -89,11 +93,12 @@ func tryNotDeepEqual(t *testing.T, failedNow bool, actual, expect any, message .
 // Equal tests the equality between actual and expect parameters. It'll set the result to fail if
 // they are not equal, and it doesn't stop the execution.
 //
-//	assertion.Equal(1, 1) // success
-//	assertion.Equal("ABC", "ABC") // success
-//	assertion.Equal(1, int64(1)) // success
-//	assertion.Equal(1, uint64(1)) // fail
-//	assertion.Equal(1, 0) // fail
+//	a := assert.New(t)
+//	a.Equal(1, 1) // success
+//	a.Equal("ABC", "ABC") // success
+//	a.Equal(1, int64(1)) // success
+//	a.Equal(1, uint64(1)) // fail
+//	a.Equal(1, 0) // fail
 func (a *Assertion) Equal(actual, expect any, message ...any) error {
 	a.Helper()
 
@@ -103,10 +108,11 @@ func (a *Assertion) Equal(actual, expect any, message ...any) error {
 // EqualNow tests the equality between actual and expect parameters, and it'll stop the execution
 // if they are not equal.
 //
-//	assertion.EqualNow(1, 1) // success
-//	assertion.EqualNow("ABC", "ABC") // success
-//	assertion.EqualNow(1, int64(1)) // success
-//	assertion.EqualNow(1, 0) // fail and terminate
+//	a := assert.New(t)
+//	a.EqualNow(1, 1) // success
+//	a.EqualNow("ABC", "ABC") // success
+//	a.EqualNow(1, int64(1)) // success
+//	a.EqualNow(1, 0) // fail and terminate
 //	never run
 func (a *Assertion) EqualNow(actual, expect any, message ...any) error {
 	a.Helper()
@@ -117,12 +123,13 @@ func (a *Assertion) EqualNow(actual, expect any, message ...any) error {
 // NotEqual tests the inequality between actual and expected parameters. It'll set the result to
 // fail if they are equal, but it doesn't stop the execution.
 //
-//	assertion.NotEqual(1, 0) // success
-//	assertion.NotEqual("ABC", "CBA") // success
-//	assertion.NotEqual(1, uint64(1)) // success
-//	assertion.NotEqual(1, 1) // fail
-//	assertion.NotEqual("ABC", "ABC") // fail
-//	assertion.NotEqual(1, int64(1)) // fail
+//	a := assert.New(t)
+//	a.NotEqual(1, 0) // success
+//	a.NotEqual("ABC", "CBA") // success
+//	a.NotEqual(1, uint64(1)) // success
+//	a.NotEqual(1, 1) // fail
+//	a.NotEqual("ABC", "ABC") // fail
+//	a.NotEqual(1, int64(1)) // fail
 func (a *Assertion) NotEqual(actual, expect any, message ...any) error {
 	a.Helper()
 
@@ -132,9 +139,10 @@ func (a *Assertion) NotEqual(actual, expect any, message ...any) error {
 // NotEqualNow tests the inequality between actual and expected parameters, and it'll stop the
 // execution if they are equal.
 //
-//	assertion.NotEqualNow(1, 0) // success
-//	assertion.NotEqualNow("ABC", "CBA") // success
-//	assertion.NotEqualNow(1, 1) // fail and terminate
+//	a := assert.New(t)
+//	a.NotEqualNow(1, 0) // success
+//	a.NotEqualNow("ABC", "CBA") // success
+//	a.NotEqualNow(1, 1) // fail and terminate
 //	// never run
 func (a *Assertion) NotEqualNow(actual, expect any, message ...any) error {
 	a.Helper()
@@ -174,11 +182,12 @@ func tryNotEqual(t *testing.T, failedNow bool, actual, expect any, message ...an
 // always return false if the value is a bool, an integer, a floating number, a complex, or a
 // string.
 //
+//	a := assert.New(t)
 //	var err error // nil
-//	assertion.Nil(err) // success
+//	a.Nil(err) // success
 //
 //	err = errors.New("some error")
-//	assertion.Nil(err) // fail
+//	a.Nil(err) // fail
 func (a *Assertion) Nil(val any, message ...any) error {
 	a.Helper()
 
@@ -191,11 +200,12 @@ func (a *Assertion) Nil(val any, message ...any) error {
 //
 // This function will set the result to fail, and stop the execution if the value is not nil.
 //
+//	a := assert.New(t)
 //	var err error // nil
-//	assertion.NilNow(err) // success
+//	a.NilNow(err) // success
 //
 //	err = errors.New("some error")
-//	assertion.NilNow(err) // fail and terminate
+//	a.NilNow(err) // fail and terminate
 //	// never run
 func (a *Assertion) NilNow(val any, message ...any) error {
 	a.Helper()
@@ -207,11 +217,12 @@ func (a *Assertion) NilNow(val any, message ...any) error {
 // always return true if the value is a bool, an integer, a floating number, a complex, or a
 // string.
 //
+//	a := assert.New(t)
 //	var err error // nil
-//	assertion.NotNil(err) // fail
+//	a.NotNil(err) // fail
 //
 //	err = errors.New("some error")
-//	assertion.NotNil(err) // success
+//	a.NotNil(err) // success
 func (a *Assertion) NotNil(val any, message ...any) error {
 	a.Helper()
 
@@ -224,11 +235,12 @@ func (a *Assertion) NotNil(val any, message ...any) error {
 //
 // This function will set the result to fail, and stop the execution if the value is nil.
 //
+//	a := assert.New(t)
 //	var err error = errors.New("some error")
-//	assertion.NotNilNow(err) // success
+//	a.NotNilNow(err) // success
 //
 //	err = nil
-//	assertion.NotNilNow(err) // fail and terminate
+//	a.NotNilNow(err) // fail and terminate
 //	// never run
 func (a *Assertion) NotNilNow(val any, message ...any) error {
 	a.Helper()
@@ -267,10 +279,11 @@ func tryNotNil(t *testing.T, failedNow bool, val any, message ...any) error {
 // slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the
 // value is always falsy.
 //
-//	assertion.True(1) // success
-//	assertion.True("test") // success
-//	assertion.True(0) // fail
-//	assertion.True("") // fail
+//	a := assert.New(t)
+//	a.True(1) // success
+//	a.True("test") // success
+//	a.True(0) // fail
+//	a.True("") // fail
 func (a *Assertion) True(val any, message ...any) error {
 	a.Helper()
 
@@ -284,9 +297,10 @@ func (a *Assertion) True(val any, message ...any) error {
 //
 // The function will stop the execution if the value is falsy.
 //
-//	assertion.TrueNow(1) // success
-//	assertion.TrueNow("test") // success
-//	assertion.TrueNow("") // fail and terminate
+//	a := assert.New(t)
+//	a.TrueNow(1) // success
+//	a.TrueNow("test") // success
+//	a.TrueNow("") // fail and terminate
 //	// never run
 func (a *Assertion) TrueNow(val any, message ...any) error {
 	a.Helper()
@@ -299,10 +313,11 @@ func (a *Assertion) TrueNow(val any, message ...any) error {
 // slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the
 // value is always falsy.
 //
-//	assertion.NotTrue(0) // success
-//	assertion.NotTrue("") // success
-//	assertion.NotTrue(1) // fail
-//	assertion.NotTrue("test") // fail
+//	a := assert.New(t)
+//	a.NotTrue(0) // success
+//	a.NotTrue("") // success
+//	a.NotTrue(1) // fail
+//	a.NotTrue("test") // fail
 func (a *Assertion) NotTrue(val any, message ...any) error {
 	a.Helper()
 
@@ -316,9 +331,10 @@ func (a *Assertion) NotTrue(val any, message ...any) error {
 //
 // The function will stop the execution if the value is truthy.
 //
-//	assertion.NotTrueNow(0) // success
-//	assertion.NotTrueNow("") // success
-//	assertion.NotTrueNow("test") // fail and terminate
+//	a := assert.New(t)
+//	a.NotTrueNow(0) // success
+//	a.NotTrueNow("") // success
+//	a.NotTrueNow("test") // fail and terminate
 //	// never run
 func (a *Assertion) NotTrueNow(val any, message ...any) error {
 	a.Helper()

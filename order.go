@@ -22,6 +22,7 @@ const (
 // Gt compares the values and sets the result to false if the first value is not greater than to
 // the second value.
 //
+//	a := assert.New(t)
 //	a.Gt(2, 1) // success
 //	a.Gt(3.14, 1.68) // success
 //	a.Gt("BCD", "ABC") // success
@@ -43,6 +44,7 @@ func (a *Assertion) Gt(v1, v2 any, message ...string) error {
 // GtNow compares the values and sets the result to false if the first value is not greater than to
 // the second value. It will panic if they do not match the expected result.
 //
+//	a := assert.New(t)
 //	a.GtNow(2, 1) // success
 //	a.GtNow(3.14, 1.68) // success
 //	a.GtNow("BCD", "ABC") // success
@@ -64,6 +66,7 @@ func (a *Assertion) GtNow(v1, v2 any, message ...string) error {
 // Gte compares the values and sets the result to false if the first value is not greater than or
 // equal to the second value.
 //
+//	a := assert.New(t)
 //	a.Gte(2, 1) // success
 //	a.Gte(3.14, 1.68) // success
 //	a.Gte("BCD", "ABC") // success
@@ -85,6 +88,7 @@ func (a *Assertion) Gte(v1, v2 any, message ...string) error {
 // GteNow compares the values and sets the result to false if the first value is not greater than
 // or equal to the second value. It will panic if they do not match the expected result.
 //
+//	a := assert.New(t)
 //	a.GteNow(2, 1) // success
 //	a.GteNow(3.14, 1.68) // success
 //	a.GteNow("BCD", "ABC") // success
@@ -107,6 +111,7 @@ func (a *Assertion) GteNow(v1, v2 any, message ...string) error {
 // Lt compares the values and sets the result to false if the first value is not less than the
 // second value.
 //
+//	a := assert.New(t)
 //	a.Lt(1, 2) // success
 //	a.Lt(1.68, 3.14) // success
 //	a.Lt("ABC", "BCD") // success
@@ -128,6 +133,7 @@ func (a *Assertion) Lt(v1, v2 any, message ...string) error {
 // LtNow compares the values and sets the result to false if the first value is not less than the
 // second value. It will panic if they do not match the expected result.
 //
+//	a := assert.New(t)
 //	a.LtNow(1, 2) // success
 //	a.LtNow(1.68, 3.14) // success
 //	a.LtNow("ABC", "BCD") // success
@@ -149,6 +155,7 @@ func (a *Assertion) LtNow(v1, v2 any, message ...string) error {
 // Lte compares the values and sets the result to false if the first value is not less than or
 // equal to the second value.
 //
+//	a := assert.New(t)
 //	a.Lte(1, 2) // success
 //	a.Lte(1.68, 3.14) // success
 //	a.Lte("ABC", "BCD") // success
@@ -170,6 +177,7 @@ func (a *Assertion) Lte(v1, v2 any, message ...string) error {
 // LteNow compares the values and sets the result to false if the first value is not less than or
 // equal to the second value. It will panic if they do not match the expected result.
 //
+//	a := assert.New(t)
 //	a.LteNow(1, 2) // success
 //	a.LteNow(1.68, 3.14) // success
 //	a.LteNow("ABC", "BCD") // success

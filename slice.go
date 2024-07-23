@@ -10,9 +10,10 @@ import (
 // it set the result to fail if the array or slice does not contain the specified element. It'll
 // panic if the `source` is not an array or a slice.
 //
-//	assertion.ContainsElement([]int{1, 2, 3}, 1) // success
-//	assertion.ContainsElement([]int{1, 2, 3}, 3) // success
-//	assertion.ContainsElement([]int{1, 2, 3}, 4) // fail
+//	a := assert.New(t)
+//	a.ContainsElement([]int{1, 2, 3}, 1) // success
+//	a.ContainsElement([]int{1, 2, 3}, 3) // success
+//	a.ContainsElement([]int{1, 2, 3}, 4) // fail
 func (a *Assertion) ContainsElement(source, expect any, message ...any) error {
 	a.Helper()
 
@@ -23,9 +24,10 @@ func (a *Assertion) ContainsElement(source, expect any, message ...any) error {
 // it will terminate the execution if the array or slice does not contain the specified element.
 // It'll panic if the `source` is not an array or a slice.
 //
-//	assertion.ContainsElementNow([]int{1, 2, 3}, 1) // success
-//	assertion.ContainsElementNow([]int{1, 2, 3}, 3) // success
-//	assertion.ContainsElementNow([]int{1, 2, 3}, 4) // fail and stop the execution
+//	a := assert.New(t)
+//	a.ContainsElementNow([]int{1, 2, 3}, 1) // success
+//	a.ContainsElementNow([]int{1, 2, 3}, 3) // success
+//	a.ContainsElementNow([]int{1, 2, 3}, 4) // fail and stop the execution
 //	// never runs
 func (a *Assertion) ContainsElementNow(source, expect any, message ...any) error {
 	a.Helper()
@@ -37,9 +39,10 @@ func (a *Assertion) ContainsElementNow(source, expect any, message ...any) error
 // it set the result to fail if the array or slice contains the specified element. It'll panic if
 // the `source` is not an array or a slice.
 //
-//	assertion.NotContainsElement([]int{1, 2, 3}, 4) // success
-//	assertion.NotContainsElement([]int{1, 2, 3}, 0) // success
-//	assertion.NotContainsElement([]int{1, 2, 3}, 1) // fail
+//	a := assert.New(t)
+//	a.NotContainsElement([]int{1, 2, 3}, 4) // success
+//	a.NotContainsElement([]int{1, 2, 3}, 0) // success
+//	a.NotContainsElement([]int{1, 2, 3}, 1) // fail
 func (a *Assertion) NotContainsElement(source, expect any, message ...any) error {
 	a.Helper()
 
@@ -50,9 +53,10 @@ func (a *Assertion) NotContainsElement(source, expect any, message ...any) error
 // and it will terminate the execution if the array or slice contains the specified element. It'll
 // panic if the `source` is not an array or a slice.
 //
-//	assertion.NotContainsElementNow([]int{1, 2, 3}, 4) // success
-//	assertion.NotContainsElementNow([]int{1, 2, 3}, 0) // success
-//	assertion.NotContainsElementNow([]int{1, 2, 3}, 1) // fail and stop the execution
+//	a := assert.New(t)
+//	a.NotContainsElementNow([]int{1, 2, 3}, 4) // success
+//	a.NotContainsElementNow([]int{1, 2, 3}, 0) // success
+//	a.NotContainsElementNow([]int{1, 2, 3}, 1) // fail and stop the execution
 //	// never runs
 func (a *Assertion) NotContainsElementNow(source, expect any, message ...any) error {
 	a.Helper()

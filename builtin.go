@@ -10,9 +10,9 @@ import (
 // it set the result to fail if the array or slice does not contain the specified element. It'll
 // panic if the `source` is not an array or a slice.
 //
-//	assertion.ContainsElement([]int{1, 2, 3}, 1) // success
-//	assertion.ContainsElement([]int{1, 2, 3}, 3) // success
-//	assertion.ContainsElement([]int{1, 2, 3}, 4) // fail
+//	assert.ContainsElement(t, []int{1, 2, 3}, 1) // success
+//	assert.ContainsElement(t, []int{1, 2, 3}, 3) // success
+//	assert.ContainsElement(t, []int{1, 2, 3}, 4) // fail
 func ContainsElement(t *testing.T, source, expect any, message ...any) error {
 	t.Helper()
 
@@ -23,9 +23,9 @@ func ContainsElement(t *testing.T, source, expect any, message ...any) error {
 // it will terminate the execution if the array or slice does not contain the specified element.
 // It'll panic if the `source` is not an array or a slice.
 //
-//	assertion.ContainsElementNow([]int{1, 2, 3}, 1) // success
-//	assertion.ContainsElementNow([]int{1, 2, 3}, 3) // success
-//	assertion.ContainsElementNow([]int{1, 2, 3}, 4) // fail and stop the execution
+//	assert.ContainsElementNow(t, []int{1, 2, 3}, 1) // success
+//	assert.ContainsElementNow(t, []int{1, 2, 3}, 3) // success
+//	assert.ContainsElementNow(t, []int{1, 2, 3}, 4) // fail and stop the execution
 //	// never runs
 func ContainsElementNow(t *testing.T, source, expect any, message ...any) error {
 	t.Helper()
@@ -37,9 +37,9 @@ func ContainsElementNow(t *testing.T, source, expect any, message ...any) error 
 // it set the result to fail if the array or slice contains the specified element. It'll panic if
 // the `source` is not an array or a slice.
 //
-//	assertion.NotContainsElement([]int{1, 2, 3}, 4) // success
-//	assertion.NotContainsElement([]int{1, 2, 3}, 0) // success
-//	assertion.NotContainsElement([]int{1, 2, 3}, 1) // fail
+//	assert.NotContainsElement(t, []int{1, 2, 3}, 4) // success
+//	assert.NotContainsElement(t, []int{1, 2, 3}, 0) // success
+//	assert.NotContainsElement(t, []int{1, 2, 3}, 1) // fail
 func NotContainsElement(t *testing.T, source, expect any, message ...any) error {
 	t.Helper()
 
@@ -50,9 +50,9 @@ func NotContainsElement(t *testing.T, source, expect any, message ...any) error 
 // and it will terminate the execution if the array or slice contains the specified element. It'll
 // panic if the `source` is not an array or a slice.
 //
-//	assertion.NotContainsElementNow([]int{1, 2, 3}, 4) // success
-//	assertion.NotContainsElementNow([]int{1, 2, 3}, 0) // success
-//	assertion.NotContainsElementNow([]int{1, 2, 3}, 1) // fail and stop the execution
+//	assert.NotContainsElementNow(t, []int{1, 2, 3}, 4) // success
+//	assert.NotContainsElementNow(t, []int{1, 2, 3}, 0) // success
+//	assert.NotContainsElementNow(t, []int{1, 2, 3}, 1) // fail and stop the execution
 //	// never runs
 func NotContainsElementNow(t *testing.T, source, expect any, message ...any) error {
 	t.Helper()
@@ -63,10 +63,10 @@ func NotContainsElementNow(t *testing.T, source, expect any, message ...any) err
 // ContainsString tests whether the string contains the substring or not, and it set the result to
 // fail if the string does not contains the substring.
 //
-//	ContainsString(t, "Hello world", "") // success
-//	ContainsString(t, "Hello world", "Hello") // success
-//	ContainsString(t, "Hello world", "world") // success
-//	ContainsString(t, "Hello world", "hello") // fail
+//	assert.ContainsString(t, "Hello world", "") // success
+//	assert.ContainsString(t, "Hello world", "Hello") // success
+//	assert.ContainsString(t, "Hello world", "world") // success
+//	assert.ContainsString(t, "Hello world", "hello") // fail
 func ContainsString(t *testing.T, str, substr string, message ...any) error {
 	t.Helper()
 
@@ -76,10 +76,10 @@ func ContainsString(t *testing.T, str, substr string, message ...any) error {
 // ContainsStringNow tests whether the string contains the substring or not, and it will terminate the
 // execution if the string does not contains the substring.
 //
-//	ContainsStringNow(t, "Hello world", "") // success
-//	ContainsStringNow(t, "Hello world", "Hello") // success
-//	ContainsStringNow(t, "Hello world", "world") // success
-//	ContainsStringNow(t, "Hello world", "hello") // fail and stop the execution
+//	assert.ContainsStringNow(t, "Hello world", "") // success
+//	assert.ContainsStringNow(t, "Hello world", "Hello") // success
+//	assert.ContainsStringNow(t, "Hello world", "world") // success
+//	assert.ContainsStringNow(t, "Hello world", "hello") // fail and stop the execution
 //	// never runs
 func ContainsStringNow(t *testing.T, str, substr string, message ...any) error {
 	t.Helper()
@@ -90,11 +90,11 @@ func ContainsStringNow(t *testing.T, str, substr string, message ...any) error {
 // Gt compares the values and sets the result to false if the first value is not greater than to
 // the second value.
 //
-//	Gt(t, 2, 1) // success
-//	Gt(t, 3.14, 1.68) // success
-//	Gt(t, "BCD", "ABC") // success
-//	Gt(t, 2, 2) // fail
-//	Gt(t, 1, 2) // fail
+//	assert.Gt(t, 2, 1) // success
+//	assert.Gt(t, 3.14, 1.68) // success
+//	assert.Gt(t, "BCD", "ABC") // success
+//	assert.Gt(t, 2, 2) // fail
+//	assert.Gt(t, 1, 2) // fail
 func Gt(t *testing.T, v1, v2 any, message ...string) error {
 	t.Helper()
 
@@ -111,10 +111,10 @@ func Gt(t *testing.T, v1, v2 any, message ...string) error {
 // GtNow compares the values and sets the result to false if the first value is not greater than to
 // the second value. It will panic if they do not match the expected result.
 //
-//	GtNow(t, 2, 1) // success
-//	GtNow(t, 3.14, 1.68) // success
-//	GtNow(t, "BCD", "ABC") // success
-//	GtNow(t, 1, 2) // fail and terminate
+//	assert.GtNow(t, 2, 1) // success
+//	assert.GtNow(t, 3.14, 1.68) // success
+//	assert.GtNow(t, "BCD", "ABC") // success
+//	assert.GtNow(t, 1, 2) // fail and terminate
 //	// never runs
 func GtNow(t *testing.T, v1, v2 any, message ...string) error {
 	t.Helper()
@@ -132,11 +132,11 @@ func GtNow(t *testing.T, v1, v2 any, message ...string) error {
 // Gte compares the values and sets the result to false if the first value is not greater than or
 // equal to the second value.
 //
-//	Gte(t, 2, 1) // success
-//	Gte(t, 3.14, 1.68) // success
-//	Gte(t, "BCD", "ABC") // success
-//	Gte(t, 2, 2) // success
-//	Gte(t, 1, 2) // fail
+//	assert.Gte(t, 2, 1) // success
+//	assert.Gte(t, 3.14, 1.68) // success
+//	assert.Gte(t, "BCD", "ABC") // success
+//	assert.Gte(t, 2, 2) // success
+//	assert.Gte(t, 1, 2) // fail
 func Gte(t *testing.T, v1, v2 any, message ...string) error {
 	t.Helper()
 
@@ -153,11 +153,11 @@ func Gte(t *testing.T, v1, v2 any, message ...string) error {
 // GteNow compares the values and sets the result to false if the first value is not greater than
 // or equal to the second value. It will panic if they do not match the expected result.
 //
-//	GteNow(t, 2, 1) // success
-//	GteNow(t, 3.14, 1.68) // success
-//	GteNow(t, "BCD", "ABC") // success
-//	GteNow(t, 2, 2) // success
-//	GteNow(t, 1, 2) // fail and terminate
+//	assert.GteNow(t, 2, 1) // success
+//	assert.GteNow(t, 3.14, 1.68) // success
+//	assert.GteNow(t, "BCD", "ABC") // success
+//	assert.GteNow(t, 2, 2) // success
+//	assert.GteNow(t, 1, 2) // fail and terminate
 //	// never runs
 func GteNow(t *testing.T, v1, v2 any, message ...string) error {
 	t.Helper()
@@ -175,11 +175,11 @@ func GteNow(t *testing.T, v1, v2 any, message ...string) error {
 // Lt compares the values and sets the result to false if the first value is not less than the
 // second value.
 //
-//	Lt(t, 1, 2) // success
-//	Lt(t, 1.68, 3.14) // success
-//	Lt(t, "ABC", "BCD") // success
-//	Lt(t, 2, 2) // fail
-//	Lt(t, 2, 1) // fail
+//	assert.Lt(t, 1, 2) // success
+//	assert.Lt(t, 1.68, 3.14) // success
+//	assert.Lt(t, "ABC", "BCD") // success
+//	assert.Lt(t, 2, 2) // fail
+//	assert.Lt(t, 2, 1) // fail
 func Lt(t *testing.T, v1, v2 any, message ...string) error {
 	t.Helper()
 
@@ -196,10 +196,10 @@ func Lt(t *testing.T, v1, v2 any, message ...string) error {
 // LtNow compares the values and sets the result to false if the first value is not less than the
 // second value. It will panic if they do not match the expected result.
 //
-//	LtNow(t, 1, 2) // success
-//	LtNow(t, 1.68, 3.14) // success
-//	LtNow(t, "ABC", "BCD") // success
-//	LtNow(t, 2, 1) // fail and terminate
+//	assert.LtNow(t, 1, 2) // success
+//	assert.LtNow(t, 1.68, 3.14) // success
+//	assert.LtNow(t, "ABC", "BCD") // success
+//	assert.LtNow(t, 2, 1) // fail and terminate
 //	// never runs
 func LtNow(t *testing.T, v1, v2 any, message ...string) error {
 	t.Helper()
@@ -217,11 +217,11 @@ func LtNow(t *testing.T, v1, v2 any, message ...string) error {
 // Lte compares the values and sets the result to false if the first value is not less than or
 // equal to the second value.
 //
-//	Lte(t, 1, 2) // success
-//	Lte(t, 1.68, 3.14) // success
-//	Lte(t, "ABC", "BCD") // success
-//	Lte(t, 2, 2) // success
-//	Lte(t, 2, 1) // fail
+//	assert.Lte(t, 1, 2) // success
+//	assert.Lte(t, 1.68, 3.14) // success
+//	assert.Lte(t, "ABC", "BCD") // success
+//	assert.Lte(t, 2, 2) // success
+//	assert.Lte(t, 2, 1) // fail
 func Lte(t *testing.T, v1, v2 any, message ...string) error {
 	t.Helper()
 
@@ -238,11 +238,11 @@ func Lte(t *testing.T, v1, v2 any, message ...string) error {
 // LteNow compares the values and sets the result to false if the first value is not less than or
 // equal to the second value. It will panic if they do not match the expected result.
 //
-//	LteNow(t, 1, 2) // success
-//	LteNow(t, 1.68, 3.14) // success
-//	LteNow(t, "ABC", "BCD") // success
-//	LteNow(t, 2, 2) // success
-//	LteNow(t, 2, 1) // fail and terminate
+//	assert.LteNow(t, 1, 2) // success
+//	assert.LteNow(t, 1.68, 3.14) // success
+//	assert.LteNow(t, "ABC", "BCD") // success
+//	assert.LteNow(t, 2, 2) // success
+//	assert.LteNow(t, 2, 1) // fail and terminate
 //	// never runs
 func LteNow(t *testing.T, v1, v2 any, message ...string) error {
 	t.Helper()
@@ -260,10 +260,10 @@ func LteNow(t *testing.T, v1, v2 any, message ...string) error {
 // NotContainsString tests whether the string contains the substring or not, and it set the result
 // to fail if the string contains the substring.
 //
-//	NotContainsString(t, "Hello world", "") // fail
-//	NotContainsString(t, "Hello world", "Hello") // fail
-//	NotContainsString(t, "Hello world", "world") // fail
-//	NotContainsString(t, "Hello world", "hello") // success
+//	assert.NotContainsString(t, "Hello world", "") // fail
+//	assert.NotContainsString(t, "Hello world", "Hello") // fail
+//	assert.NotContainsString(t, "Hello world", "world") // fail
+//	assert.NotContainsString(t, "Hello world", "hello") // success
 func NotContainsString(t *testing.T, str, substr string, message ...any) error {
 	t.Helper()
 
@@ -273,8 +273,8 @@ func NotContainsString(t *testing.T, str, substr string, message ...any) error {
 // NotContainsStringNow tests whether the string contains the substring or not, and it will terminate the
 // execution if the string contains the substring.
 //
-//	NotContainsStringNow(t, "Hello world", "hello") // success
-//	NotContainsStringNow(t, "Hello world", "Hello") // fail and stop the execution
+//	assert.NotContainsStringNow(t, "Hello world", "hello") // success
+//	assert.NotContainsStringNow(t, "Hello world", "Hello") // fail and stop the execution
 //	// never runs
 func NotContainsStringNow(t *testing.T, str, substr string, message ...any) error {
 	t.Helper()
@@ -285,10 +285,10 @@ func NotContainsStringNow(t *testing.T, str, substr string, message ...any) erro
 // DeepEqual tests the deep equality between actual and expect parameters. It'll set the result to
 // fail if they are not deeply equal, and it doesn't stop the execution.
 //
-//	DeepEqual(t, 1, 1) // success
-//	DeepEqual(t, "ABC", "ABC") // success
-//	DeepEqual(t, 1, 0) // fail
-//	DeepEqual(t, 1, int64(1)) // fail
+//	assert.DeepEqual(t, 1, 1) // success
+//	assert.DeepEqual(t, "ABC", "ABC") // success
+//	assert.DeepEqual(t, 1, 0) // fail
+//	assert.DeepEqual(t, 1, int64(1)) // fail
 func DeepEqual(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
 
@@ -298,9 +298,9 @@ func DeepEqual(t *testing.T, actual, expect any, message ...any) error {
 // DeepEqualNow tests the deep equality between actual and expect parameters, and it'll stop the
 // execution if they are not deeply equal.
 //
-//	DeepEqualNow(t, 1, 1) // success
-//	DeepEqualNow(t, "ABC", "ABC") // success
-//	DeepEqualNow(t, 1, int64(1)) // fail and terminate
+//	assert.DeepEqualNow(t, 1, 1) // success
+//	assert.DeepEqualNow(t, "ABC", "ABC") // success
+//	assert.DeepEqualNow(t, 1, int64(1)) // fail and terminate
 //	// never run
 func DeepEqualNow(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
@@ -311,10 +311,10 @@ func DeepEqualNow(t *testing.T, actual, expect any, message ...any) error {
 // NotDeepEqual tests the deep inequality between actual and expected parameters. It'll set the
 // result to fail if they are deeply equal, but it doesn't stop the execution.
 //
-//	NotDeepEqual(t, 1, 0) // success
-//	NotDeepEqual(t, 1, int64(1)) // success
-//	NotDeepEqual(t, 1, 1) // fail
-//	NotDeepEqual(t, "ABC", "ABC") // fail
+//	assert.NotDeepEqual(t, 1, 0) // success
+//	assert.NotDeepEqual(t, 1, int64(1)) // success
+//	assert.NotDeepEqual(t, 1, 1) // fail
+//	assert.NotDeepEqual(t, "ABC", "ABC") // fail
 func NotDeepEqual(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
 
@@ -324,9 +324,9 @@ func NotDeepEqual(t *testing.T, actual, expect any, message ...any) error {
 // NotDeepEqualNow tests the deep inequality between actual and expected parameters, and it'll stop
 // the execution if they are deeply equal.
 //
-//	NotDeepEqual(t, 1, 0) // success
-//	NotDeepEqual(t, 1, int64(1)) // success
-//	NotDeepEqual(t, "ABC", "ABC") // fail and terminate
+//	assert.NotDeepEqual(t, 1, 0) // success
+//	assert.NotDeepEqual(t, 1, int64(1)) // success
+//	assert.NotDeepEqual(t, "ABC", "ABC") // fail and terminate
 //	// never run
 func NotDeepEqualNow(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
@@ -337,11 +337,11 @@ func NotDeepEqualNow(t *testing.T, actual, expect any, message ...any) error {
 // Equal tests the equality between actual and expect parameters. It'll set the result to fail if
 // they are not equal, and it doesn't stop the execution.
 //
-//	Equal(t, 1, 1) // success
-//	Equal(t, "ABC", "ABC") // success
-//	Equal(t, 1, int64(1)) // success
-//	Equal(t, 1, uint64(1)) // fail
-//	Equal(t, 1, 0) // fail
+//	assert.Equal(t, 1, 1) // success
+//	assert.Equal(t, "ABC", "ABC") // success
+//	assert.Equal(t, 1, int64(1)) // success
+//	assert.Equal(t, 1, uint64(1)) // fail
+//	assert.Equal(t, 1, 0) // fail
 func Equal(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
 
@@ -351,10 +351,10 @@ func Equal(t *testing.T, actual, expect any, message ...any) error {
 // EqualNow tests the equality between actual and expect parameters, and it'll stop the execution
 // if they are not equal.
 //
-//	EqualNow(t, 1, 1) // success
-//	EqualNow(t, "ABC", "ABC") // success
-//	EqualNow(t, 1, int64(1)) // success
-//	EqualNow(t, 1, 0) // fail and terminate
+//	assert.EqualNow(t, 1, 1) // success
+//	assert.EqualNow(t, "ABC", "ABC") // success
+//	assert.EqualNow(t, 1, int64(1)) // success
+//	assert.EqualNow(t, 1, 0) // fail and terminate
 //	never run
 func EqualNow(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
@@ -365,12 +365,12 @@ func EqualNow(t *testing.T, actual, expect any, message ...any) error {
 // NotEqual tests the inequality between actual and expected parameters. It'll set the result to
 // fail if they are equal, but it doesn't stop the execution.
 //
-//	NotEqual(t, 1, 0) // success
-//	NotEqual(t, "ABC", "CBA") // success
-//	NotEqual(t, 1, uint64(1)) // success
-//	NotEqual(t, 1, 1) // fail
-//	NotEqual(t, "ABC", "ABC") // fail
-//	NotEqual(t, 1, int64(1)) // fail
+//	assert.NotEqual(t, 1, 0) // success
+//	assert.NotEqual(t, "ABC", "CBA") // success
+//	assert.NotEqual(t, 1, uint64(1)) // success
+//	assert.NotEqual(t, 1, 1) // fail
+//	assert.NotEqual(t, "ABC", "ABC") // fail
+//	assert.NotEqual(t, 1, int64(1)) // fail
 func NotEqual(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
 
@@ -380,9 +380,9 @@ func NotEqual(t *testing.T, actual, expect any, message ...any) error {
 // NotEqualNow tests the inequality between actual and expected parameters, and it'll stop the
 // execution if they are equal.
 //
-//	NotEqualNow(t, 1, 0) // success
-//	NotEqualNow(t, "ABC", "CBA") // success
-//	NotEqualNow(t, 1, 1) // fail and terminate
+//	assert.NotEqualNow(t, 1, 0) // success
+//	assert.NotEqualNow(t, "ABC", "CBA") // success
+//	assert.NotEqualNow(t, 1, 1) // fail and terminate
 //	// never run
 func NotEqualNow(t *testing.T, actual, expect any, message ...any) error {
 	t.Helper()
@@ -393,10 +393,10 @@ func NotEqualNow(t *testing.T, actual, expect any, message ...any) error {
 // HasPrefixString tests whether the string has the prefix string or not, and it set the result to
 // fail if the string does not have the prefix string.
 //
-//	HasPrefixString(t, "Hello world", "") // success
-//	HasPrefixString(t, "Hello world", "Hello") // success
-//	HasPrefixString(t, "Hello world", "world") // fail
-//	HasPrefixString(t, "Hello world", "hello") // fail
+//	assert.HasPrefixString(t, "Hello world", "") // success
+//	assert.HasPrefixString(t, "Hello world", "Hello") // success
+//	assert.HasPrefixString(t, "Hello world", "world") // fail
+//	assert.HasPrefixString(t, "Hello world", "hello") // fail
 func HasPrefixString(t *testing.T, str, prefix string, message ...any) error {
 	t.Helper()
 
@@ -406,9 +406,9 @@ func HasPrefixString(t *testing.T, str, prefix string, message ...any) error {
 // HasPrefixStringNow tests whether the string has the prefix string or not, and it will terminate
 // the execution if the string does not have the prefix string.
 //
-//	HasPrefixStringNow(t, "Hello world", "") // success
-//	HasPrefixStringNow(t, "Hello world", "Hello") // success
-//	HasPrefixStringNow(t, "Hello world", "hello") // fail and stop the execution
+//	assert.HasPrefixStringNow(t, "Hello world", "") // success
+//	assert.HasPrefixStringNow(t, "Hello world", "Hello") // success
+//	assert.HasPrefixStringNow(t, "Hello world", "hello") // fail and stop the execution
 //	// never runs
 func HasPrefixStringNow(t *testing.T, str, prefix string, message ...any) error {
 	t.Helper()
@@ -419,10 +419,10 @@ func HasPrefixStringNow(t *testing.T, str, prefix string, message ...any) error 
 // NotHasPrefixString tests whether the string has the prefix string or not, and it set the result
 // to fail if the string have the prefix string.
 //
-//	NotHasPrefixString(t, "Hello world", "hello") // success
-//	NotHasPrefixString(t, "Hello world", "world") // success
-//	NotHasPrefixString(t, "Hello world", "") // fail
-//	NotHasPrefixString(t, "Hello world", "Hello") // fail
+//	assert.NotHasPrefixString(t, "Hello world", "hello") // success
+//	assert.NotHasPrefixString(t, "Hello world", "world") // success
+//	assert.NotHasPrefixString(t, "Hello world", "") // fail
+//	assert.NotHasPrefixString(t, "Hello world", "Hello") // fail
 func NotHasPrefixString(t *testing.T, str, prefix string, message ...any) error {
 	t.Helper()
 
@@ -432,9 +432,9 @@ func NotHasPrefixString(t *testing.T, str, prefix string, message ...any) error 
 // NotHasPrefixStringNow tests whether the string has the prefix string or not, and it will
 // terminate the execution if the string have the prefix string.
 //
-//	NotHasPrefixStringNow(t, "Hello world", "hello") // success
-//	NotHasPrefixStringNow(t, "Hello world", "world") // success
-//	NotHasPrefixStringNow(t, "Hello world", "Hello") // fail and stop the execution
+//	assert.NotHasPrefixStringNow(t, "Hello world", "hello") // success
+//	assert.NotHasPrefixStringNow(t, "Hello world", "world") // success
+//	assert.NotHasPrefixStringNow(t, "Hello world", "Hello") // fail and stop the execution
 //	// never runs
 func NotHasPrefixStringNow(t *testing.T, str, prefix string, message ...any) error {
 	t.Helper()
@@ -445,10 +445,10 @@ func NotHasPrefixStringNow(t *testing.T, str, prefix string, message ...any) err
 // HasSuffixString tests whether the string has the suffix string or not, and it set the result to
 // fail if the string does not have the suffix string.
 //
-//	HasSuffixString(t, "Hello world", "") // success
-//	HasSuffixString(t, "Hello world", "world") // success
-//	HasSuffixString(t, "Hello world", "World") // fail
-//	HasSuffixString(t, "Hello world", "hello") // fail
+//	assert.HasSuffixString(t, "Hello world", "") // success
+//	assert.HasSuffixString(t, "Hello world", "world") // success
+//	assert.HasSuffixString(t, "Hello world", "World") // fail
+//	assert.HasSuffixString(t, "Hello world", "hello") // fail
 func HasSuffixString(t *testing.T, str, suffix string, message ...any) error {
 	t.Helper()
 
@@ -458,9 +458,9 @@ func HasSuffixString(t *testing.T, str, suffix string, message ...any) error {
 // HasSuffixStringNow tests whether the string has the suffix string or not, and it will terminate
 // the execution if the string does not have the suffix string.
 //
-//	HasSuffixStringNow(t, "Hello world", "") // success
-//	HasSuffixStringNow(t, "Hello world", "world") // success
-//	HasSuffixStringNow(t, "Hello world", "World") // fail and stop the execution
+//	assert.HasSuffixStringNow(t, "Hello world", "") // success
+//	assert.HasSuffixStringNow(t, "Hello world", "world") // success
+//	assert.HasSuffixStringNow(t, "Hello world", "World") // fail and stop the execution
 //	// never runs
 func HasSuffixStringNow(t *testing.T, str, suffix string, message ...any) error {
 	t.Helper()
@@ -471,10 +471,10 @@ func HasSuffixStringNow(t *testing.T, str, suffix string, message ...any) error 
 // NotHasSuffixString tests whether the string has the suffix string or not, and it set the result
 // to fail if the string have the suffix string.
 //
-//	NotHasSuffixString(t, "Hello world", "Hello") // success
-//	NotHasSuffixString(t, "Hello world", "World") // success
-//	NotHasSuffixString(t, "Hello world", "") // fail
-//	NotHasSuffixString(t, "Hello world", "world") // fail
+//	assert.NotHasSuffixString(t, "Hello world", "Hello") // success
+//	assert.NotHasSuffixString(t, "Hello world", "World") // success
+//	assert.NotHasSuffixString(t, "Hello world", "") // fail
+//	assert.NotHasSuffixString(t, "Hello world", "world") // fail
 func NotHasSuffixString(t *testing.T, str, suffix string, message ...any) error {
 	t.Helper()
 
@@ -484,9 +484,9 @@ func NotHasSuffixString(t *testing.T, str, suffix string, message ...any) error 
 // NotHasSuffixStringNow tests whether the string has the suffix string or not, and it will
 // terminate the execution if the string have the suffix string.
 //
-//	NotHasSuffixStringNow(t, "Hello world", "hello") // success
-//	NotHasSuffixStringNow(t, "Hello world", "World") // success
-//	NotHasSuffixStringNow(t, "Hello world", "world") // fail and stop the execution
+//	assert.NotHasSuffixStringNow(t, "Hello world", "hello") // success
+//	assert.NotHasSuffixStringNow(t, "Hello world", "World") // success
+//	assert.NotHasSuffixStringNow(t, "Hello world", "world") // fail and stop the execution
 //	// never runs
 func NotHasSuffixStringNow(t *testing.T, str, suffix string, message ...any) error {
 	t.Helper()
@@ -497,9 +497,9 @@ func NotHasSuffixStringNow(t *testing.T, str, suffix string, message ...any) err
 // MapHasKey tests whether the map contains the specified key or not, it will fail if the map does
 // not contain the key, or the type of the key cannot assign to the type of the key of the map.
 //
-//	assertion.MapHasKey(map[string]int{"a":1}, "a") // success
-//	assertion.MapHasKey(map[string]int{"a":1}, "b") // fail
-//	assertion.MapHasKey(map[string]int{"a":1}, 1) // fail
+//	assert.MapHasKey(t, map[string]int{"a":1}, "a") // success
+//	assert.MapHasKey(t, map[string]int{"a":1}, "b") // fail
+//	assert.MapHasKey(t, map[string]int{"a":1}, 1) // fail
 func MapHasKey(t *testing.T, m, key any, message ...any) error {
 	t.Helper()
 
@@ -510,8 +510,8 @@ func MapHasKey(t *testing.T, m, key any, message ...any) error {
 // execution if the test fails. It will fail if the map does not contain the key, or the type of
 // the key cannot assign to the type of the key of the map.
 //
-//	assertion.MapHasKeyNow(map[string]int{"a":1}, "a") // success
-//	assertion.MapHasKeyNow(map[string]int{"a":1}, "b") // fail and terminate
+//	assert.MapHasKeyNow(t, map[string]int{"a":1}, "a") // success
+//	assert.MapHasKeyNow(t, map[string]int{"a":1}, "b") // fail and terminate
 //	// never run
 func MapHasKeyNow(t *testing.T, m, key any, message ...any) error {
 	t.Helper()
@@ -523,9 +523,9 @@ func MapHasKeyNow(t *testing.T, m, key any, message ...any) error {
 // contain the key. It will also set the test result to success if the type of the key cannot
 // assign to the type of the key of the map.
 //
-//	assertion.NotMapHasKey(map[string]int{"a":1}, "b") // success
-//	assertion.NotMapHasKey(map[string]int{"a":1}, 1) // success
-//	assertion.NotMapHasKey(map[string]int{"a":1}, "a") // fail
+//	assert.NotMapHasKey(t, map[string]int{"a":1}, "b") // success
+//	assert.NotMapHasKey(t, map[string]int{"a":1}, 1) // success
+//	assert.NotMapHasKey(t, map[string]int{"a":1}, "a") // fail
 func NotMapHasKey(t *testing.T, m, key any, message ...any) error {
 	t.Helper()
 
@@ -536,9 +536,9 @@ func NotMapHasKey(t *testing.T, m, key any, message ...any) error {
 // contain the key, and it will terminate the execution if the test fails. It will also set the
 // test result to success if the type of the key cannot assign to the type of the key of the map.
 //
-//	assertion.NotMapHasKeyNow(map[string]int{"a":1}, "b") // success
-//	assertion.NotMapHasKeyNow(map[string]int{"a":1}, 1) // success
-//	assertion.NotMapHasKeyNow(map[string]int{"a":1}, "a") // fail and terminate
+//	assert.NotMapHasKeyNow(t, map[string]int{"a":1}, "b") // success
+//	assert.NotMapHasKeyNow(t, map[string]int{"a":1}, 1) // success
+//	assert.NotMapHasKeyNow(t, map[string]int{"a":1}, "a") // fail and terminate
 //	// never run
 func NotMapHasKeyNow(t *testing.T, m, key any, message ...any) error {
 	t.Helper()
@@ -550,9 +550,9 @@ func NotMapHasKeyNow(t *testing.T, m, key any, message ...any) error {
 // does not contain the value, or the type of the value cannot assign to the type of the values of
 // the map.
 //
-//	assertion.MapHasValue(map[string]int{"a":1}, 1) // success
-//	assertion.MapHasValue(map[string]int{"a":1}, 2) // fail
-//	assertion.MapHasValue(map[string]int{"a":1}, "a") // fail
+//	assert.MapHasValue(t, map[string]int{"a":1}, 1) // success
+//	assert.MapHasValue(t, map[string]int{"a":1}, 2) // fail
+//	assert.MapHasValue(t, map[string]int{"a":1}, "a") // fail
 func MapHasValue(t *testing.T, m, value any, message ...any) error {
 	t.Helper()
 
@@ -563,8 +563,8 @@ func MapHasValue(t *testing.T, m, value any, message ...any) error {
 // the execution if the test fails. It will fail if the map does not contain the value, or the type
 // of the value cannot assign to the type of the value of the map.
 //
-//	assertion.MapHasValueNow(map[string]int{"a":1}, 1) // success
-//	assertion.MapHasValueNow(map[string]int{"a":1}, 2) // fail and terminate
+//	assert.MapHasValueNow(t, map[string]int{"a":1}, 1) // success
+//	assert.MapHasValueNow(t, map[string]int{"a":1}, 2) // fail and terminate
 //	// never run
 func MapHasValueNow(t *testing.T, m, value any, message ...any) error {
 	t.Helper()
@@ -576,9 +576,9 @@ func MapHasValueNow(t *testing.T, m, value any, message ...any) error {
 // map contain the value. It will also set the test result to success if the type of the value
 // cannot assign to the type of the value of the map.
 //
-//	assertion.NotMapHasValue(map[string]int{"a":1}, 2) // success
-//	assertion.NotMapHasValue(map[string]int{"a":1}, "a") // success
-//	assertion.NotMapHasValue(map[string]int{"a":1}, 1) // fail
+//	assert.NotMapHasValue(t, map[string]int{"a":1}, 2) // success
+//	assert.NotMapHasValue(t, map[string]int{"a":1}, "a") // success
+//	assert.NotMapHasValue(t, map[string]int{"a":1}, 1) // fail
 func NotMapHasValue(t *testing.T, m, value any, message ...any) error {
 	t.Helper()
 
@@ -590,9 +590,9 @@ func NotMapHasValue(t *testing.T, m, value any, message ...any) error {
 // the test result to success if the type of the value cannot assign to the type of the value of
 // the map.
 //
-//	assertion.NotMapHasValueNow(map[string]int{"a":1}, 2) // success
-//	assertion.NotMapHasValueNow(map[string]int{"a":1}, "a") // success
-//	assertion.NotMapHasValueNow(map[string]int{"a":1}, 1) // fail and terminate
+//	assert.NotMapHasValueNow(t, map[string]int{"a":1}, 2) // success
+//	assert.NotMapHasValueNow(t, map[string]int{"a":1}, "a") // success
+//	assert.NotMapHasValueNow(t, map[string]int{"a":1}, 1) // fail and terminate
 //	// never run
 func NotMapHasValueNow(t *testing.T, m, value any, message ...any) error {
 	t.Helper()
@@ -603,8 +603,8 @@ func NotMapHasValueNow(t *testing.T, m, value any, message ...any) error {
 // Match tests whether the string matches the regular expression or not.
 //
 //	pattern := regexp.MustCompile(`^https?:\/\/`)
-//	Match(t, "http://example.com", pattern) // success
-//	Match(t, "example.com", pattern) // fail
+//	assert.Match(t, "http://example.com", pattern) // success
+//	assert.Match(t, "example.com", pattern) // fail
 func Match(t *testing.T, val string, pattern *regexp.Regexp, message ...any) error {
 	t.Helper()
 
@@ -615,8 +615,8 @@ func Match(t *testing.T, val string, pattern *regexp.Regexp, message ...any) err
 // the execution if it does not match.
 //
 //	pattern := regexp.MustCompile(`^https?:\/\/`)
-//	MatchNow(t, "http://example.com", pattern) // success
-//	MatchNow(t, "example.com", pattern) // fail and terminate
+//	assert.MatchNow(t, "http://example.com", pattern) // success
+//	assert.MatchNow(t, "example.com", pattern) // fail and terminate
 //	// never run
 func MatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...any) error {
 	t.Helper()
@@ -627,8 +627,8 @@ func MatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...any) 
 // MatchString will compile the pattern and test whether the string matches the regular expression
 // or not. It will panic if the pattern is not a valid regular expression.
 //
-//	MatchString(t, "http://example.com", `^https?:\/\/`) // success
-//	MatchString(t, "example.com", `^https?:\/\/`) // fail
+//	assert.MatchString(t, "http://example.com", `^https?:\/\/`) // success
+//	assert.MatchString(t, "example.com", `^https?:\/\/`) // fail
 func MatchString(t *testing.T, val, pattern string, message ...any) error {
 	t.Helper()
 
@@ -639,8 +639,8 @@ func MatchString(t *testing.T, val, pattern string, message ...any) error {
 // expression or not. It will terminate the execution if it does not match, and it will panic if
 // the pattern is not a valid regular expression.
 //
-//	MatchStringNow(t, "http://example.com", `^https?:\/\/`) // success
-//	MatchStringNow(t, "example.com", `^https?:\/\/`) // fail and terminate
+//	assert.MatchStringNow(t, "http://example.com", `^https?:\/\/`) // success
+//	assert.MatchStringNow(t, "example.com", `^https?:\/\/`) // fail and terminate
 //	// never run
 func MatchStringNow(t *testing.T, val, pattern string, message ...any) error {
 	t.Helper()
@@ -652,8 +652,8 @@ func MatchStringNow(t *testing.T, val, pattern string, message ...any) error {
 // to fail if the string matches the pattern.
 //
 //	pattern := regexp.MustCompile(`^https?:\/\/`)
-//	NotMatch(t, "example.com", pattern) // success
-//	NotMatch(t, "http://example.com", pattern) // fail
+//	assert.NotMatch(t, "example.com", pattern) // success
+//	assert.NotMatch(t, "http://example.com", pattern) // fail
 func NotMatch(t *testing.T, val string, pattern *regexp.Regexp, message ...any) error {
 	t.Helper()
 
@@ -664,8 +664,8 @@ func NotMatch(t *testing.T, val string, pattern *regexp.Regexp, message ...any) 
 // terminate the execution if the string matches the pattern.
 //
 //	pattern := regexp.MustCompile(`^https?:\/\/`)
-//	NotMatchNow(t, "example.com", pattern) // success
-//	NotMatchNow(t, "http://example.com", pattern) // fail and terminate
+//	assert.NotMatchNow(t, "example.com", pattern) // success
+//	assert.NotMatchNow(t, "http://example.com", pattern) // fail and terminate
 //	// never run
 func NotMatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...any) error {
 	t.Helper()
@@ -677,8 +677,8 @@ func NotMatchNow(t *testing.T, val string, pattern *regexp.Regexp, message ...an
 // or not, and it set the result to fail if the string matches the pattern. It will also panic if
 // the pattern is not a valid regular expression.
 //
-//	NotMatchString(t, "example.com", `^https?:\/\/`) // success
-//	NotMatchString(t, "http://example.com", `^https?:\/\/`) // fail
+//	assert.NotMatchString(t, "example.com", `^https?:\/\/`) // success
+//	assert.NotMatchString(t, "http://example.com", `^https?:\/\/`) // fail
 func NotMatchString(t *testing.T, val, pattern string, message ...any) error {
 	t.Helper()
 
@@ -690,8 +690,8 @@ func NotMatchString(t *testing.T, val, pattern string, message ...any) error {
 // terminate the execution if the string matches the pattern, and it will panic if the pattern is
 // not a valid regular expression.
 //
-//	NotMatchStringNow(t, "example.com", `^https?:\/\/`) // success
-//	NotMatchStringNow(t, "http://example.com", `^https?:\/\/`) // fail and terminate
+//	assert.NotMatchStringNow(t, "example.com", `^https?:\/\/`) // success
+//	assert.NotMatchStringNow(t, "http://example.com", `^https?:\/\/`) // fail and terminate
 //	// never run
 func NotMatchStringNow(t *testing.T, val, pattern string, message ...any) error {
 	t.Helper()
@@ -704,10 +704,10 @@ func NotMatchStringNow(t *testing.T, val, pattern string, message ...any) error 
 // string.
 //
 //	var err error // nil
-//	Nil(t, err) // success
+//	assert.Nil(t, err) // success
 //
 //	err = errors.New("some error")
-//	Nil(t, err) // fail
+//	assert.Nil(t, err) // fail
 func Nil(t *testing.T, val any, message ...any) error {
 	t.Helper()
 
@@ -721,10 +721,10 @@ func Nil(t *testing.T, val any, message ...any) error {
 // This function will set the result to fail, and stop the execution if the value is not nil.
 //
 //	var err error // nil
-//	NilNow(t, err) // success
+//	assert.NilNow(t, err) // success
 //
 //	err = errors.New("some error")
-//	NilNow(t, err) // fail and terminate
+//	assert.NilNow(t, err) // fail and terminate
 //	// never run
 func NilNow(t *testing.T, val any, message ...any) error {
 	t.Helper()
@@ -737,10 +737,10 @@ func NilNow(t *testing.T, val any, message ...any) error {
 // string.
 //
 //	var err error // nil
-//	NotNil(t, err) // fail
+//	assert.NotNil(t, err) // fail
 //
 //	err = errors.New("some error")
-//	NotNil(t, err) // success
+//	assert.NotNil(t, err) // success
 func NotNil(t *testing.T, val any, message ...any) error {
 	t.Helper()
 
@@ -754,10 +754,10 @@ func NotNil(t *testing.T, val any, message ...any) error {
 // This function will set the result to fail, and stop the execution if the value is nil.
 //
 //	var err error = errors.New("some error")
-//	NotNilNow(t, err) // success
+//	assert.NotNilNow(t, err) // success
 //
 //	err = nil
-//	NotNilNow(t, err) // fail and terminate
+//	assert.NotNilNow(t, err) // fail and terminate
 //	// never run
 func NotNilNow(t *testing.T, val any, message ...any) error {
 	t.Helper()
@@ -768,11 +768,11 @@ func NotNilNow(t *testing.T, val any, message ...any) error {
 // Panic expects the function fn to panic, and it'll set the result to fail if the function doesn't
 // panic.
 //
-//	Panic(t, func() {
+//	assert.Panic(t, func() {
 //	  panic("some error")
 //	}) // success
 //
-//	Panic(t, func() {
+//	assert.Panic(t, func() {
 //	  // no panic
 //	}) // fail
 func Panic(t *testing.T, fn func(), message ...any) error {
@@ -784,11 +784,11 @@ func Panic(t *testing.T, fn func(), message ...any) error {
 // PanicNow expects the function fn to panic. It'll set the result to fail if the function doesn't
 // panic, and stop the execution.
 //
-//	PanicNow(t, func() {
+//	assert.PanicNow(t, func() {
 //	  panic("some error")
 //	}) // success
 //
-//	PanicNow(t, func() {
+//	assert.PanicNow(t, func() {
 //	  // no panic
 //	}) // fail
 //	// never run
@@ -801,11 +801,11 @@ func PanicNow(t *testing.T, fn func(), message ...any) error {
 // NotPanic asserts that the function fn does not panic, and it'll set the result to fail if the
 // function panic.
 //
-//	NotPanic(t, func() {
+//	assert.NotPanic(t, func() {
 //	  // no panic
 //	}) // success
 //
-//	NotPanic(t, func() {
+//	assert.NotPanic(t, func() {
 //	  panic("some error")
 //	}) // fail
 func NotPanic(t *testing.T, fn func(), message ...any) error {
@@ -817,11 +817,11 @@ func NotPanic(t *testing.T, fn func(), message ...any) error {
 // NotPanicNow asserts that the function fn does not panic. It'll set the result to fail if the
 // function panic, and it also stops the execution.
 //
-//	NotPanicNow(t, func() {
+//	assert.NotPanicNow(t, func() {
 //	  // no panic
 //	}) // success
 //
-//	NotPanicNow(t, func() {
+//	assert.NotPanicNow(t, func() {
 //	  panic("some error")
 //	}) // fail and terminate
 //	// never run
@@ -834,13 +834,13 @@ func NotPanicNow(t *testing.T, fn func(), message ...any) error {
 // PanicOf expects the function fn to panic by the expected error. If the function does not panic
 // or panic for another reason, it will set the result to fail.
 //
-//	PanicOf(t, func() {
+//	assert.PanicOf(t, func() {
 //	  panic("expected error")
 //	}, "expected error") // success
-//	PanicOf(t, func() {
+//	assert.PanicOf(t, func() {
 //	  panic("unexpected error")
 //	}, "expected error") // fail
-//	PanicOf(t, func() {
+//	assert.PanicOf(t, func() {
 //	  // ..., no panic
 //	}, "expected error") // fail
 func PanicOf(t *testing.T, fn func(), expectErr any, message ...any) error {
@@ -852,10 +852,10 @@ func PanicOf(t *testing.T, fn func(), expectErr any, message ...any) error {
 // PanicOfNow expects the function fn to panic by the expected error. If the function does not
 // panic or panic for another reason, it will set the result to fail and terminate the execution.
 //
-//	PanicOfNow(t, func() {
+//	assert.PanicOfNow(t, func() {
 //	  panic("expected error")
 //	}, "expected error") // success
-//	PanicOfNow(t, func() {
+//	assert.PanicOfNow(t, func() {
 //	  panic("unexpected error")
 //	}, "expected error") // fail and terminated
 //	// never runs
@@ -868,13 +868,13 @@ func PanicOfNow(t *testing.T, fn func(), expectErr any, message ...any) error {
 // NotPanicOf expects the function fn not panic, or the function does not panic by the unexpected
 // error. If the function panics by the unexpected error, it will set the result to fail.
 //
-//	NotPanicOf(t, func() {
+//	assert.NotPanicOf(t, func() {
 //	  panic("other error")
 //	}, "unexpected error") // success
-//	NotPanicOf(t, func() {
+//	assert.NotPanicOf(t, func() {
 //	  // ..., no panic
 //	}, "unexpected error") // success
-//	NotPanicOf(t, func() {
+//	assert.NotPanicOf(t, func() {
 //	  panic("unexpected error")
 //	}, "unexpected error") // fail
 func NotPanicOf(t *testing.T, fn func(), unexpectedErr any, message ...any) error {
@@ -887,13 +887,13 @@ func NotPanicOf(t *testing.T, fn func(), unexpectedErr any, message ...any) erro
 // unexpected error. If the function panics by the unexpected error, it will set the result to fail
 // and stop the execution.
 //
-//	NotPanicOfNow(t, func() {
+//	assert.NotPanicOfNow(t, func() {
 //	  panic("other error")
 //	}, "unexpected error") // success
-//	NotPanicOfNow(t, func() {
+//	assert.NotPanicOfNow(t, func() {
 //	  // ..., no panic
 //	}, "unexpected error") // success
-//	NotPanicOfNow(t, func() {
+//	assert.NotPanicOfNow(t, func() {
 //	  panic("unexpected error")
 //	}, "unexpected error") // fail and terminate
 //	// never runs
@@ -908,10 +908,10 @@ func NotPanicOfNow(t *testing.T, fn func(), unexpectedErr any, message ...any) e
 // slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the
 // value is always falsy.
 //
-//	True(t, 1) // success
-//	True(t, "test") // success
-//	True(t, 0) // fail
-//	True(t, "") // fail
+//	assert.True(t, 1) // success
+//	assert.True(t, "test") // success
+//	assert.True(t, 0) // fail
+//	assert.True(t, "") // fail
 func True(t *testing.T, val any, message ...any) error {
 	t.Helper()
 
@@ -925,9 +925,9 @@ func True(t *testing.T, val any, message ...any) error {
 //
 // The function will stop the execution if the value is falsy.
 //
-//	TrueNow(t, 1) // success
-//	TrueNow(t, "test") // success
-//	TrueNow(t, "") // fail and terminate
+//	assert.TrueNow(t, 1) // success
+//	assert.TrueNow(t, "test") // success
+//	assert.TrueNow(t, "") // fail and terminate
 //	// never run
 func TrueNow(t *testing.T, val any, message ...any) error {
 	t.Helper()
@@ -940,10 +940,10 @@ func TrueNow(t *testing.T, val any, message ...any) error {
 // slice, a truthy value should not be nil, and its length must be greater than 0. For nil, the
 // value is always falsy.
 //
-//	NotTrue(t, 0) // success
-//	NotTrue(t, "") // success
-//	NotTrue(t, 1) // fail
-//	NotTrue(t, "test") // fail
+//	assert.NotTrue(t, 0) // success
+//	assert.NotTrue(t, "") // success
+//	assert.NotTrue(t, 1) // fail
+//	assert.NotTrue(t, "test") // fail
 func NotTrue(t *testing.T, val any, message ...any) error {
 	t.Helper()
 
@@ -957,9 +957,9 @@ func NotTrue(t *testing.T, val any, message ...any) error {
 //
 // The function will stop the execution if the value is truthy.
 //
-//	NotTrueNow(t, 0) // success
-//	NotTrueNow(t, "") // success
-//	NotTrueNow(t, "test") // fail and terminate
+//	assert.NotTrueNow(t, 0) // success
+//	assert.NotTrueNow(t, "") // success
+//	assert.NotTrueNow(t, "test") // fail and terminate
 //	// never run
 func NotTrueNow(t *testing.T, val any, message ...any) error {
 	t.Helper()

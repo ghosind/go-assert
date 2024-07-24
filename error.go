@@ -34,6 +34,7 @@ const (
 	defaultErrMessageGte                string = "%v must greater than or equal to %v"
 	defaultErrMessageLt                 string = "%v must less then %v"
 	defaultErrMessageLte                string = "%v must less then or equal to %v"
+	defaultErrMessageIsError            string = "expect err matches %v, got %v"
 )
 
 var (

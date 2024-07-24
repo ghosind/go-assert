@@ -494,6 +494,33 @@ func NotHasSuffixStringNow(t *testing.T, str, suffix string, message ...any) err
 	return tryNotHasSuffixString(t, true, str, suffix, message...)
 }
 
+// IsError tests whether the error matches the target or not. It'll set the result to fail if the
+// error does not match to the target error, and it doesn't stop the execution.
+//
+//	err1 := errors.New("error 1")
+//	err2 := errors.New("error 2")
+//	assert.IsError(t, err1, err1) // success
+//	assert.IsError(t, err1, err2) // fail
+//	assert.IsError(t, errors.Join(err1, err2), err1) // success
+//	assert.IsError(t, errors.Join(err1, err2), err2) // success
+func IsError(t *testing.T, err, target error, message ...any) error {
+	return isError(t, false, err, target, message...)
+}
+
+// IsErrorNow tests whether the error matches the target or not. It'll set the result to fail and
+// stop the execution if the error does not match to the target error.
+//
+//	err1 := errors.New("error 1")
+//	err2 := errors.New("error 2")
+//	assert.IsErrorNow(t, errors.Join(err1, err2), err1) // success
+//	assert.IsErrorNow(t, errors.Join(err1, err2), err2) // success
+//	assert.IsErrorNow(t, err1, err1) // success
+//	assert.IsErrorNow(t, err1, err2) // fail
+//	// never runs
+func IsErrorNow(t *testing.T, err, target error, message ...any) error {
+	return isError(t, true, err, target, message...)
+}
+
 // MapHasKey tests whether the map contains the specified key or not, it will fail if the map does
 // not contain the key, or the type of the key cannot assign to the type of the key of the map.
 //

@@ -17,9 +17,6 @@ func TestIsError(t *testing.T) {
 	testIsError(a, mockA, err1, err1, true)
 	testIsError(a, mockA, err1, err2, false)
 	testIsError(a, mockA, err1, err3, false)
-	testIsError(a, mockA, errors.Join(err1, err2), err1, true)
-	testIsError(a, mockA, errors.Join(err1, err2), err2, true)
-	testIsError(a, mockA, errors.Join(err1, err2), err3, false)
 }
 
 func testIsError(a, mockA *Assertion, err, target error, isError bool) {

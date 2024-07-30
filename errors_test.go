@@ -29,10 +29,24 @@ func testIsError(a, mockA *Assertion, err, target error, isError bool) {
 		return mockA.IsError(err, target)
 	}, isError)
 
+	testAssertionFunction(a, "NotIsError", func() error {
+		return NotIsError(mockA.T, err, target)
+	}, !isError)
+	testAssertionFunction(a, "Assertion.NotIsError", func() error {
+		return mockA.NotIsError(err, target)
+	}, !isError)
+
 	testAssertionNowFunction(a, "IsErrorNow", func() {
 		IsErrorNow(mockA.T, err, target)
 	}, !isError)
 	testAssertionNowFunction(a, "Assertion.IsErrorNow", func() {
 		mockA.IsErrorNow(err, target)
 	}, !isError)
+
+	testAssertionNowFunction(a, "NotIsErrorNow", func() {
+		NotIsErrorNow(mockA.T, err, target)
+	}, isError)
+	testAssertionNowFunction(a, "Assertion.NotIsErrorNow", func() {
+		mockA.NotIsErrorNow(err, target)
+	}, isError)
 }

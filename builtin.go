@@ -499,12 +499,14 @@ func NotHasSuffixStringNow(t *testing.T, str, suffix string, message ...any) err
 //
 //	err1 := errors.New("error 1")
 //	err2 := errors.New("error 2")
+//	err3 := errors.New("error 3")
 //	assert.IsError(t, err1, err1) // success
 //	assert.IsError(t, err1, err2) // fail
 //	assert.IsError(t, errors.Join(err1, err2), err1) // success
 //	assert.IsError(t, errors.Join(err1, err2), err2) // success
-func IsError(t *testing.T, err, target error, message ...any) error {
-	return isError(t, false, err, target, message...)
+//	assert.IsError(t, errors.Join(err1, err2), err3) // fail
+func IsError(t *testing.T, err, expected error, message ...any) error {
+	return isError(t, false, err, expected, message...)
 }
 
 // IsErrorNow tests whether the error matches the target or not. It'll set the result to fail and
@@ -517,8 +519,37 @@ func IsError(t *testing.T, err, target error, message ...any) error {
 //	assert.IsErrorNow(t, err1, err1) // success
 //	assert.IsErrorNow(t, err1, err2) // fail
 //	// never runs
-func IsErrorNow(t *testing.T, err, target error, message ...any) error {
-	return isError(t, true, err, target, message...)
+func IsErrorNow(t *testing.T, err, expected error, message ...any) error {
+	return isError(t, true, err, expected, message...)
+}
+
+// NotIsError tests whether the error matches the target or not. It'll set the result to fail if
+// the error matches to the target error, and it doesn't stop the execution.
+//
+//	err1 := errors.New("error 1")
+//	err2 := errors.New("error 2")
+//	err3 := errors.New("error 3")
+//	assert.NotIsError(t, err1, err2) // success
+//	assert.NotIsError(t, err1, err1) // fail
+//	assert.NotIsError(t, errors.Join(err1, err2), err3) // success
+//	assert.NotIsError(t, errors.Join(err1, err2), err1) // fail
+//	assert.NotIsError(t, errors.Join(err1, err2), err2) // fail
+func NotIsError(t *testing.T, err, unexpected error, message ...any) error {
+	return notIsError(t, false, err, unexpected, message...)
+}
+
+// NotIsErrorNow tests whether the error matches the target or not. It'll set the result to fail
+// and stop the execution if the error matches to the target error.
+//
+//	err1 := errors.New("error 1")
+//	err2 := errors.New("error 2")
+//	err3 := errors.new("error 3")
+//	assert.NotIsErrorNow(t, errors.Join(err1, err2), err3) // success
+//	assert.NotIsErrorNow(t, err1, err2) // fail
+//	assert.NotIsErrorNow(t, err1, err1) // fail and terminate
+//	// never runs
+func NotIsErrorNow(t *testing.T, err, unexpected error, message ...any) error {
+	return notIsError(t, true, err, unexpected, message...)
 }
 
 // MapHasKey tests whether the map contains the specified key or not, it will fail if the map does

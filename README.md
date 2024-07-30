@@ -232,6 +232,10 @@ func TestExample(t *testing.T) {
 
 ### Error Handling
 
+- [`IsError`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.IsError) and [`NotIsError`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotIsError): assert the error matches the target error or not.
+
+  > Since v1.1.0
+
 - [`Panic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Panic) and [`NotPanic`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotPanic): assert the function will panic or not.
 
   > Since v0.1.0

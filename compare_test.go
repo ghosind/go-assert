@@ -135,6 +135,55 @@ func testEqualAndNotEqual(a, mockA *Assertion, v1, v2 any, isEqual bool) {
 	}, isEqual)
 }
 
+func TestFloatEqualAndFloatNotEqual(t *testing.T) {
+	a := New(t)
+	mockA := New(new(testing.T))
+
+	testFloatEqualAndFloatNotEqual(a, mockA, 1, 1, 1e-7, true)
+	testFloatEqualAndFloatNotEqual(a, mockA, 1, 1.1, 1e-7, false)
+	testFloatEqualAndFloatNotEqual(a, mockA, 1, 2, 1e-7, false)
+	testFloatEqualAndFloatNotEqual(a, mockA, 0.999999999999, 1, 1e-7, true)
+	testFloatEqualAndFloatNotEqual(a, mockA, 1.00000000001, 1, 1e-7, true)
+	testFloatEqualAndFloatNotEqual(a, mockA, 1.00001, 1, 1e-7, false)
+	testFloatEqualAndFloatNotEqual(a, mockA, 0.9999, 1, 1e-7, false)
+}
+
+func testFloatEqualAndFloatNotEqual(a, mockA *Assertion, v1, v2, epsilon any, isEqual bool) {
+	// a.T.Helper()
+
+	// FloatEqual
+	testAssertionFunction(a, "FloatEqual", func() error {
+		return FloatEqual(mockA.T, v1, v2, epsilon)
+	}, isEqual)
+	testAssertionFunction(a, "Assertion.FloatEqual", func() error {
+		return mockA.FloatEqual(v1, v2, epsilon)
+	}, isEqual)
+
+	// FloatNotEqual
+	testAssertionFunction(a, "FloatNotEqual", func() error {
+		return FloatNotEqual(mockA.T, v1, v2, epsilon)
+	}, !isEqual)
+	testAssertionFunction(a, "Assertion.FloatNotEqual", func() error {
+		return mockA.FloatNotEqual(v1, v2, epsilon)
+	}, !isEqual)
+
+	// FloatEqualNow
+	testAssertionNowFunction(a, "FloatEqualNow", func() {
+		FloatEqualNow(mockA.T, v1, v2, epsilon)
+	}, !isEqual)
+	testAssertionNowFunction(a, "Assertion.FloatEqualNow", func() {
+		mockA.FloatEqualNow(v1, v2, epsilon)
+	}, !isEqual)
+
+	// FloatNotEqualNow
+	testAssertionNowFunction(a, "FloatNotEqualNow", func() {
+		FloatNotEqualNow(mockA.T, v1, v2, epsilon)
+	}, isEqual)
+	testAssertionNowFunction(a, "Assertion.FloatNotEqualNow", func() {
+		mockA.FloatNotEqualNow(v1, v2, epsilon)
+	}, isEqual)
+}
+
 func TestNilAndNotNil(t *testing.T) {
 	a := New(t)
 	mockA := New(new(testing.T))

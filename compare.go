@@ -178,6 +178,86 @@ func tryNotEqual(t *testing.T, failedNow bool, actual, expect any, message ...an
 	)
 }
 
+// FloatEqual tests the equality between actual and expect floating numbers with epsilon. It'll
+// set the result to fail if they are not equal, and it doesn't stop the execution.
+//
+//	a := assert.New(t)
+//	a.FloatEqual(1.0, 1.0, 0.1) // success
+//	a.FloatEqual(1.0, 1.01, 0.1) // success
+//	a.FloatEqual(1.0, 1.2, 0.1) // fail
+func (a *Assertion) FloatEqual(actual, expect, epsilon any, message ...any) error {
+	a.Helper()
+
+	return tryFloatEqual(a.T, false, actual, expect, epsilon, message...)
+}
+
+// FloatEqualNow tests the equality between actual and expect floating numbers with epsilon, and
+// it'll stop the execution if they are not equal.
+//
+//	a := assert.New(t)
+//	a.FloatEqualNow(1.0, 1.0, 0.1) // success
+//	a.FloatEqualNow(1.0, 1.01, 0.1) // success
+//	a.FloatEqualNow(1.0, 1.2, 0.1) // fail and terminate
+func (a *Assertion) FloatEqualNow(actual, expect, epsilon any, message ...any) error {
+	a.Helper()
+
+	return tryFloatEqual(a.T, true, actual, expect, epsilon, message...)
+}
+
+// FloatNotEqual tests the inequality between actual and expect floating numbers with epsilon. It'll
+// set the result to fail if they are equal, but it doesn't stop the execution.
+//
+//	a := assert.New(t)
+//	a.FloatNotEqual(1.0, 1.2, 0.1) // success
+//	a.FloatNotEqual(1.0, 1.1, 0.1) // success
+//	a.FloatNotEqual(1.0, 1.0, 0.1) // fail
+func (a *Assertion) FloatNotEqual(actual, expect, epsilon any, message ...any) error {
+	a.Helper()
+
+	return tryFloatNotEqual(a.T, false, actual, expect, epsilon, message...)
+}
+
+// FloatNotEqualNow tests the inequality between actual and expect floating numbers with epsilon,
+// and it'll stop the execution if they are equal.
+//
+//	a := assert.New(t)
+//	a.FloatNotEqualNow(1.0, 1.2, 0.1) // success
+//	a.FloatNotEqualNow(1.0, 1.1, 0.1) // success
+//	a.FloatNotEqualNow(1.0, 1.0, 0.1) // fail and terminate
+func (a *Assertion) FloatNotEqualNow(actual, expect, epsilon any, message ...any) error {
+	a.Helper()
+
+	return tryFloatNotEqual(a.T, true, actual, expect, epsilon, message...)
+}
+
+// tryFloatEqual try to testing the equality between actual and expect floating numbers, and it'll
+// fail if the values are not equal.
+func tryFloatEqual(t *testing.T, failedNow bool, actual, expect, epsilon any, message ...any) error {
+	t.Helper()
+
+	return test(
+		t,
+		func() bool { return isFloatEqual(actual, expect, epsilon) },
+		failedNow,
+		fmt.Sprintf(defaultErrMessageEqual, actual, expect),
+		message...,
+	)
+}
+
+// tryFloatNotEqual try to testing the inequality between actual and expect floating numbers, and
+// it'll fail if the values are equal.
+func tryFloatNotEqual(t *testing.T, failedNow bool, actual, expect, epsilon any, message ...any) error {
+	t.Helper()
+
+	return test(
+		t,
+		func() bool { return !isFloatEqual(actual, expect, epsilon) },
+		failedNow,
+		fmt.Sprintf(defaultErrMessageEqual, actual, expect),
+		message...,
+	)
+}
+
 // Nil tests whether a value is nil or not, and it'll fail when the value is not nil. It will
 // always return false if the value is a bool, an integer, a floating number, a complex, or a
 // string.
@@ -411,6 +491,24 @@ func isEqual(x, y any) bool {
 	default:
 		return v1.Interface() == v2.Interface()
 	}
+}
+
+// isFloatEqual checks the equality of two floating numbers with epsilon.
+func isFloatEqual(x, y, epsilon any) bool {
+	xv := toFloat(x)
+	yv := toFloat(y)
+	ev := toFloat(epsilon)
+
+	if xv == yv {
+		return true
+	}
+
+	diff := xv - yv
+	if diff < 0 {
+		diff = -diff
+	}
+
+	return diff < ev
 }
 
 // isNil checks whether a value is nil or not. It'll always return false if the value is not a

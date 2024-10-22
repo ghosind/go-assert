@@ -390,6 +390,54 @@ func NotEqualNow(t *testing.T, actual, expect any, message ...any) error {
 	return tryNotEqual(t, true, actual, expect, message...)
 }
 
+// FloatEqual tests the equality between actual and expect floating numbers with epsilon. It'll
+// set the result to fail if they are not equal, and it doesn't stop the execution.
+//
+//	FloatEqual(t, 1.0, 1.0, 0.1) // success
+//	FloatEqual(t, 1.0, 1.01, 0.1) // success
+//	FloatEqual(t, 1.0, 1.2, 0.1) // fail
+func FloatEqual(t *testing.T, actual, expect, epsilon any, message ...any) error {
+	t.Helper()
+
+	return tryFloatEqual(t, false, actual, expect, epsilon, message...)
+}
+
+// FloatEqualNow tests the equality between actual and expect floating numbers with epsilon, and
+// it'll stop the execution if they are not equal.
+//
+//	FloatEqualNow(t, 1.0, 1.0, 0.1) // success
+//	FloatEqualNow(t, 1.0, 1.01, 0.1) // success
+//	FloatEqualNow(t, 1.0, 1.2, 0.1) // fail and terminate
+func FloatEqualNow(t *testing.T, actual, expect, epsilon any, message ...any) error {
+	t.Helper()
+
+	return tryFloatEqual(t, true, actual, expect, epsilon, message...)
+}
+
+// FloatNotEqual tests the inequality between actual and expect floating numbers with epsilon. It'll
+// set the result to fail if they are equal, but it doesn't stop the execution.
+//
+//	FloatNotEqual(t, 1.0, 1.2, 0.1) // success
+//	FloatNotEqual(t, 1.0, 1.1, 0.1) // success
+//	FloatNotEqual(t, 1.0, 1.0, 0.1) // fail
+func FloatNotEqual(t *testing.T, actual, expect, epsilon any, message ...any) error {
+	t.Helper()
+
+	return tryFloatNotEqual(t, false, actual, expect, epsilon, message...)
+}
+
+// FloatNotEqualNow tests the inequality between actual and expect floating numbers with epsilon,
+// and it'll stop the execution if they are equal.
+//
+//	FloatNotEqualNow(t, 1.0, 1.2, 0.1) // success
+//	FloatNotEqualNow(t, 1.0, 1.1, 0.1) // success
+//	FloatNotEqualNow(t, 1.0, 1.0, 0.1) // fail and terminate
+func FloatNotEqualNow(t *testing.T, actual, expect, epsilon any, message ...any) error {
+	t.Helper()
+
+	return tryFloatNotEqual(t, true, actual, expect, epsilon, message...)
+}
+
 // HasPrefixString tests whether the string has the prefix string or not, and it set the result to
 // fail if the string does not have the prefix string.
 //

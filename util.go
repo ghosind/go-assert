@@ -5,6 +5,10 @@ import (
 	"testing"
 )
 
+var (
+	floatType = reflect.TypeOf(float64(0))
+)
+
 // test tries to run the test function, and creates an assertion error if the result is fail.
 func test(
 	t *testing.T,
@@ -68,4 +72,18 @@ func isSameType(t1, t2 reflect.Type) bool {
 	default:
 		return t1 == t2
 	}
+}
+
+// toFloat converts the value to a float64, and it'll panic if the value can't be converted.
+func toFloat(v any) float64 {
+	vv := reflect.ValueOf(v)
+	if vv.CanFloat() {
+		return vv.Float()
+	}
+
+	if vv.CanConvert(floatType) {
+		return vv.Convert(floatType).Float()
+	}
+
+	panic(ErrNotFloat)
 }

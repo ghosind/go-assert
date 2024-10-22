@@ -41,6 +41,8 @@ const (
 var (
 	// ErrNotArray indicates that the value must be a slice or an array.
 	ErrNotArray error = errors.New("the value must be a slice or an array")
+	// ErrNotFloat indicates that the value must be a floating number.
+	ErrNotFloat error = errors.New("the value must be a floating number")
 	// ErrNotMap indicates that the value must be a map.
 	ErrNotMap error = errors.New("the value must be a map")
 	// ErrNotOrderable indicates that the value must be orderable.

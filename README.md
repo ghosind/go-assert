@@ -164,6 +164,10 @@ func TestExample(t *testing.T) {
 
   > Since v0.1.5
 
+- [`FloatEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.FloatEqual) and [`NotFloatEqual`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.NotFloatEqual): assert the float value is equal or not.
+
+  > Since v1.1.1
+
 ### Comparison
 
 - [`Gt`](https://pkg.go.dev/github.com/ghosind/go-assert#Assertion.Gt): assert the first value is greater than the second value.

@@ -149,7 +149,7 @@ func TestFloatEqualAndFloatNotEqual(t *testing.T) {
 }
 
 func testFloatEqualAndFloatNotEqual(a, mockA *Assertion, v1, v2, epsilon any, isEqual bool) {
-	// a.T.Helper()
+	a.T.Helper()
 
 	// FloatEqual
 	testAssertionFunction(a, "FloatEqual", func() error {
